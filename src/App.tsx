@@ -7,7 +7,7 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
-import ECommerce from './pages/MainPage/MainPage';
+import MainPage from './pages/MainPage/MainPage';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
@@ -40,29 +40,13 @@ function App() {
           index
           element={
             <>
-              <PageTitle title="eCommerce Dashboard | SMSVerify" />
-              <ECommerce />
+              <PageTitle title="Home | SMSVerify" />
+              <MainPage />
             </>
           }
         />
-        <Route
-          path="/calendar"
-          element={
-            <>
-              <PageTitle title="Calendar | SMSVerify" />
-              <Calendar />
-            </>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <>
-              <PageTitle title="Profile | SMSVerify" />
-              <Profile />
-            </>
-          }
-        />
+        
+       
         <Route
           path="/faq"
           element={
@@ -72,33 +56,8 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/forms/form-elements"
-          element={
-            <>
-              <PageTitle title="Form Elements | SMSVerify" />
-              <FormElements />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-layout"
-          element={
-            <>
-              <PageTitle title="Form Layout | SMSVerify" />
-              <FormLayout />
-            </>
-          }
-        />
-        <Route
-          path="/tables"
-          element={
-            <>
-              <PageTitle title="Tables | SMSVerify" />
-              <Tables />
-            </>
-          }
-        />
+      
+       
         <Route
           path="/settings"
           element={
@@ -108,33 +67,7 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/chart"
-          element={
-            <>
-              <PageTitle title="Basic Chart | SMSVerify" />
-              <Chart />
-            </>
-          }
-        />
-        <Route
-          path="/ui/alerts"
-          element={
-            <>
-              <PageTitle title="Alerts | SMSVerify" />
-              <Alerts />
-            </>
-          }
-        />
-        <Route
-          path="/ui/buttons"
-          element={
-            <>
-              <PageTitle title="Buttons | SMSVerify" />
-              <Buttons />
-            </>
-          }
-        />
+     
         <Route
           path="/auth/signin"
           element={

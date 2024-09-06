@@ -3,7 +3,7 @@ import React from 'react';
 import { ChooseService } from '../../components/shadcn/chooseservice';
 import { Features } from '../../components/shadcn/services';
 
-const ECommerce: React.FC = () => {
+const MainPage: React.FC = () => {
   return (
     <>
       <div className="flex lg:hidden">
@@ -16,4 +16,4 @@ const ECommerce: React.FC = () => {
   );
 };
 
-export default ECommerce;
+export default MainPage;
