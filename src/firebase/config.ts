@@ -4,13 +4,13 @@ import { getFirestore } from 'firebase/firestore';
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 const  firebaseConfig = {
-  apiKey: "AIzaSyCt-gKnHc7lwgq7i96KW1Yr1txxUPiz4pQ",
-  authDomain: "sms-services-5284f.firebaseapp.com",
-  projectId: "sms-services-5284f",
-  storageBucket: "sms-services-5284f.appspot.com",
-  messagingSenderId: "587437758412",
-  appId: "1:587437758412:web:6a74402cec9350ed3c2f69",
-  measurementId: "G-JDGGGDNJ5W"
+  apiKey: import.meta.env.VITE_APP_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_APP_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase

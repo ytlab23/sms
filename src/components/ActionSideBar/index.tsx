@@ -22,18 +22,32 @@ const ActionSidebar = ({
   const trigger = useRef<any>(null);
   const actionSidebar = useRef<any>(null);
 
-  useEffect(() => {
-    fetch('https://5sim.net/v1/guest/countries', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTYzOTM4OTYsImlhdCI6MTcyNDg1Nzg5NiwicmF5IjoiNjYxODEyYTM5OGQyZWFlNjY2MThkZGRlZGQ4ODUxODMiLCJzdWIiOjI2OTcyODN9.LjwOqrC_mmKS_BnVSSv4KFiBvcd11EJYBsZpjTkoh4P8vYQYgJdQ7T8dO7q8bYkZdr5pcpBxKIRMO8IhFoxaMOgHZWIzEA7Mafb6LJWyq-FsE5BM8MoNfLpfh_vHxp1iGNX2zt4Nv99Qix0lY3GvwdiiKhOu31U_9TrXD0W0EOydXDnMgeqtht8hMjfxx9uv87AGTr9up7d51S6t1flOHA92a3R9rHJI6BLttZskixQQamCPUIskD3C-gvvk0ujvLZMc8Gh94j00hcwLPMt0f6gjH7RBsyGztg0KrrBcRchJklp7C7Y1n7HXaDtW5CE9dtt9Hn0l2MLvymN0tKYQDg',
-      },
-    }).then((response) => {
-      console.log(response);
-    });
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://5sim.net/v1/guest/countries', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization:
+  //         'Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTYzOTM4OTYsImlhdCI6MTcyNDg1Nzg5NiwicmF5IjoiNjYxODEyYTM5OGQyZWFlNjY2MThkZGRlZGQ4ODUxODMiLCJzdWIiOjI2OTcyODN9.LjwOqrC_mmKS_BnVSSv4KFiBvcd11EJYBsZpjTkoh4P8vYQYgJdQ7T8dO7q8bYkZdr5pcpBxKIRMO8IhFoxaMOgHZWIzEA7Mafb6LJWyq-FsE5BM8MoNfLpfh_vHxp1iGNX2zt4Nv99Qix0lY3GvwdiiKhOu31U_9TrXD0W0EOydXDnMgeqtht8hMjfxx9uv87AGTr9up7d51S6t1flOHA92a3R9rHJI6BLttZskixQQamCPUIskD3C-gvvk0ujvLZMc8Gh94j00hcwLPMt0f6gjH7RBsyGztg0KrrBcRchJklp7C7Y1n7HXaDtW5CE9dtt9Hn0l2MLvymN0tKYQDg',
+  //     },
+  //   }).then((response) => {
+  //     console.log(response);
+  //   });
+  // }, []);
+  
+    useEffect(() => {
+      fetch('/api/countries', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            `Bearer ${import.meta.env.VITE_APP_5SIM_API_KEY}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error('Error:', error));
+    }, []);
   return (
     <aside
       ref={actionSidebar}
