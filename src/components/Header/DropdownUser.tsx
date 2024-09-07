@@ -1,13 +1,18 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
+import { useAuth } from '../../contexts/authContext';
 import { CreditDisplay } from '../shadcn/creditdisplay';
 import { Settings, LogOut, ChevronRight } from 'lucide-react'
+
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const { logout } = useAuth();
+  const navigate = useNavigate(); 
   return (
+    
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
         onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -59,7 +64,16 @@ const DropdownUser = () => {
        </ul>
        <button
          className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 transition-all duration-300 ease-in-out hover:bg-red-50 dark:hover:bg-red-900/30 group w-full text-left"
-         onClick={() => setDropdownOpen(false)}
+         onClick={()=> {
+          logout();
+        
+          setDropdownOpen(false);
+          navigate('/auth/signin');
+        
+        }
+
+
+         }
          onMouseEnter={() => setHoveredItem('logout')}
          onMouseLeave={() => setHoveredItem(null)}
        >

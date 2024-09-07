@@ -1,10 +1,118 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-placeholder.svg';
 import Logo from '../../images/logo/logo-placeholder.svg';
+import { auth, db } from '../../firebase/config';
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+
 
 const SignIn: React.FC = () => {
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const [message, setMessage] = React.useState<string>('');
+  const [authLoading, setAuthLoading] = React.useState<boolean>(false);
+  const navigate = useNavigate(); 
+
+
+  function handleGoogleSignIn() {
+   
+  
+    setAuthLoading(true); // Show loading indicator
+  
+    const provider = new GoogleAuthProvider();
+  
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const user = result.user;
+        console.log('Google Sign-In Success:', user.email);
+  
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+  
+        if (!userDoc.exists()) {
+          await setDoc(userDocRef, {
+            username: user.displayName || 'New User',
+            email: user.email,
+            createdAt: new Date(),
+          });
+          console.log('New user document created');
+        }
+  
+        navigate('/'); // Redirect to the homepage
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+  
+        switch (errorCode) {
+          case 'auth/account-exists-with-different-credential':
+            setMessage('An account already exists with the same email address but different credentials.');
+            break;
+          case 'auth/popup-closed-by-user':
+            setMessage('The popup was closed before the sign-in was completed.');
+            break;
+          default:
+            setMessage('An error occurred during Google Sign-In.');
+            break;
+        }
+  
+        console.log('Google Sign-In Error:', errorMessage);
+      })
+      .finally(() => {
+        setAuthLoading(false); // Hide loading indicator
+      });
+  }
+  function handleSignIn() {
+
+    if (!email.includes('@')) {
+      setMessage('Please enter a valid email');
+      console.log('Please enter a valid email');
+      return;
+    }
+    if (password.length < 6) {
+      setMessage('Password must be at least 6 characters');
+      console.log('Password must be at least 6 characters');
+      return;
+    }
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log("auth success");
+      navigate('/');
+      // Additional actions on successful sign-in
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+  
+      // Handle specific error codes
+      switch (errorCode) {
+        case 'auth/user-not-found':
+          setMessage('Account does not exist. Please sign up first.');
+          break;
+        case 'auth/wrong-password':
+          setMessage('Incorrect password. Please try again.');
+          break;
+        case 'auth/invalid-email':
+          setMessage('The email address is not valid. Please check and try again.');
+          break;
+        case 'auth/invalid-credential':
+          setMessage('Invalid credentials');
+          break;
+
+        default:
+          setMessage("invalid credentials");
+          break;
+      }
+  
+      console.log(errorMessage);
+    });
+  
+  
+  }
   
   return (
     <>
@@ -162,6 +270,10 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                       type="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -189,10 +301,14 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    Password
                   </label>
                   <div className="relative">
                     <input
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
                       type="password"
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -221,16 +337,29 @@ const SignIn: React.FC = () => {
                     </span>
                   </div>
                 </div>
-
+<span className='text-red-600'>{message}</span>
                 <div className="mb-5">
                   <input
                     type="submit"
+                    onClick={
+                      (e) => {
+                        e.preventDefault();
+                        handleSignIn();
+                      }
+                      }
                     value="Sign In"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   />
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                <button
+                onClick={
+                  (e) => {
+                    e.preventDefault();
+                    handleGoogleSignIn();
+                  }
+                  }
+                className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"

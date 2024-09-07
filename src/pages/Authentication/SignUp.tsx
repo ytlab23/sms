@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-placeholder.svg';
 import Logo from '../../images/logo/logo-placeholder.svg';
@@ -12,6 +12,11 @@ import Loader from '../../common/Loader';
 const SignUp: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const navigate = useNavigate(); 
+
+  const [username, setUsername] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState(''); 
+
   const [message, setMessage] = React.useState('');
   const [authLoading, setAuthLoading] = React.useState(false);
   React.useEffect(() => {
@@ -33,6 +38,21 @@ const SignUp: React.FC = () => {
       // The signed-in user info.
       const user = result.user;
       console.log('Google Sign-In Success:', user.email);
+
+      setDoc(doc(db, 'users', user.uid), {
+        username: username, // replace this with your actual username state
+        email: user.email,
+
+      });
+      getDoc(doc(db, 'users', user.uid)).then((doc) => {   
+        if (doc.exists()) {
+          console.log('Document data:', doc.data());
+        } else {
+          // doc.data() will be undefined in this case
+          console.log('No such document!');
+        }
+       });
+       navigate('/'); 
 
       // Optionally, you might want to handle additional user information or save it to your database.
 
@@ -60,6 +80,27 @@ const SignUp: React.FC = () => {
     }
   }
   async function handleSignup() {
+// mae it log error if there the confirm password is not the same as the password
+   
+    if (!email.includes('@')) {
+      setMessage('Invalid email');
+    return;
+    }
+  if (username === '' || email === '' || password === '' || confirmPassword === '' ) {
+      setMessage('Please fill in all fields');
+      return;
+  }
+  if (password.length < 6) {
+    setMessage('Password must be at least 6 characters');
+    return;
+  }
+ 
+
+  if (password !== confirmPassword) {
+    setMessage('Passwords do not match');
+    console.log("error from password");
+    return;
+  }
     console.log(authLoading, 'before');
     console.log(authLoading, 'after');
     setAuthLoading(true);
@@ -79,8 +120,9 @@ const SignUp: React.FC = () => {
         const user = userCredential.user;
         console.log(user.email);
          setDoc(doc(db, 'users', user.uid), {
-          username: 'testuser', // replace this with your actual username state
+          username: username, // replace this with your actual username state
           email: user.email,
+
         });
         getDoc(doc(db, 'users', user.uid)).then((doc) => {   
           if (doc.exists()) {
@@ -90,6 +132,7 @@ const SignUp: React.FC = () => {
             console.log('No such document!');
           }
          });
+         navigate('/');
       })
       .catch((error) => {
         setAuthLoading(false);
@@ -102,6 +145,7 @@ const SignUp: React.FC = () => {
           console.log(
             'This email is already registered. Please try logging in or use a different email.',
           );
+          setMessage('This email is already registered. Please try logging in or use a different email.');
         } else {
           console.log(errorMessage);
         }
@@ -265,9 +309,13 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
                       type="text"
                       placeholder="Enter your full name"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className="w-full  rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -307,7 +355,7 @@ const SignUp: React.FC = () => {
                       id="email"
                       type="email"
                       placeholder="Enter your email"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className="w-full rounded-lg border  border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -376,6 +424,10 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                    value={confirmPassword}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                    }}
                       type="password"
                       placeholder="Re-enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -404,7 +456,7 @@ const SignUp: React.FC = () => {
                     </span>
                   </div>
                 </div>
-
+<span className='text-red-500'>{message}</span>
                 <div className="mb-5">
                   <button
                     onClick={handleSignup}
