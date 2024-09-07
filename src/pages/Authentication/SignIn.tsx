@@ -19,7 +19,7 @@ const SignIn: React.FC = () => {
   function handleGoogleSignIn() {
    
   
-    setAuthLoading(true); // Show loading indicator
+    setAuthLoading(true); 
   
     const provider = new GoogleAuthProvider();
   
