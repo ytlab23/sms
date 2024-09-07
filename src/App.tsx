@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation ,Navigate} from 'react-router-dom';
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -18,7 +18,7 @@ import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import { FaqSection } from './components/shadcn/faqsection';
 import Faq from './pages/Faq/Faq';
-import { AuthProvider } from './contexts/authContext';
+import { AuthProvider } from './contexts/authcontext';
 import ProtectedRoute from './contexts/ProtectedRoute';
 import HowToBuy from './pages/HowToBuy/HowToBuy';
 import OrdersPage from './pages/Orders/OrdersPage';
@@ -111,7 +111,7 @@ function App() {
               </>
             }
           />
-           <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </DefaultLayout>
     </AuthProvider>

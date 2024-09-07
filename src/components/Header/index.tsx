@@ -72,9 +72,9 @@
 //         </div>
 
 //         <div className="hidden sm:block">
-       
+
 //         </div>
-       
+
 //         <ul className="mt-4 mb-5.5 hidden lg:flex gap-2 pl-6">
 //       {navItems.map((item) => (
 //         <li key={item.name}>
@@ -100,7 +100,7 @@
 //             {/* <!-- Dark Mode Toggler --> */}
 
 //             <DarkModeSwitcher />
-            
+
 //           </ul>
 
 //           {/* <!-- User Area --> */}
@@ -114,13 +114,20 @@
 
 // export default Header;
 
-import { Link, NavLink, useLocation,useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import DropdownUser from './DropdownUser';
 import LogoIcon from '../../images/logo/logo-placeholder.svg';
 import DarkModeSwitcher from './DarkModeSwitcher';
 import { Button } from '../shadcn/ui/button';
-import { Home, HelpCircle, UserPlus, LogIn, ShoppingBag, BookOpen } from 'lucide-react';
-import { useAuth } from '../../contexts/authContext';
+import {
+  Home,
+  HelpCircle,
+  UserPlus,
+  LogIn,
+  ShoppingBag,
+  BookOpen,
+} from 'lucide-react';
+import { useAuth } from '../../contexts/authcontext';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -129,7 +136,7 @@ const Header = (props: {
   const { currentUser } = useAuth(); // Get the current user from AuthContext
   const location = useLocation();
   const currentPath = location.pathname;
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   // Navigation items visible to all users
   const commonNavItems = [
     { name: 'HOME', href: '/', icon: Home },
@@ -149,7 +156,9 @@ const Header = (props: {
   ];
 
   // Combine navigation items based on user authentication status
-  const navItems = currentUser ? [...commonNavItems, ...authNavItems] : [...commonNavItems, ...guestNavItems];
+  const navItems = currentUser
+    ? [...commonNavItems, ...authNavItems]
+    : [...commonNavItems, ...guestNavItems];
 
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
