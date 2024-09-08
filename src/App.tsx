@@ -22,6 +22,7 @@ import { AuthProvider } from './contexts/authcontext';
 import ProtectedRoute from './contexts/ProtectedRoute';
 import HowToBuy from './pages/HowToBuy/HowToBuy';
 import OrdersPage from './pages/Orders/OrdersPage';
+import DepositMoney from './pages/deposit/depositmoney';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,6 +48,15 @@ function App() {
               <>
                 <PageTitle title="Home | SMSVerify" />
                 <MainPage />
+              </>
+            }
+          />
+          <Route
+            path="/pay"
+            element={
+              <>
+                <PageTitle title="Pay | SMSVerify" />
+                <DepositMoney></DepositMoney>
               </>
             }
           />
