@@ -73,7 +73,7 @@ app.get('/api/countries', async (req, res) => {
     });
     res.json(response.data);
   } catch (error) {
-    console.error('Error fetching countries:', error.message);
+    console.error('Error fetching countries:', error);
     res.status(500).json({ error: 'Failed to fetch countries' });
   }
 });
