@@ -9,7 +9,7 @@
       "resolveJsonModule": true,
       "outDir": "./dist"
     },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts", "firebase.ts", "index.ts"],
     "exclude": ["node_modules"]
   }
   
