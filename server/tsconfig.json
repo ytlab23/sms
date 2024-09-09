@@ -11,8 +11,8 @@
   },
   "include": [
     "src/**/*.ts",
-    "firebase.ts",
-    "index.ts"
+    "src/firebase.ts",
+    "src/index.ts"
   ],
   "exclude": [
     "node_modules"
