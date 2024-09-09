@@ -33,6 +33,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist', // Ensure that Vercel expects the output directory to be 'dist'
+    outDir: 'dist', // Ensure thgat Vercel expects the output directory to be 'dist'
   },
 });

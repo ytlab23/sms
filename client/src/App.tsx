@@ -132,6 +132,7 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
+
 import { loadStripe } from '@stripe/stripe-js';
 
 import Loader from './common/Loader';
