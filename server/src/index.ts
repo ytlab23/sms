@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { db } from './firebase';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-
+import axios from 'axios';
 const app = express();
 const stripe = new Stripe('sk_test_51Ps4ASHiyrduhHMT81gXgjh1HglUaf4PSdxjP9ZWkZFGJBhz5ehjpk4bNxM2YZTT5zHiI42EQ8OROgCKn7CXGLNK007cMxAofs', {
   apiVersion: '2020-08-27',
@@ -62,6 +62,21 @@ app.post('/api/create-checkout-session', async (req, res) => {
   }
 });
 //webhook for success
+// Endpoint for fetching countries from the 5sim API
+app.get('/api/countries', async (req, res) => {
+  try {
+    const response = await axios.get('https://5sim.net/v1/guest/countries', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.VITE_APP_5SIM_API_KEY}`, // Load API key from env
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching countries:', error.message);
+    res.status(500).json({ error: 'Failed to fetch countries' });
+  }
+});
 
 // Get Customer Balance
 app.get('/api/check-balance', async (req, res) => {
