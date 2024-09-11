@@ -157,6 +157,7 @@ import ProtectedRoute from './contexts/ProtectedRoute';
 import HowToBuy from './pages/HowToBuy/HowToBuy';
 import OrdersPage from './pages/Orders/OrdersPage';
 import PaymentForm from './pages/payment/paymentform';
+import TryTo from './pages/payment/trytobuy';
 
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
@@ -196,6 +197,7 @@ function App() {
                 <>
                   <PageTitle title="Pay | SMSVerify" />
                   <PaymentForm ></PaymentForm>
+                  <TryTo></TryTo>
                 </>
               </Elements>
             }

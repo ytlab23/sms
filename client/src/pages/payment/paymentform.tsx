@@ -1,35 +1,39 @@
 import { useState } from 'react';
+import { useAuth } from '../../contexts/authcontext';
 
 const PaymentForm = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { currentUser } = useAuth(); // Get the current user from AuthContext
 
-  const checkBalance = async (customerId: string) => {
-    console.log("checkBalance customerId", customerId);
-    try {
-      const response = await fetch(`http://localhost:3000/api/check-balance?customerId=${customerId}`);
-      const data = await response.json();
-      console.log('Customer Balance:', data.balance);
-    } catch (error) {
-      console.error('Error fetching balance:', error);
-    }
-  };
+  // const checkBalance = async (customerId: string) => {
+  //   console.log("checkBalance customerId", customerId);
+  //   try {
+  //     const response = await fetch(`http://localhost:3000/api/check-balance?customerId=${customerId}`);
+  //     const data = await response.json();
+  //     console.log('Customer Balance:', data.balance);
+  //   } catch (error) {
+  //     console.error('Error fetching balance:', error);
+  //   }
+  // };
   
-  // Example usage
-   checkBalance('cus_QoV6cedIHuDlts');
+  // // Example usage
+  //  checkBalance('cus_QoV6cedIHuDlts');
   
   
 
   const handlePayment = async () => {
+
     try {
-      const response = await fetch('https://smsverify-server.vercel.app/api/create-checkout-session', {
+      const response = await fetch('http://localhost:3000/api/create-checkout-session', {
+      // const response = await fetch('https://smsverify-server.vercel.app/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          uid: 'abdulmajid', // Replace with actual user ID
+          uid: currentUser?.uid, // Replace with actual user ID
           amount: 100,    // Amount in dollars
-          email: 'user@example.com', // Replace with actual email
+          email: currentUser?.email, // Replace with actual email
         }),
       });
 
@@ -54,7 +58,7 @@ const PaymentForm = () => {
 
   return (
     <div>
-      <button onClick={handlePayment}>Pay Now</button>
+      <button onClick={handlePayment}>Pay Noww</button>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
     </div>
   );
