@@ -62,7 +62,7 @@ const fetchServices = async () => {
   const buyProduct = async () => {
     console.log("buying prgggoduct");
     try {
-      const response = await axios.post('http://localhost:3000/api/buy-product', {
+      const response = await axios.post('https://smsverify-server.vercel.app/api/buy-product', {
         uid: currentUser?.uid,
         country: "E",
         service: "telegram",
@@ -79,7 +79,7 @@ const fetchServices = async () => {
   const fetchUserProducts = async () => {
     console.log("getting user products");
     try {
-      const response = await axios.get('http://localhost:3000/api/get-user-products', {
+      const response = await axios.get('https://smsverify-server.vercel.app/get-user-products', {
         params: { uid: userId },
       });
       setProducts(response.data);
@@ -92,7 +92,7 @@ const fetchServices = async () => {
   const fetchSms = async (numberId: string) => {
     console.log("fetching sms");
     try {
-      const response = await axios.get('http://localhost:3000/api/get-sms', {
+      const response = await axios.get('https://smsverify-server.vercel.app/api/get-sms', {
         params: { uid: userId, numberId },
       });
       setSms(response.data);
@@ -147,7 +147,7 @@ const fetchServices = async () => {
           <p>{JSON.stringify(sms)}</p>
         </div>
       )}
-      <button onClick={buyProduct}>Buy Product</button>
+      <button >Buy Product</button>
     </div>
     
   );

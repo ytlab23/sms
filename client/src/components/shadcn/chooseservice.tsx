@@ -137,7 +137,7 @@ export const ChooseService: React.FC = () => {
   // const services = Object.values(servicesData);
   const fetchCountries = async () => {
     console.log('fetching countries');
-    fetch('http://localhost:3000/api/countries', {
+    fetch('https://smsverify-server.vercel.app/api/countries', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ export const ChooseService: React.FC = () => {
     console.log('fetching services');
     try {
       const response = await axios.get(
-        'http://localhost:3000/api/get-services',
+        'https://smsverify-server.vercel.app/api/get-services',
       );
       const formattedServices = Object.entries(response.data).map(
         ([key, value]: [string, any]) => ({
