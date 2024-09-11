@@ -43,7 +43,7 @@ const TryTo: React.FC = () => {
 const fetchServices = async () => {
     console.log("fetching services");
     try {
-      const response = await axios.get('http://localhost:3000/api/get-services');
+      const response = await axios.get('https://smsverify-server.vercel.app/api/get-services');
       const formattedServices = Object.entries(response.data).map(([key, value]: [string, any]) => ({
         name: key, // Service name like '115com'
         category: (value as { Category: string }).Category, // Service category
