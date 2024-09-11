@@ -257,10 +257,11 @@ function App() {
           <Route
             path="/howtobuy"
             element={
+              <ProtectedRoute>
               <>
                 <PageTitle title="How to Buy | SMSVerify" />
                 <HowToBuy />
-              </>
+              </></ProtectedRoute>
             }
           />
           <Route path="*" element={<Navigate to="/" />} />
