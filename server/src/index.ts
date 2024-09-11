@@ -91,7 +91,7 @@ app.post(
   express.raw({ type: 'application/json' }),
   async (req, res) => {
     const sig = req.headers['stripe-signature'];
-    const endpointSecret = 'whsec_b8d5afa9222183584c6d1edb7b7d3698b36205222734b1a000451bbee0e0965f';
+    const endpointSecret = 'whsec_YiDJzH6zKu5KAu602yHQFntMReE3ZcHH';
     if (!sig) {
       console.error('Webhook signature is missing.');
       return res.sendStatus(400);
