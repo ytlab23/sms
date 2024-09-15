@@ -6,6 +6,7 @@ import { Button } from '../components/shadcn/ui/button';
 import { ChooseService } from '../components/shadcn/chooseservice';
 import ActionSidebar from '../components/ActionSideBar';
 import Footer from '../components/shadcn/footer';
+import { Toaster } from '../components/shadcn/ui/toaster';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -43,7 +44,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
           {/* <!-- ===== Main Content End ===== --> */}
         </div>
         {/* <!-- ===== Content Area End ===== --> */}
-
+<Toaster></Toaster>
       </div> 
       {/* <!-- ===== Page Wrapper End ===== --> */}
     </div>

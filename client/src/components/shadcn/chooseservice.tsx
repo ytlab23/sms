@@ -5,6 +5,11 @@ import { ScrollArea } from './ui/scrollarea';
 import { Search, Star, X } from 'lucide-react';
 import Logo from '../../images/logo/logo-placeholder.svg';
 import axios from 'axios';
+import { useAuth } from '../../contexts/authcontext';
+import { count } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+import { ToastAction } from './ui/toast';
+import { toast } from './ui/use-toast';
 
 interface Country {
   iso: string;
@@ -18,9 +23,8 @@ interface Service {
 }
 
 interface Operator {
-  id: string;
   name: string;
-  price: number;
+  cost: number;
   count: number;
 }
 
@@ -80,7 +84,7 @@ const SelectedTile: React.FC<SelectedTileProps> = ({
   <div className="flex items-center dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-between bg-gray-100 p-2 rounded-md">
     <div className="flex items-center">
       <img
-        src={Logo}
+        src={`https://logo.clearbit.com/${item.name.toLowerCase()}.com`}
         alt={
           type === 'country' ? `Flag of ${item.name}` : `Icon of ${item.name}`
         }
@@ -101,6 +105,8 @@ const SelectedTile: React.FC<SelectedTileProps> = ({
 );
 
 export const ChooseService: React.FC = () => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const [countries, setCountries] = useState<
     { name: string; iso: string; prefix: string }[]
   >([]);
@@ -110,6 +116,7 @@ export const ChooseService: React.FC = () => {
     { name: string; iso: string; prefix: string }[]
   >([]);
   const [filteredServices, setFilteredServices] = useState<any[]>([]);
+  const [operators, setOperators] = useState<any[]>([]);
 
   const [countrySearch, setCountrySearch] = useState('');
   const [serviceSearch, setServiceSearch] = useState('');
@@ -132,6 +139,16 @@ export const ChooseService: React.FC = () => {
     fetchCountries();
     fetchServices();
   }, []);
+
+  useEffect(() => {
+    if (!selectedCountry) return;
+    fetchServices();
+  }, [selectedCountry]);
+
+  useEffect(() => {
+    if (!selectedCountry || !selectedService) return;
+    fetchOperator();
+  }, [selectedCountry, selectedService]);
 
   // const countries = Object.values(countriesData);
   // const services = Object.values(servicesData);
@@ -160,12 +177,136 @@ export const ChooseService: React.FC = () => {
 
   // Fetch services
   // Fetch services
+  // const buyProduct = async () => {
+  //   console.log('buying prgggoduct');
+  //   const country = selectedCountry?.name.toLowerCase();
+  //   const product = selectedService?.name.toLowerCase();
+  //   const operator = selectedOperator?.name.toLowerCase();
+  //   console.log(``, 'buying product', country, product, operator);
+
+  //   try {
+  //     const response = await axios.post(
+  //       'http://localhost:3000/api/buy-product',
+  //       {
+  //         uid: currentUser?.uid,
+  //         country: country,
+  //         operator: operator,
+  //         product: product,
+  //       },
+  //     );
+  //     const id = response.data?.product.id ?? null;
+  //     // alert(id);
+  //     // alert('Product purchased successfully');
+  //     setSelectedCountry(null);
+  //     setSelectedService(null);
+  //     setSelectedOperator(null);
+  //     // how to show shadcn 
+  //     navigate(`/sms?id=${id}`);
+  //     toast({ 
+  //       variant: "success",
+  //       title: "Product purchased successfully",
+  //       description: "You can now use the service.",
+  //     });
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     alert('Failed to purchase product');
+  //     console.error(error);
+  //     if (error instanceof Error) {
+  //       alert(error);
+  //     } else {
+  //       alert('An unknown error occurred.');
+  //     }
+  //     toast({
+  //       variant: "destructive",
+  //       title: "Uh oh! Something went wrong.",
+  //       description: "Failed to purchase product",
+  //       action: <ToastAction onClick={buyProduct} altText="Try again">Try again</ToastAction>,
+  //     });
+     
+  //   }
+  // };
+  const buyProduct = async () => {
+    console.log('buying product');
+    const country = selectedCountry?.name.toLowerCase();
+    const product = selectedService?.name.toLowerCase();
+    const operator = selectedOperator?.name.toLowerCase();
+  
+    console.log('buying product', country, product, operator);
+  
+    try {
+      const response = await axios.post('https://smsverify-server.vercel.app/api/buy-product', {
+        uid: currentUser?.uid,
+        country,
+        operator,
+        product,
+      });
+  
+      const id = response.data?.product?.id ?? null;
+  
+      // Reset the selected states
+      setSelectedCountry(null);
+      setSelectedService(null);
+      setSelectedOperator(null);
+  
+      // Navigate to the SMS page
+      navigate(`/sms?id=${id}`);
+  
+      // Success toast notification
+      // toast({
+      //   variant: 'success',
+      //   title: 'Product purchased successfully',
+      //   description: 'You can now use the service.',
+      // });
+  
+      // console.log('Purchase response:', response.data);
+    } catch (error: any) {
+      // Handle different error types
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 402) {
+          // Insufficient balance toast
+          toast({
+            variant: 'destructive',
+            title: 'Insufficient balance',
+            description: 'Please top up your account to complete the purchase.',
+            action: <ToastAction onClick={() => navigate('/pay')} altText="Go to payment">Go to Payment</ToastAction>,
+          });
+        } else {
+          // General Axios error
+          toast({
+            variant: 'destructive',
+            title: 'Purchase failed',
+            description:  'Something went wrong while purchasing the product.',
+          });
+        }
+      } else {
+        // Non-Axios or unknown errors
+        toast({
+          variant: 'destructive',
+          title: 'Unknown error',
+          description: 'An unknown error occurred. Please try again.',
+          action: <ToastAction onClick={buyProduct} altText="Try again">Try again</ToastAction>,
+        });
+      }
+  
+      console.error('Error purchasing product:', error);
+    }
+  };
   const fetchServices = async () => {
     console.log('fetching services');
+
     try {
-      const response = await axios.get(
-        'https://smsverify-server.vercel.app/api/get-services',
+      let lowercaseCountry = 'any';
+      if (selectedCountry) {
+        lowercaseCountry = (selectedCountry?.name as string)?.toLowerCase();
+      }
+      console.log(
+        ' services',
+        lowercaseCountry,
       );
+      const response = await axios.get(
+        `https://smsverify-server.vercel.app/api/get-services?country=${lowercaseCountry}`,
+      );
+
       const formattedServices = Object.entries(response.data).map(
         ([key, value]: [string, any]) => ({
           name: key, // Service name like '115com'
@@ -181,40 +322,59 @@ export const ChooseService: React.FC = () => {
     }
   };
 
-  // const filteredCountries = useMemo(() => {
-  //   return countries.filter((country) =>
-  //     country.name.toLowerCase().includes(countrySearch.toLowerCase()),
-  //   );
-  // }, [countrySearch]);
+  const fetchOperator = async () => {
+    const lowercaseCountry = (selectedCountry?.name as string).toLowerCase();
+    const lowercaseService = (selectedService?.name as string).toLowerCase();
+    console.log(
+      'operators,, are coming',
+      selectedCountry?.name,
+      selectedService?.name,
+    );
+    try {
+      const response = await fetch(
+        `https://smsverify-server.vercel.app/api/get-operators?country=${lowercaseCountry}&service=${lowercaseService}`,
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch operators.');
+      }
 
-  // const filteredServices = useMemo(() => {
-  //   return services.filter((service) =>
-  //     service.name.toLowerCase().includes(serviceSearch.toLowerCase()),
-  //   );
-  // }, [serviceSearch]);
+      const data = await response.json();
+      console.log('response data', data);
 
-  // const filteredOperators = useMemo(() => {
-  //   if (!selectedCountry) return [];
-  //   return selectedCountry.operators.filter((operator) =>
-  //     operator.name.toLowerCase().includes(operatorSearch.toLowerCase())
-  //   );
-  // }, [selectedCountry, operatorSearch]);
+      // Format operators to an array from the nested object structure
+      const formattedOperators = Object.entries(
+        data[lowercaseCountry][lowercaseService],
+      ).map(([name, details]: [string, any]) => ({
+        name, // e.g., 'beeline', 'matrix', etc.
+        cost: details.cost,
+        count: details.count,
+        rate: details.rate ?? 0, // Make rate optional with a default value of 0
+      }));
+
+      setOperators(formattedOperators);
+    } catch (err: any) {
+      console.log(err.message);
+    } finally {
+      // Optionally handle loading state
+    }
+  };
+
   useEffect(() => {
     setFilteredCountries(
       countries.filter((country) =>
-        country.name.toLowerCase().includes(countrySearch.toLowerCase())
-      )
+        country.name.toLowerCase().includes(countrySearch.toLowerCase()),
+      ),
     );
   }, [countries, countrySearch]);
-  
+
   useEffect(() => {
     setFilteredServices(
       services.filter((service) =>
-        service.name.toLowerCase().includes(serviceSearch.toLowerCase())
-      )
+        service.name.toLowerCase().includes(serviceSearch.toLowerCase()),
+      ),
     );
   }, [services, serviceSearch]);
-  
+
   const handleCountrySelect = (country: Country) => {
     setSelectedCountry(country);
     setSelectedOperator(null);
@@ -290,9 +450,9 @@ export const ChooseService: React.FC = () => {
         <div className="h-[300px] overflow-hidden">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
-              {filteredCountries.map((country) => (
+              {filteredCountries.map((country, index) => (
                 <Button
-                  key={country.iso}
+                  key={`${country.iso}-${index}`}
                   variant="ghost"
                   className="w-full dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-start font-normal h-14"
                   onClick={() => handleCountrySelect(country)}
@@ -309,13 +469,21 @@ export const ChooseService: React.FC = () => {
                         toggleFavorite('countries', country.name);
                       }}
                     />
-                    <img
+                    {/* <img
                       src={Logo}
                       alt={`Flag of ${country.name}`}
                       className={`flags flags-${country.iso} mr-2`}
                       width={20}
                       height={20}
+                    /> */}
+                    <img
+                      src={`https://flagcdn.com/w20/${country.iso.toLowerCase()}.png`} // Using the ISO code
+                      alt={`Flag of ${country.name}`}
+                      className={`flags flags-${country.iso} mr-2`}
+                      width={20}
+                      height={20}
                     />
+
                     <span>{country.name}</span>
                   </div>
                 </Button>
@@ -348,9 +516,10 @@ export const ChooseService: React.FC = () => {
         <div className="h-[300px] overflow-hidden">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
-              {filteredServices.map((service) => (
+              {filteredServices.map((service, index) => (
+                
                 <Button
-                  key={service.icon}
+                  key={`${service.name}-${index}`}
                   variant="ghost"
                   className="w-full dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-start font-normal h-14"
                   onClick={() => handleServiceSelect(service)}
@@ -367,14 +536,37 @@ export const ChooseService: React.FC = () => {
                         toggleFavorite('services', service.icon);
                       }}
                     />
-                    <img
+                    {/* <img
                       src={Logo}
                       alt={`Icon of ${service.name}`}
                       className={`products products-${service.icon} mr-2`}
                       width={20}
                       height={20}
+                    /> */}
+                    <img
+                      src={`https://logo.clearbit.com/${service.name.toLowerCase()}.com`}
+                      alt={`Icon of ${service.name}`}
+                      className="mr-2"
+                      width={20}
+                      height={20}
+                      onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                        (e.target as HTMLImageElement).onerror = null; // Prevent infinite loop
+                        (e.target as HTMLImageElement).src = ''; // Remove broken image
+                        (e.target as HTMLImageElement).replaceWith(document.createTextNode('')); // Replace with "?" fallback
+                      }}
                     />
-                    <span className="">{service.name}</span>
+                    <div className="flex flex-row justify-end">
+                      <span className="mr-6">{service.name}</span>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-blue-300">
+                          {service.quantity} Available number{' '}
+                        </span>
+
+                        <span className="text-xs text-blue-950">
+                          price from {service.price}{' '}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </Button>
               ))}
@@ -410,9 +602,9 @@ export const ChooseService: React.FC = () => {
         <div className="h-[200px] overflow-hidden">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
-              {services.map((operator) => (
+              {operators.map((operator, index) => (
                 <Button
-                  key={operator.name}
+                  key={`${operator.name}-${index}`}
                   variant="ghost"
                   className="w-full dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-start font-normal h-14"
                   onClick={() => handleOperatorSelect(operator)}
@@ -431,9 +623,9 @@ export const ChooseService: React.FC = () => {
                     />
                     <span className="flex-grow">{operator.name}</span>
                     <div className="text-right">
-                      <div className="text-sm">from {operator.name}₽</div>
+                      <div className="text-sm">from {operator.cost}₽</div>
                       <div className="text-xs text-green-500">
-                        {operator.name} numbers
+                        {operator.count} numbers
                       </div>
                     </div>
                   </div>
@@ -445,6 +637,7 @@ export const ChooseService: React.FC = () => {
       )}
       <div className="p-4">
         <Button
+          onClick={buyProduct}
           className="w-full text-white"
           disabled={!selectedCountry || !selectedService || !selectedOperator}
         >

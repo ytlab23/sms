@@ -1,17 +1,52 @@
 import { Wallet } from "lucide-react"
 import { Card, CardContent } from "./ui/card"
-
+import { useEffect, useState } from "react";
+import { useAuth } from '../../contexts/authcontext';
 interface CreditDisplayProps {
   credit: number
 }
 
 export function  CreditDisplay({ credit = 0 }: CreditDisplayProps) {
+
+const [balance, setBalance] = useState<number>(0);
+
+const { currentUser } = useAuth(); 
+// useEffect(() => {
+
+
+// });
+ useEffect(() => {
+    if (!currentUser) return;
+
+    const fetchBalance = async () => {
+      try {
+        const response = await fetch(`https://smsverify-server.vercel.app/api/balance?userId=${currentUser.uid}`);
+        console.log(response,"")
+        if (!response.ok) {
+          throw new Error('Failed to fetch balance.');
+        }
+
+        const data = await response.json();
+        setBalance(data.balance);
+      } catch (err: any) {
+        // setError(err.message);
+        console.log(err.message);
+      } finally {
+        // setLoading(false);
+
+      }
+    };
+  
+
+    fetchBalance();
+  },[]);
+
   const formattedCredit = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(credit)
+  }).format(balance)
 
   return (
     <Card className="w-full dark:bg-boxdark-2 max-w-[200px] mx-auto transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-md">

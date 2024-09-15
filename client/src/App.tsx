@@ -158,6 +158,10 @@ import HowToBuy from './pages/HowToBuy/HowToBuy';
 import OrdersPage from './pages/Orders/OrdersPage';
 import PaymentForm from './pages/payment/paymentform';
 import TryTo from './pages/payment/trytobuy';
+import Sms from './components/shadcn/sms';
+import SmsPage from './pages/sms/smspage';
+import AdminPage from './pages/admin/AdminPage';
+import AdminProtectedRoute from './contexts/AdminProtectedRoute';
 
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
@@ -197,7 +201,6 @@ function App() {
                 <>
                   <PageTitle title="Pay | SMSVerify" />
                   <PaymentForm ></PaymentForm>
-                  <TryTo></TryTo>
                 </>
               </Elements>
             }
@@ -257,11 +260,30 @@ function App() {
           <Route
             path="/howtobuy"
             element={
-              <ProtectedRoute>
               <>
                 <PageTitle title="How to Buy | SMSVerify" />
                 <HowToBuy />
+              </>
+            }
+          />
+          <Route
+            path="/sms"
+            element={
+              <ProtectedRoute>
+              <>
+                <PageTitle title="SMS | SMSVerify" />
+                <SmsPage />
               </></ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              // <ProtectedRoute>
+              <AdminProtectedRoute>
+              <>
+                <PageTitle title="Admin | SMSVerify" />
+                <AdminPage></AdminPage></></AdminProtectedRoute>
             }
           />
           <Route path="*" element={<Navigate to="/" />} />

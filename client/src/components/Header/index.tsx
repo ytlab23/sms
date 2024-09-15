@@ -142,7 +142,6 @@ const Header = (props: {
     { name: 'HOME', href: '/', icon: Home },
     { name: 'FAQ', href: '/faq', icon: HelpCircle },
     { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen }, // New common navigation item
-    { name: 'HOW TO ', href: '/pay', icon: BookOpen }, // New common navigation item
   ];
 
   // Navigation items for unauthenticated users
