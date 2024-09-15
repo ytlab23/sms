@@ -73,8 +73,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
       }],
       mode: 'payment',
       customer: customerId,
-      success_url: 'http://localhost:5173/',  // Redirect after success
-      cancel_url: 'http://localhost:3000/cancel',    // Redirect after cancel
+      success_url: 'https://smsverify.vercel.app/',  // Redirect after success
+      cancel_url: 'https://smsverify.vercel.app/cancel',    // Redirect after cancel
     });
 
     res.json({ url: session.url });
