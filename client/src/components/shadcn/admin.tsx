@@ -87,7 +87,7 @@ export default function Admin() {
   return (
     <Card className="w-full max-w-4xl mx-auto bg-white">
       <CardHeader>
-        <CardTitle>SMS Verification Pricing Admin Panel</CardTitle>
+        <CardTitle>SMSVerify Pricing Admin Panel</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -95,8 +95,8 @@ export default function Admin() {
             <TableRow>
               <TableHead>Country</TableHead>
               <TableHead>Service</TableHead>
-              <TableHead>Previous Price ($)</TableHead>
-              <TableHead>Current Price ($)</TableHead>
+              <TableHead>Previous additional Price ($)</TableHead>
+              <TableHead>Current additional Price ($)</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
