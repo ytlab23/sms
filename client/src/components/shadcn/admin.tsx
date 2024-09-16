@@ -1,91 +1,4 @@
-// import React, { useState } from 'react'
-// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
-// import { Input } from "./ui/input"
-// import { Button } from "./ui/button"
-// import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
-// import { toast, useToast } from "./ui/use-toast"
 
-// // Mock data - in a real application, this would come from your backend
-// const initialPrices = [
-//   { id: 1, country: 'USA', service: 'WhatsApp', price: 0.5, previousPrice: 0.48 },
-//   { id: 2, country: 'UK', service: 'Telegram', price: 0.6, previousPrice: 0.55 },
-//   { id: 3, country: 'Germany', service: 'WhatsApp', price: 0.55, previousPrice: 0.52 },
-//   { id: 4, country: 'USA', service: 'Telegram', price: 0.45, previousPrice: 0.45 },
-//   { id: 5, country: 'UK', service: 'WhatsApp', price: 0.52, previousPrice: 0.50 },
-//   { id: 6, country: 'Germany', service: 'Telegram', price: 0.58, previousPrice: 0.60 },
-// ]
-
-// export default function Admin() {
-//   const [prices, setPrices] = useState(initialPrices)
-//   const { toast } = useToast()
-
-//   const handlePriceChange = (id: number, newPrice: number) => {
-//     setPrices(prices.map(price => 
-//       price.id === id ? { ...price, price: newPrice } : price
-//     ))
-//   }
-
-//   const handleUpdatePrice = (id: number) => {
-//     setPrices(prices.map(price => {
-//       if (price.id === id) {
-//         const updatedPrice = { ...price, previousPrice: price.price }
-//         console.log(`Updating price for ${updatedPrice.country} - ${updatedPrice.service} from ${updatedPrice.previousPrice} to ${updatedPrice.price}`)
-//         toast({
-//           title: "Price Updated",
-//           description: `${updatedPrice.country} - ${updatedPrice.service}: $${updatedPrice.previousPrice.toFixed(2)} → $${updatedPrice.price.toFixed(2)}`,
-//         })
-//         alert(`Price updated for ${updatedPrice.country} - ${updatedPrice.service} from $${updatedPrice.previousPrice.toFixed(2)} to $${updatedPrice.price.toFixed(2)}`)
-//         return updatedPrice
-//       }
-//       return price
-//     }))
-//   }
-
-//   return (
-//     <Card className="w-full max-w-5xl mx-auto">
-//       <CardHeader>
-//         <CardTitle>SMS Verification Pricing Admin Panel</CardTitle>
-//       </CardHeader>
-//       <CardContent>
-//         <Table>
-//           <TableHeader>
-//             <TableRow>
-//               <TableHead>Country</TableHead>
-//               <TableHead>Service</TableHead>
-//               <TableHead>Previous Price ($)</TableHead>
-//               <TableHead>Current Price ($)</TableHead>
-//               <TableHead>Action</TableHead>
-//             </TableRow>
-//           </TableHeader>
-//           <TableBody>
-//             {prices.map((price) => (
-//               <TableRow key={price.id}>
-//                 <TableCell>{price.country}</TableCell>
-//                 <TableCell>{price.service}</TableCell>
-//                 <TableCell>{price.previousPrice.toFixed(2)}</TableCell>
-//                 <TableCell>
-//                   <Input 
-//                     type="number" 
-//                     value={price.price} 
-//                     onChange={(e) => handlePriceChange(price.id, parseFloat(e.target.value))}
-//                     step="0.01"
-//                     min="0"
-//                     className="w-24"
-//                   />
-//                 </TableCell>
-//                 <TableCell>
-//                   <Button variant="outline" size="sm" onClick={() => handleUpdatePrice(price.id)}>
-//                     Update
-//                   </Button>
-//                 </TableCell>
-//               </TableRow>
-//             ))}
-//           </TableBody>
-//         </Table>
-//       </CardContent>
-//     </Card>
-//   )
-// }
 import React, { useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
 import { Input } from "./ui/input"
@@ -94,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "./ui/dialog"
 import { Label } from "./ui/label"
+import {db} from '../../firebase/config'
 
 const initialData = [
   { 
@@ -114,7 +28,7 @@ const initialData = [
   },
 ]
 
-export default function Component() {
+export default function Admin() {
   const [data, setData] = useState(initialData)
   const [selectedServices, setSelectedServices] = useState<Record<string, string>>({})
   const [isDialogOpen, setIsDialogOpen] = useState(false)

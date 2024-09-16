@@ -114,6 +114,51 @@
 
 // export default Header;
 
+// import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+// import DropdownUser from './DropdownUser';
+// import LogoIcon from '../../images/logo/logo-placeholder.svg';
+// import DarkModeSwitcher from './DarkModeSwitcher';
+// import { Button } from '../shadcn/ui/button';
+// import {
+//   Home,
+//   HelpCircle,
+//   UserPlus,
+//   LogIn,
+//   ShoppingBag,
+//   BookOpen,
+// } from 'lucide-react';
+// import { useAuth } from '../../contexts/authcontext';
+
+// const Header = (props: {
+//   sidebarOpen: string | boolean | undefined;
+//   setSidebarOpen: (arg0: boolean) => void;
+// }) => {
+//   const { currentUser } = useAuth(); // Get the current user from AuthContext
+//   const location = useLocation();
+//   const currentPath = location.pathname;
+//   const navigate = useNavigate();
+//   // Navigation items visible to all users
+//   const commonNavItems = [
+//     { name: 'HOME', href: '/', icon: Home },
+//     { name: 'FAQ', href: '/faq', icon: HelpCircle },
+//     { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen }, // New common navigation item
+//   ];
+
+//   // Navigation items for unauthenticated users
+//   const guestNavItems = [
+//     { name: 'SIGN UP', href: '/auth/signup', icon: UserPlus },
+//     { name: 'LOGIN', href: '/auth/signin', icon: LogIn },
+//   ];
+
+//   // Navigation items for authenticated users
+//   const authNavItems = [
+//     { name: 'YOUR ORDERS', href: '/orders', icon: ShoppingBag }, // New authenticated navigation item
+//   ];
+
+//   // Combine navigation items based on user authentication status
+//   const navItems = currentUser
+//     ? [...commonNavItems, ...authNavItems]
+//     : [...commonNavItems, ...guestNavItems];
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import DropdownUser from './DropdownUser';
 import LogoIcon from '../../images/logo/logo-placeholder.svg';
@@ -126,8 +171,19 @@ import {
   LogIn,
   ShoppingBag,
   BookOpen,
-} from 'lucide-react';
+  Shield,
+} from 'lucide-react'; // Import an icon for Admin
 import { useAuth } from '../../contexts/authcontext';
+
+// Utility function to check if the user is an admin
+const isAdminEmail = (email: string | null | undefined): boolean => {
+  if (!email) return false;
+  
+  const adminEmails = import.meta.env.VITE_ADMIN_EMAILS?.split(',').map((email: string) => email.trim().toLowerCase());
+  const normalizedEmail = email.trim().toLowerCase();
+  
+  return adminEmails?.includes(normalizedEmail) || false;
+};
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -137,6 +193,7 @@ const Header = (props: {
   const location = useLocation();
   const currentPath = location.pathname;
   const navigate = useNavigate();
+
   // Navigation items visible to all users
   const commonNavItems = [
     { name: 'HOME', href: '/', icon: Home },
@@ -155,11 +212,17 @@ const Header = (props: {
     { name: 'YOUR ORDERS', href: '/orders', icon: ShoppingBag }, // New authenticated navigation item
   ];
 
+  // Add admin navigation item if the user is an admin
+  const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms', icon: Shield };
+
   // Combine navigation items based on user authentication status
   const navItems = currentUser
-    ? [...commonNavItems, ...authNavItems]
+    ? [
+        ...commonNavItems,
+        ...authNavItems,
+        ...(isAdminEmail(currentUser?.email) ? [adminNavItem] : []), // Include Admin link if the user is an admin
+      ]
     : [...commonNavItems, ...guestNavItems];
-
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">

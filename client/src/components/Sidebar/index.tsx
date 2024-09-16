@@ -144,7 +144,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo-placeholder.svg';
-import { Home, HelpCircle, UserPlus, LogIn, Settings, ShoppingBag, BookOpen } from 'lucide-react';
+import { Home, HelpCircle, UserPlus, LogIn, Settings, ShoppingBag, BookOpen ,Shield} from 'lucide-react';
 import { useAuth } from '../../contexts/authcontext'; // Import useAuth for authentication
 
 interface SidebarProps {
@@ -202,27 +202,66 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   }, [sidebarExpanded]);
 
   // Navigation items for all users
+  // const commonNavItems = [
+  //   { name: 'HOME', href: '/', icon: Home },
+  //   { name: 'FAQ', href: '/faq', icon: HelpCircle },
+  //   { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen },
+  // ];
+
+  // // Navigation items for unauthenticated users
+  // const guestNavItems = [
+  //   { name: 'SIGN UP', href: '/auth/signup', icon: UserPlus },
+  //   { name: 'LOGIN', href: '/auth/signin', icon: LogIn },
+  // ];
+
+  // // Navigation items for authenticated users
+  // const authNavItems = [
+  //   { name: 'Account Setting', href: '/settings', icon: Settings },
+  //   { name: 'YOUR ORDERS', href: '/orders', icon: ShoppingBag },
+  // ];
+
+  // // Combine navigation items based on user authentication status
+  // const navItems = currentUser
+  //   ? [...commonNavItems, ...authNavItems]
+  //   : [...commonNavItems, ...guestNavItems];
+  const isAdminEmail = (email: string | null | undefined): boolean => {
+    if (!email) return false;
+    
+    const adminEmails = import.meta.env.VITE_ADMIN_EMAILS?.split(',').map((email: string) => email.trim().toLowerCase());
+    const normalizedEmail = email.trim().toLowerCase();
+    
+    return adminEmails?.includes(normalizedEmail) || false;
+  };
+  
+  // Navigation items for all users
   const commonNavItems = [
     { name: 'HOME', href: '/', icon: Home },
     { name: 'FAQ', href: '/faq', icon: HelpCircle },
     { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen },
   ];
-
+  
   // Navigation items for unauthenticated users
   const guestNavItems = [
     { name: 'SIGN UP', href: '/auth/signup', icon: UserPlus },
     { name: 'LOGIN', href: '/auth/signin', icon: LogIn },
   ];
-
+  
   // Navigation items for authenticated users
   const authNavItems = [
     { name: 'Account Setting', href: '/settings', icon: Settings },
     { name: 'YOUR ORDERS', href: '/orders', icon: ShoppingBag },
   ];
-
-  // Combine navigation items based on user authentication status
+  
+  // Navigation item for admin users
+  const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms', icon: Shield };
+  
+  // Combine navigation items based on user authentication and admin status
   const navItems = currentUser
-    ? [...commonNavItems, ...authNavItems]
+    ? [
+        ...commonNavItems,
+        ...authNavItems,
+        ...(isAdminEmail(currentUser?.email) ? [adminNavItem] : []), // Add Admin link if the user is an admin
+      ]
     : [...commonNavItems, ...guestNavItems];
 
   return (
