@@ -4,6 +4,8 @@ import { db } from './firebase'; // Make sure firebase.ts exports the correctly 
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import axios from 'axios';
+import { doc, getDoc } from 'firebase/firestore';
+
 
 const app = express();
 const stripe = new Stripe('sk_test_51Ps4ASHiyrduhHMT81gXgjh1HglUaf4PSdxjP9ZWkZFGJBhz5ehjpk4bNxM2YZTT5zHiI42EQ8OROgCKn7CXGLNK007cMxAofs', {
@@ -249,65 +251,7 @@ app.get('/api/get-operators', async (req: Request, res: Response) => {
   }
 });
 //get operators
-// const checkBalance = async (uid: string, cost: number): Promise<CheckBalanceResult> => {
-//   const userRef = db.collection('users').doc(uid);
-//   const userDoc = await userRef.get();
 
-//   if (!userDoc.exists) {
-//     throw new Error('User not found');
-//   }
-
-//   const currentBalance = userDoc.data()?.balance || 0;
-//   if (currentBalance < cost) {
-//     throw new Error('Insufficient balance');
-//   }
-
-//   return { userRef, currentBalance };
-// };
-
-// // Buy a specific product from 5sim
-// app.post('/api/buy-product', async (req: Request, res: Response) => {
-//   const { uid, country, operator, product } = req.body;
-//   console.log(country,operator,product)
-
-//   try {
-//     console.log('Received request to buy prjjoduct:', { uid, country, operator, product });
-//     // return res.json({ message: 'Pyyyyyroduct purchased successfully' });
-//     // Step 1: Check if the user has enough balance
-//     const { userRef, currentBalance } = await checkBalance(String(uid), 100); // Replace 1.0 with the actual product cost
-//     console.log('User balance validated:', { uid, currentBalance });
-
-//     // Step 2: Purchase a number from 5sim API
-//     const url = `https://5sim.net/v1/user/buy/activation/${country}/${operator}/${product}`;
-//     const response = await axios.get(url, {
-//       headers: {
-//         'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
-//         'Accept': 'application/json',
-//       },
-//     });
-
-//     const purchasedNumber = response.data;
-// console.log('Number purchased successfully:', purchasedNumber, response);
-
-// // Step 3: Save purchased number information to Firestore using the number ID as the document ID
-// await userRef.collection('products').doc(purchasedNumber.id.toString()).set({
-//   ...purchasedNumber,
-//   purchaseDate: new Date(),
-// });
-
-//     console.log('Product information saved to Firestore');
-
-//     // Step 4: Deduct cost from the user's balance
-//     const newBalance = currentBalance - 100; // Replace 1.0 with the actual product cost
-//     await userRef.update({ balance: newBalance });
-//     console.log('User balance updated:', { newBalance });
-
-//     res.json({ message: 'Product purchased successfully', product: purchasedNumber });
-//   } catch (error) {
-//     console.error('Error purchasing product:', error);
-//     res.status(500).json({ error: error || 'Failed to purchase product' });
-//   }
-// });
 const checkBalance = async (uid: string, cost: number): Promise<CheckBalanceResult> => {
   const userRef = db.collection('users').doc(uid);
   const userDoc = await userRef.get();
@@ -327,40 +271,126 @@ const checkBalance = async (uid: string, cost: number): Promise<CheckBalanceResu
 };
 
 // Fetch product price from 5sim API
-const getProductPrice = async (country: string, product: string, operator: string): Promise<number> => {
-  const priceUrl = `https://5sim.net/v1/guest/prices?country=${country}&product=${product}`;
-  const response = await axios.get(priceUrl, {
-    headers: {
-      'Accept': 'application/json',
-    },
-  });
+// const getProductPrice = async (country: string, product: string, operator: string): Promise<number> => {
+//   const priceUrl = `https://5sim.net/v1/guest/prices?country=${country}&product=${product}`;
+//   const response = await axios.get(priceUrl, {
+//     headers: {
+//       'Accept': 'application/json',
+//     },
+//   });
 
-  const productData = response.data[country]?.[product]?.[operator];
-  if (!productData || productData.cost === undefined) {
-    throw new Error(`Price for ${operator} not found`);
+//   const productData = response.data[country]?.[product]?.[operator];
+//   if (!productData || productData.cost === undefined) {
+//     throw new Error(`Price for ${operator} not found`);
+//   }
+
+//   return productData.cost;
+// };
+// Fetch product price from Firestore
+const getProductPrice = async (country: string, product: string): Promise<number> => {
+  const serviceDocId = `${country}_${product}`;
+  const serviceDocRef = db.collection('pricing').doc(serviceDocId);
+
+  // Fetch the specific country and product price from Firestore
+  const docSnap = await serviceDocRef.get();
+
+  if (docSnap.exists) {
+    // If price exists for the country and product, return it
+    const data = docSnap.data();
+    if (data?.price !== undefined) {
+      return data.price;
+    }
   }
 
-  return productData.cost;
+  // If the price is not set for the country and product, fetch the default price
+  const defaultServiceDocRef = db.collection('service').doc(product);
+  const defaultDocSnap = await defaultServiceDocRef.get();
+
+  if (defaultDocSnap.exists) {
+    const defaultData = defaultDocSnap.data();
+    if (defaultData?.price !== undefined) {
+      return defaultData.price;
+    }
+  }
+
+  throw new Error(`Price for ${product} not found`);
 };
 
+
 // Buy a specific product from 5sim
+
+// app.post('/api/buy-product', async (req: Request, res: Response) => {
+//   const { uid, country, operator, product } = req.body;
+//   console.log(country, operator, product);
+
+//   try {
+//     console.log('Received request to buy product:', { uid, country, operator, product });
+
+//     // Step 1: Fetch the price of the product from 5sim
+//     const productCost = await getProductPrice(country, product, operator);
+//     console.log('Product price fetched:', { productCost });
+
+//     // Step 2: Check if the user has enough balance
+//     const { userRef, currentBalance } = await checkBalance(String(uid), productCost);
+//     console.log('User balance validated:', { uid, currentBalance });
+
+//     // Step 3: Purchase a number from 5sim API
+//     const url = `https://5sim.net/v1/user/buy/activation/${country}/any/${product}`;
+//     const purchaseResponse = await axios.get(url, {
+//       headers: {
+//         'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
+//         'Accept': 'application/json',
+//       },
+//     });
+
+//     const purchasedNumber = purchaseResponse.data;
+//     console.log('Number purchased successfully:', purchasedNumber);
+
+//     // Step 4: Save purchased number information to Firestore using the number ID as the document ID
+//     await userRef.collection('products').doc(purchasedNumber.id.toString()).set({
+//       ...purchasedNumber,
+//       purchaseDate: new Date(),
+//       refunded: false,
+//     });
+//     console.log('Product information saved to Firestore');
+
+//     // Step 5: Deduct cost from the user's balance
+//     const newBalance = currentBalance - productCost;
+//     await userRef.update({ balance: newBalance });
+//     console.log('User balance updated:', { newBalance });
+
+//     res.json({ message: 'Product purchased successfully', product: purchasedNumber });
+//   } catch (error) {
+//     if ((error as Error).name === 'InsufficientBalanceError') {
+//       console.error('Insufficient balance:', (error as Error).message);
+//       return res.status(402).json({ error: 'Insufficient balance. Please top up your account.' });
+//     }
+
+//     console.error('Error purchasing product:', error);
+//     res.status(500).json({ error: (error as Error).message || 'Failed to purchase product' });
+//   }
+// });
+
+
+
+// Get user's purchased products
 app.post('/api/buy-product', async (req: Request, res: Response) => {
-  const { uid, country, operator, product } = req.body;
-  console.log(country, operator, product);
+  const { uid, country, product } = req.body;  // Removed operator field
+  console.log(country, product);
 
   try {
-    console.log('Received request to buy product:', { uid, country, operator, product });
+    console.log('Received request to buy product:', { uid, country, product });
 
-    // Step 1: Fetch the price of the product from 5sim
-    const productCost = await getProductPrice(country, product, operator);
+    // Step 1: Fetch the price of the product from Firestore
+    const productCost = await getProductPrice(country, product);  // Adjusted to only use country and product
     console.log('Product price fetched:', { productCost });
 
     // Step 2: Check if the user has enough balance
     const { userRef, currentBalance } = await checkBalance(String(uid), productCost);
     console.log('User balance validated:', { uid, currentBalance });
 
-    // Step 3: Purchase a number from 5sim API
-    const url = `https://5sim.net/v1/user/buy/activation/${country}/${operator}/${product}`;
+    // Step 3: Purchase a number from 5sim API (without operator field)
+    const url = `https://5sim.net/v1/user/buy/activation/${country}/any/${product}`;
     const purchaseResponse = await axios.get(url, {
       headers: {
         'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
@@ -371,7 +401,7 @@ app.post('/api/buy-product', async (req: Request, res: Response) => {
     const purchasedNumber = purchaseResponse.data;
     console.log('Number purchased successfully:', purchasedNumber);
 
-    // Step 4: Save purchased number information to Firestore using the number ID as the document ID
+    // Step 4: Save purchased number information to Firestore
     await userRef.collection('products').doc(purchasedNumber.id.toString()).set({
       ...purchasedNumber,
       purchaseDate: new Date(),
@@ -396,9 +426,6 @@ app.post('/api/buy-product', async (req: Request, res: Response) => {
   }
 });
 
-
-
-// Get user's purchased products
 app.get('/api/get-user-products', async (req: Request, res: Response) => {
   const { uid } = req.query;
 

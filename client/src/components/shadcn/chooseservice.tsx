@@ -108,121 +108,108 @@ export const ChooseService: React.FC = () => {
     fetchServices();
   }, []);
 
-  useEffect(() => {
-    if (!selectedCountry) return;
-    fetchServices();
-  }, [selectedCountry]);
 
-  useEffect(() => {
-    if (!selectedCountry || !selectedService) return;
-    fetchOperator();
-  }, [selectedCountry, selectedService]);
-
-  // const fetchCountries = async () => {
-  //   console.log('fetching countries');
-  //   fetch('https://smsverify-server.vercel.app/api/countries', {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const formattedCountries = Object.entries(data).map(
-  //         ([key, value]: [string, any]) => ({
-  //           name: value.text_en, // English name of the country
-  //           iso: Object.keys(value.iso)[0], // ISO code, e.g., 'af' for Afghanistan
-  //           prefix: Object.keys(value.prefix)[0], // Prefix, e.g., '+93' for Afghanistan
-  //         }),
-  //       );
-  //       setCountries(formattedCountries);
-  //       console.log('Formatted Countries:', formattedCountries);
-  //     })
-  //     .catch((error) => console.error('Error fetching countries:', error));
-  // };
 
   // Fetch services
-  
-  const fetchCountries = async () => {
-    console.log('Fetching countries from Firestore...');
-    try {
-      // Reference the 'countries' collection
-      const countriesCollectionRef = collection(db, 'countries');
-  
-      // Query Firestore to get countries where 'included' is true
-      const q = query(countriesCollectionRef, where('included', '==', true));
-      const querySnapshot = await getDocs(q);
-  
-      // Format the fetched countries
-      const formattedCountries = querySnapshot.docs.map((doc) => ({
-        name: doc.data().name,
-        iso: doc.data().iso,
-        prefix: doc.data().prefix,
-      }));
-  
-      setCountries(formattedCountries); // Set state with formatted countries
-      console.log('Formatted Countries from Firestore:', formattedCountries);
-    } catch (error) {
-      console.error('Error fetching countries from Firestore:', error);
-    }
-  };
+
+ 
   // const fetchCountries = async () => {
-  //   console.log('Fetching countries...');
+  //   console.log('Fetching countries from Firestore...');
   //   try {
-  //     const response = await fetch('https://smsverify-server.vercel.app/api/countries', {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  //     const data = await response.json();
-  
-  //     // Format the countries data
-  //     const formattedCountries = Object.entries(data).map(
-  //       ([key, value]: [string, any]) => ({
-  //         name: value.text_en, // English name of the country
-  //         iso: Object.keys(value.iso)[0], // ISO code, e.g., 'af' for Afghanistan
-  //         prefix: Object.keys(value.prefix)[0], // Prefix, e.g., '+93' for Afghanistan
-  //       }),
-  //     );
-  
-  //     // Save each country to Firestore
+  //     // Reference the 'countries' collection
   //     const countriesCollectionRef = collection(db, 'countries');
-  //     formattedCountries.forEach(async (country) => {
-  //       try {
-  //         const docRef = doc(countriesCollectionRef, country.name);
-  //         await setDoc(docRef, {
-  //           name: country.name,
-  //           prefix: country.prefix,
-  //           iso: country.iso,
-  //           included: false,
-  //         });
-  //         console.log(`Country ${country.name} saved successfully`);
-  //       } catch (error) {
-  //         console.error(`Error saving country ${country.name}:`, error);
-  //       }
-  //     });
+  
+  //     // Query Firestore to get countries where 'included' is true
+  //     const q = query(countriesCollectionRef, where('included', '==', true));
+  //     const querySnapshot = await getDocs(q);
+  
+  //     // Format the fetched countries
+  //     const formattedCountries = querySnapshot.docs.map((doc) => ({
+  //       name: doc.data().name,
+  //       iso: doc.data().iso,
+  //       prefix: doc.data().prefix,
+  //     }));
   
   //     setCountries(formattedCountries); // Set state with formatted countries
-  //     console.log('Formatted Countries:', formattedCountries);
+  //     console.log('Formatted Countries from Firestore:', formattedCountries);
   //   } catch (error) {
-  //     console.error('Error fetching countries:', error);
+  //     console.error('Error fetching countries from Firestore:', error);
   //   }
-  // };   
+  // };
+  const fetchCountries = async () => {
+    console.log('Checking if countries collection exists...');
+  
+    try {
+      // Step 1: Check if the countries collection exists
+      const countriesCollectionRef = collection(db, 'countries');
+      const querySnapshot = await getDocs(countriesCollectionRef);
+  
+      if (!querySnapshot.empty) {
+        console.log('Countries collection already exists, skipping fetch.');
+        return; // Exit if the collection exists
+      }
+  
+      // Step 2: Fetch countries from external API if collection doesn't exist
+      console.log('Countries collection not found, fetching from API...');
+      const response = await fetch('https://smsverify-server.vercel.app/api/countries', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch countries from API');
+      }
+  
+      const data = await response.json();
+  
+      // Step 3: Format the countries data
+      const formattedCountries = Object.entries(data).map(
+        ([key, value]: [string, any]) => ({
+          name: value.text_en, // English name of the country
+          iso: Object.keys(value.iso)[0], // ISO code, e.g., 'af' for Afghanistan
+          prefix: Object.keys(value.prefix)[0], // Prefix, e.g., '+93' for Afghanistan
+        })
+      );
+  
+      // Step 4: Save each formatted country to Firestore
+      formattedCountries.forEach(async (country) => {
+        try {
+          const docRef = doc(countriesCollectionRef, country.iso); // Use ISO code as the document ID
+          await setDoc(docRef, {
+            name: country.name,
+            prefix: country.prefix,
+            iso: country.iso,
+            included: false, // Add any other fields as necessary
+          });
+          console.log(`Country ${country.name} saved successfully`);
+        } catch (error) {
+          console.error(`Error saving country ${country.name}:`, error);
+        }
+      });
+  
+      // Step 5: Update state with formatted countries (if needed)
+      setCountries(formattedCountries);
+      console.log('Formatted Countries:', formattedCountries);
+      
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+    }
+  };
   
   const buyProduct = async () => {
     console.log('buying product');
     const country = selectedCountry?.name.toLowerCase();
     const product = selectedService?.name.toLowerCase();
-    const operator = selectedOperator?.name.toLowerCase();
   
-    console.log('buying product', country, product, operator);
+    console.log('buying product', country, product);
   
     try {
-      const response = await axios.post('https://smsverify-server.vercel.app/api/buy-product', {
+      const response = await axios.post('http://localhost:3000//api/buy-product', {
         uid: currentUser?.uid,
         country,
-        operator,
+      
         product,
       });
   
@@ -277,84 +264,98 @@ export const ChooseService: React.FC = () => {
     }
   };
  //fetching services
-//  const fetchServices = async () => {
-//   console.log('Fetching services...');
 
-//   try {
-//     let lowercaseCountry = 'any';
-//     if (selectedCountry) {
-//       lowercaseCountry = (selectedCountry?.name as string)?.toLowerCase();
-//     }
-//     console.log('Services for country:', lowercaseCountry);
+  // const fetchServices = async () => {
+  //   console.log('Fetching services from Firestore...');
+  
+  //   try {
+  //     // Reference to the 'services' collection
+  //     const servicesCollectionRef = collection(db, 'services');
+      
+  //     // Query Firestore to get all services
+  //     const querySnapshot = await getDocs(servicesCollectionRef);
+  
+  //     // Format the fetched services
+  //     const formattedServices = querySnapshot.docs.map((doc) => ({
+  //       name: doc.data().name,
+  //       category: doc.data().category,
+  //       quantity: doc.data().quantity,
+  //       price: doc.data().price,
+  //       main: doc.data().main || false, // 'main' field if it exists
+  //     }));
+  
+  //     setServices(formattedServices); // Set state with formatted services
+  //     setFilteredServices(formattedServices);
+  //     // console.log('Formatted Services from Firestore:', formattedServices);
+  //   } catch (error) {
+  //     console.error('Failed to fetch services from Firestore', error);
+  //   }
+  // };
 
-//     const response = await axios.get(
-//       `https://smsverify-server.vercel.app/api/get-services?country=${lowercaseCountry}`,
-//     );
-
-//     const formattedServices = Object.entries(response.data).map(
-//       ([key, value]: [string, any]) => ({
-//         name: key, // Service name like '115com'
-//         category: (value as { Category: string }).Category, // Service category
-//         quantity: (value as { Qty: number }).Qty, // Available quantity
-//         price: (value as { Price: number }).Price, // Service price
-//         main: false,
-//       }),
-//     );
-
-//     // Add each service to Firestore
-//     const servicesCollectionRef = collection(db, 'services');
-//     formattedServices.forEach(async (service) => {
-//       try {
-//         const docRef = doc(servicesCollectionRef, service.name); // Service name as document ID
-//         await setDoc(docRef, {
-//           name: service.name,
-//           category: service.category,
-//           quantity: service.quantity,
-//           price: service.price,
-//           country: lowercaseCountry, // Add the country context if needed
-//         });
-//         console.log(`Service ${service.name} saved successfully`);
-//       } catch (error) {
-//         console.error(`Error saving service ${service.name}:`, error);
-//       }
-//     });
-
-//     setServices(formattedServices); // Set state with formatted services
-//     console.log('Formatted Services:', formattedServices);
-//   } catch (error) {
-//     console.error('Failed to fetch services', error);
-//   }
-// };
   const fetchServices = async () => {
-    console.log('Fetching services from Firestore...');
+    console.log('Checking if services collection exists...');
   
     try {
-      let lowercaseCountry = 'any';
-      if (selectedCountry) {
-        lowercaseCountry = (selectedCountry?.name as string)?.toLowerCase();
-      }
-      console.log('Services for country:', lowercaseCountry);
-  
-      // Reference to the 'services' collection
+      // Step 1: Check if the services collection has any documents
       const servicesCollectionRef = collection(db, 'services');
+      const servicesSnapshot = await getDocs(servicesCollectionRef);
   
-      // Query Firestore to get services for the selected country
-      const q = query(servicesCollectionRef, where('country', '==', lowercaseCountry));
-      const querySnapshot = await getDocs(q);
+      if (!servicesSnapshot.empty) {
+        console.log('Services collection already exists, skipping API fetch.');
+        return; // Exit if the services collection exists
+      }
   
-      // Format the fetched services
-      const formattedServices = querySnapshot.docs.map((doc) => ({
-        name: doc.data().name,
-        category: doc.data().category,
-        quantity: doc.data().quantity,
-        price: doc.data().price,
-        main: doc.data().main || false, // 'main' field if it exists
-      }));
+      // Step 2: Always fetch services for 'any' as the country parameter
+      const lowercaseCountry = 'any'; // Always use 'any'
+      console.log('Fetching services for country: any');
+  
+      const response = await axios.get(
+        `https://smsverify-server.vercel.app/api/get-services?country=${lowercaseCountry}`,
+      );
+  
+      const formattedServices = Object.entries(response.data).map(
+        ([key, value]: [string, any]) => ({
+          name: key, // Service name like '115com'
+          category: (value as { Category: string }).Category, // Service category
+          quantity: (value as { Qty: number }).Qty, // Available quantity
+          price: 0.7, // Set default service price
+          main: false, // Initially set to false
+        })
+      );
+  
+      // Step 3: Save each service to Firestore
+      formattedServices.forEach(async (service) => {
+        try {
+          const serviceDocRef = doc(servicesCollectionRef, service.name);
+          const docSnapshot = await getDoc(serviceDocRef);
+  
+          if (!docSnapshot.exists()) {
+            // Service doesn't exist, set 'main' to false and save
+            await setDoc(serviceDocRef, {
+              name: service.name,
+              category: service.category,
+              quantity: service.quantity,
+              price: service.price,
+              country: lowercaseCountry, // Store the country context ('any')
+              main: false, // Set main to false initially
+            });
+            console.log(`Service ${service.name} saved successfully with main: false`);
+          } else {
+            // If service already exists, use the existing value of 'main'
+            const existingService = docSnapshot.data();
+            service.main = existingService?.main || false; // Use the saved 'main' value
+            console.log(`Service ${service.name} already exists, main: ${service.main}`);
+          }
+        } catch (error) {
+          console.error(`Error saving service ${service.name}:`, error);
+        }
+      });
   
       setServices(formattedServices); // Set state with formatted services
-      console.log('Formatted Services from Firestore:', formattedServices);
+      console.log('Formatted Services:', formattedServices);
+  
     } catch (error) {
-      console.error('Failed to fetch services from Firestore', error);
+      console.error('Failed to fetch services', error);
     }
   };
   
@@ -423,10 +424,10 @@ export const ChooseService: React.FC = () => {
     setServiceSearch('');
   };
 
-  const handleOperatorSelect = (operator: Operator) => {
-    setSelectedOperator(operator);
-    setOperatorSearch('');
-  };
+  // const handleOperatorSelect = (operator: Operator) => {
+  //   setSelectedOperator(operator);
+  //   setOperatorSearch('');
+  // };
 
   const handleCountryCancel = () => {
     setSelectedCountry(null);
@@ -461,7 +462,7 @@ export const ChooseService: React.FC = () => {
   };
 
   return (
-    <div className="flex dark:bg-boxdark-2  rounded-lg dark:shadow-5 shadow-[#3a3838] flex-col w-120 bg-whiten p-4">
+    <div className="flex dark:bg-boxdark-2 min-w-full  rounded-lg dark:shadow-5 shadow-[#3a3838] flex-col w-120 bg-whiten p-4">
       <div className="p-4 ">
         <h2 className="text-lg font-semibold mb-4">1. Select country</h2>
         {selectedCountry ? (
@@ -599,7 +600,7 @@ export const ChooseService: React.FC = () => {
                         </span>
 
                         <span className="text-xs text-blue-950">
-                          price from {service.price}{' '}
+                          price from {service.price}{''}
                         </span>
                       </div>
                     </div>
@@ -610,7 +611,7 @@ export const ChooseService: React.FC = () => {
           </ScrollArea>
         </div>
       )}
-      <div className="p-4 ">
+      {/* <div className="p-4 ">
         <h2 className="text-lg font-semibold mb-4">3. Select operator</h2>
         {selectedOperator ? (
           <SelectedTile
@@ -670,12 +671,12 @@ export const ChooseService: React.FC = () => {
             </div>
           </ScrollArea>
         </div>
-      )}
+      )} */}
       <div className="p-4">
         <Button
           onClick={buyProduct}
           className="w-full text-white"
-          disabled={!selectedCountry || !selectedService || !selectedOperator}
+          disabled={!selectedCountry || !selectedService}
         >
           Buy number
         </Button>
