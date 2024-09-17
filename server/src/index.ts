@@ -63,7 +63,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items: [{
         price_data: {
-          currency: 'rub',
+          currency: 'usd',
           product_data: {
             name: 'Payment',
           },
@@ -375,6 +375,7 @@ app.post('/api/buy-product', async (req: Request, res: Response) => {
     await userRef.collection('products').doc(purchasedNumber.id.toString()).set({
       ...purchasedNumber,
       purchaseDate: new Date(),
+      refunded: false,
     });
     console.log('Product information saved to Firestore');
 
