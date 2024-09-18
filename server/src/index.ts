@@ -288,34 +288,41 @@ const checkBalance = async (uid: string, cost: number): Promise<CheckBalanceResu
 // };
 // Fetch product price from Firestore
 const getProductPrice = async (country: string, product: string): Promise<number> => {
-  const serviceDocId = `${country}_${product}`;
-  const serviceDocRef = db.collection('pricing').doc(serviceDocId);
+  try {
+    // Step 1: Fetch country-specific price
+    const serviceDocId = `${country}_${product}`;
+    const serviceDocRef = db.collection('pricing').doc(serviceDocId);
+    const docSnap = await serviceDocRef.get();
 
-  // Fetch the specific country and product price from Firestore
-  const docSnap = await serviceDocRef.get();
-
-  if (docSnap.exists) {
-    // If price exists for the country and product, return it
-    const data = docSnap.data();
-    if (data?.price !== undefined) {
-      return data.price;
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      console.log(`Country-specific price found: ${data?.price}`);
+      if (data?.price !== undefined) {
+        return data.price;
+      }
     }
-  }
 
-  // If the price is not set for the country and product, fetch the default price
-  const defaultServiceDocRef = db.collection('service').doc(product);
-  const defaultDocSnap = await defaultServiceDocRef.get();
+    // Step 2: Fetch default product price if country-specific price is not found
+    const defaultServiceDocRef = db.collection('services').doc(product); // Check collection path
+    const defaultDocSnap = await defaultServiceDocRef.get();
 
-  if (defaultDocSnap.exists) {
-    const defaultData = defaultDocSnap.data();
-    if (defaultData?.price !== undefined) {
-      return defaultData.price;
+    if (defaultDocSnap.exists) {
+      const defaultData = defaultDocSnap.data();
+      console.log(`Default price found for ${product}: ${defaultData?.price}`);
+      if (defaultData?.price !== undefined) {
+        return defaultData.price;
+      }
     }
-  }
 
-  throw new Error(`Price for ${product} not found`);
+    // Step 3: If price not found, log an error and throw an exception
+    console.log(`Default document data for ${product}:`, defaultDocSnap.data());
+    throw new Error(`Price for ${product} not found`);
+    
+  } catch (error) {
+    console.error('Error fetching product price:', error);
+    throw new Error('Unable to fetch product price');
+  }
 };
-
 
 // Buy a specific product from 5sim
 

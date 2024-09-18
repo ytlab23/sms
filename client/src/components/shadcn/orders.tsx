@@ -162,6 +162,7 @@ export default function Orders() {
       });
       setOrders(fetchedOrders);
     } catch (error) {
+      alert(error)
       console.error('Error fetching orders:', error);
     } finally {
       setIsRefreshing(false);

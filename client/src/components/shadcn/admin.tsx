@@ -119,9 +119,10 @@ export default function Admin() {
 const confirmUpdatePrice = async () => {
   try {
     const { country, service, newPrice } = dialogContent;
+    const countryLowerCase = country.toLowerCase();
 
     // Generate the document ID by concatenating country and service
-    const serviceDocId = `${country}_${service}`;  // Using underscore to separate values
+    const serviceDocId = `${countryLowerCase}_${service}`;  // Using underscore to separate values
     const serviceDocRef = doc(db, 'pricing', serviceDocId);
 
     // Fetch the document from Firestore
@@ -189,7 +190,7 @@ const confirmUpdatePrice = async () => {
               ))}
             </SelectContent>
           </Select>
-          <Button onClick={handleAddCountry} className="ml-4">Add Country</Button>
+          <Button onClick={handleAddCountry} className="ml-4 text-white">Add Country</Button>
         </div>
 
         {/* Services Table */}
@@ -246,7 +247,7 @@ const confirmUpdatePrice = async () => {
                   )}
                 </TableCell>
                 <TableCell>
-                  <Button onClick={() => setIsPriceDialogOpen(true)}>Update Price</Button>
+                  <Button className='text-white' onClick={() => setIsPriceDialogOpen(true)}>Update Price</Button>
                   {/* <Checkbox
                     checked={item.services.some((s: Service) => s.isFavorite)}
                     onCheckedChange={() => handleFavoriteToggle(selectedServices[item.country])}
@@ -254,7 +255,7 @@ const confirmUpdatePrice = async () => {
                   
                 </TableCell>
                 <TableCell>
-                <Button className='bg-red-600' onClick={() => {
+                <Button className='bg-red-600 text-white' onClick={() => {
                     setCountryToRemove(item.country)
                     setIsRemoveDialogOpen(true)
                   }}>Remove Country</Button></TableCell>
@@ -282,7 +283,7 @@ const confirmUpdatePrice = async () => {
               onCheckedChange={() => handleFavoriteToggle(service.name)}
             />
           </TableCell>
-          <TableCell>{service.previousPrice.toFixed(2)}</TableCell>
+          <TableCell>{service.price.toFixed(2)}</TableCell>
           <TableCell>
   <Input
     type="number"
@@ -299,7 +300,7 @@ const confirmUpdatePrice = async () => {
   />
 </TableCell>
 <TableCell>
-  <Button
+  <Button className='text-white'
     onClick={async () => {
       try {
         const serviceDocRef = doc(db, 'services', service.name);
@@ -322,7 +323,7 @@ const confirmUpdatePrice = async () => {
 
         {/* Price Dialog */}
         <Dialog open={isPriceDialogOpen} onOpenChange={setIsPriceDialogOpen}>
-          <DialogContent>
+          <DialogContent className="bg-white">
             <DialogHeader>
               <DialogTitle>Update Service Price</DialogTitle>
               <DialogDescription>Update the price for a selected service.</DialogDescription>
@@ -333,20 +334,20 @@ const confirmUpdatePrice = async () => {
               onChange={(e) => setDialogContent((prev) => ({ ...prev, newPrice: Number(e.target.value) }))}
             />
             <DialogFooter>
-              <Button onClick={confirmUpdatePrice}>Confirm</Button>
+              <Button className='text-white' onClick={confirmUpdatePrice}>Confirm</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
 
         {/* Remove Country Dialog */}
         <Dialog open={isRemoveDialogOpen} onOpenChange={setIsRemoveDialogOpen}>
-          <DialogContent>
+          <DialogContent className="bg-white">
             <DialogHeader>
-              <DialogTitle>Remove Country</DialogTitle>
+              <DialogTitle >Remove Country</DialogTitle>
               <DialogDescription>Are you sure you want to remove this country?</DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <Button onClick={confirmRemoveCountry}>Remove</Button>
+              <Button className='text-white' onClick={confirmRemoveCountry}>Remove</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
