@@ -105,6 +105,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { RefreshCcw} from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -119,6 +120,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { useAuth } from '../../contexts/authcontext';
 import { Link } from 'react-router-dom';
+import Loader2 from '../../common/loader2';
 
 type Order = {
   id: string;
@@ -136,7 +138,8 @@ export default function Orders() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
-
+  const [loading, setLoading] = useState(true);
+ const [errorLoading, setErrorLoading] = useState(false);
   // Fetch orders from Firestore
   const fetchOrders = async () => {
     setIsRefreshing(true);
@@ -161,9 +164,12 @@ export default function Orders() {
         return dateB.getTime() - dateA.getTime();
       });
       setOrders(fetchedOrders);
+      setLoading(false);
     } catch (error) {
-      alert(error)
       console.error('Error fetching orders:', error);
+      setLoading(false);
+      setErrorLoading(true);
+
     } finally {
       setIsRefreshing(false);
     }
@@ -272,10 +278,22 @@ export default function Orders() {
           </TableBody>
         </Table>
       </div>
-      {filteredOrders.length === 0 && (
+      {loading && (
+        // <p className="text-center text-gray-500 mt-4">
+        //   No orders found matching your search.
+        // </p>
+        <Loader2 height={'100px'}></Loader2>
+      )}
+      {filteredOrders.length === 0 && !loading && !errorLoading && (
         <p className="text-center text-gray-500 mt-4">
           No orders found matching your search.
         </p>
+        // <Loader2 height={'100px'}></Loader2>
+      )}
+      {errorLoading && (<>
+        <p className="text-center text-gray-500 mt-4">
+          Error loading orders. Please try again.
+        </p></>
       )}
     </div>
   );

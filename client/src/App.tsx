@@ -68,10 +68,13 @@ function App() {
             element={
               <Elements stripe={stripePromise}>
                 {/* Wrap the PaymentForm in the <Elements> provider */}
-                <>
-                  <PageTitle title="Pay | SMSVerify" />
-                  <PaymentForm ></PaymentForm>
-                </>
+                <ProtectedRoute>
+                  <div>
+                    <PageTitle title="Pay | SMSVerify" />
+                    <PaymentForm />
+                  </div>
+                </ProtectedRoute>
+                
               </Elements>
             }
           />

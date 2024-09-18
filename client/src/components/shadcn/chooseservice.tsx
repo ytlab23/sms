@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scrollarea';
-import { Search, Star, X } from 'lucide-react';
+import { Search, Star, X,RefreshCcw } from 'lucide-react';
 import Logo from '../../images/logo/logo-placeholder.svg';
 import axios from 'axios';
 import { useAuth } from '../../contexts/authcontext';
@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import { ToastAction } from './ui/toast';
 import { toast } from './ui/use-toast';
 import { db } from '../../firebase/config';
+import Loader from '../../common/Loader';
+import Loader2 from '../../common/loader2';
 
 interface Country {
   iso: string;
@@ -103,6 +105,14 @@ export const ChooseService: React.FC = () => {
     services: {},
     operators: {},
   });
+
+
+
+  const [loadingCountries, setLoadingCountries] = useState(true);
+  const [loadingServices, setLoadingServices] = useState(true);
+  const [erroLoadingCountries, setErrorLoadingCountries] = useState(false);
+  const [errorLoadingServices, setErrorLoadingServices] = useState(false);
+
   useEffect(() => {
     fetchCountries();
     fetchServices();
@@ -114,6 +124,7 @@ export const ChooseService: React.FC = () => {
 
  
   const fetchCountries = async () => {
+    setLoadingCountries(true);
     console.log('Fetching countries from Firestore...');
     try {
       // Reference the 'countries' collection
@@ -131,8 +142,12 @@ export const ChooseService: React.FC = () => {
       }));
   
       setCountries(formattedCountries); // Set state with formatted countries
+      setLoadingCountries(false);
       console.log('Formatted Countries from Firestore:', formattedCountries);
     } catch (error) {
+
+      setErrorLoadingCountries(true);
+      setLoadingCountries(false);
       console.error('Error fetching countries from Firestore:', error);
     }
   };
@@ -266,6 +281,7 @@ export const ChooseService: React.FC = () => {
  //fetching services
 
   const fetchServices = async () => {
+    setLoadingServices(true);
     console.log('Fetching services from Firestore...');
   
     try {
@@ -285,10 +301,14 @@ export const ChooseService: React.FC = () => {
       }));
   
       setServices(formattedServices); // Set state with formatted services
+      setLoadingServices(false);
       setFilteredServices(formattedServices);
       // console.log('Formatted Services from Firestore:', formattedServices);
     } catch (error) {
+      setLoadingServices(false);
+      setErrorLoadingServices(true);
       console.error('Failed to fetch services from Firestore', error);
+
     }
   };
 
@@ -483,7 +503,12 @@ export const ChooseService: React.FC = () => {
           </div>
         )}
       </div>
-      {!selectedCountry && (
+      
+      {loadingCountries &&   <Loader2 height="200px"></Loader2>}
+
+      {erroLoadingCountries && !loadingCountries && <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 "><span>Error loading countries,Refresh</span> <RefreshCcw onClick={fetchCountries}></RefreshCcw> </div>}
+
+      {!selectedCountry && !loadingCountries && (
         <div className="h-[300px] overflow-hidden">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
@@ -549,7 +574,10 @@ export const ChooseService: React.FC = () => {
           </div>
         )}
       </div>
-      {!selectedService && (
+      {loadingServices &&      <Loader2 height="200px"></Loader2>}
+      {errorLoadingServices  && !loadingServices && <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 "><span>Error loading services,Refresh</span> <RefreshCcw onClick={fetchServices}></RefreshCcw> </div>}
+
+      {!selectedService && !loadingServices && (
         <div className="h-[300px] overflow-hidden">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-2">
@@ -595,12 +623,10 @@ export const ChooseService: React.FC = () => {
                     <div className="flex flex-row justify-end">
                       <span className="mr-6">{service.name}</span>
                       <div className="flex flex-col">
-                        <span className="text-xs text-blue-300">
-                          {service.quantity} Available number{' '}
-                        </span>
+                        
 
-                        <span className="text-xs text-blue-950">
-                          price from {service.price}{''}
+                        <span className="text-md text-blue-300">
+                          price  {service.price}{''}
                         </span>
                       </div>
                     </div>

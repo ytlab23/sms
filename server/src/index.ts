@@ -5,6 +5,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import axios from 'axios';
 import { doc, getDoc } from 'firebase/firestore';
+import { error } from 'console';
 
 
 const app = express();
@@ -42,6 +43,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
   try {
     // Fetch customer from Firestore
+    console.log(uid, 'is the uid', email, 'is the email', amount, 'is the amount');
     const userRef = db.collection('users').doc(uid);
     const userDoc = await userRef.get();
 
@@ -78,7 +80,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
       success_url: 'https://smsverify.vercel.app/',  // Redirect after success
       cancel_url: 'https://smsverify.vercel.app/cancel',    // Redirect after cancel
     });
-
+console.log(session, 'is the session');
     res.json({ url: session.url });
   } catch (error) {
     console.error('Error occurred:', error);
@@ -257,7 +259,10 @@ const checkBalance = async (uid: string, cost: number): Promise<CheckBalanceResu
   const userDoc = await userRef.get();
 
   if (!userDoc.exists) {
-    throw new Error('User not found');
+    // throw new Error('User not found');
+    const error = new Error('Insufficient balance');
+    error.name = 'InsufficientBalanceError';  // Custom error name to handle it specifically
+    throw error;
   }
 
   const currentBalance = userDoc.data()?.balance || 0;
@@ -413,7 +418,11 @@ app.post('/api/buy-product', async (req: Request, res: Response) => {
       ...purchasedNumber,
       purchaseDate: new Date(),
       refunded: false,
+      updatedPrice : productCost
     });
+   
+
+
     console.log('Product information saved to Firestore');
 
     // Step 5: Deduct cost from the user's balance
@@ -461,6 +470,7 @@ app.get('/api/get-user-products', async (req: Request, res: Response) => {
 
 app.get('/api/get-sms', async (req: Request, res: Response) => {
   const { uid, numberId } = req.query;
+ 
 
   if (!uid || !numberId) {
     return res.status(400).json({ error: 'Missing uid or numberId' });
@@ -469,34 +479,7 @@ app.get('/api/get-sms', async (req: Request, res: Response) => {
   try {
     console.log('Fetching SMS for user:', { uid, numberId });
 
-    // const userRef = db.collection('users').doc(String(uid));
-    //     const productsSnapsho = await userRef.collection('products').get();
-
-    // if (productsSnapsho.empty) {
-    //   console.log('No products found for this user.');
-    // } else {
-    //   // Loop through all documents and log their ID and data
-    //   productsSnapsho.forEach((doc) => {
-    //     console.log('Product ID:', doc.id);  // Logs the Firestore document ID
-    //     console.log('Product Data:', doc.data()); // Logs the product data
-    //   });
-    // }
-
-    // // Fetch product from Firestore
-    // const productsSnapshot = await userRef.collection('products')
-    //   .where('id', '==', String(numberId)) // Ensure numberId is treated as a string
-    //   .get();
-
-    // if (productsSnapshot.empty) {
-    //   console.log('No product found for user with this number ID:', numberId);
-    //   return res.status(404).json({ message: 'No such product found for user' });
-    // }
-
-    // // Log product details
-    // productsSnapshot.forEach((doc) => {
-    //   console.log('Product ID:', doc.id);  // Logs the Firestore document ID
-    //   console.log('Product Data:', doc.data()); // Logs the product data
-    // });
+   
 
     // Fetch SMS from 5sim API
     console.log(process.env.SIM_API_KEY,"api key")
@@ -512,6 +495,137 @@ app.get('/api/get-sms', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error fetching SMS:', error);
     res.status(500).json({ error: 'Failed to fetch SMS' });
+  }
+});
+
+
+app.post('/api/cancel', async (req: Request, res: Response) => {
+  const { uid, numberId } = req.body;
+
+  // Ensure numberId is treated as a string and trim it
+  const trimmedUid = uid?.trim();
+  const trimmedNumberId = String(numberId)?.trim();
+
+  // Check for missing or invalid values
+  if (!trimmedUid || !trimmedNumberId || trimmedNumberId === '') {
+    console.log('uid:', uid, 'numberId:', numberId);
+    console.log('Trimmed uid:', trimmedUid, 'Trimmed numberId:', trimmedNumberId);
+    console.log('Invalid uid or numberId provided');
+    return res.status(400).json({ error: 'Missing or invalid uid or numberId' });
+  }
+
+  try {
+    console.log('uid:', trimmedUid, 'numberId:', trimmedNumberId);
+
+    // Fetch purchased product details from Firestore
+    const userRef = db.collection('users').doc(trimmedUid);
+    const productDoc = await userRef.collection('products').doc(trimmedNumberId).get();
+
+    if (!productDoc.exists) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const productData = productDoc.data();
+    if (!productData) {
+      return res.status(404).json({ error: 'Product data not found' });
+    }
+
+    const isExpired = new Date() > new Date(productData.expires);
+    if (productData.sms || productData.refunded || isExpired) {
+      console.log('Product not eligible for cancellation:', productData);
+      return res.status(400).json({ error: 'Product not eligible for cancellation' });
+    }
+
+    // Call 5sim API to cancel the number
+    const cancelResponse = await axios.get(`https://5sim.net/v1/user/cancel/${trimmedNumberId}`, {
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
+        Accept: 'application/json',
+      },
+    });
+
+    if (cancelResponse.status === 200) {
+      // Refund the balance to the user
+      // const productCost = await getProductPrice(productData.country, productData.product);
+      const productCost = productData.updatedPrice;
+      const userDoc = await userRef.get();
+      const userBalance = userDoc.data()?.balance || 0;
+      const newBalance = userBalance + productCost;
+      console.log(newBalance, 'is the new balance');
+
+      // Update user's balance in Firestore
+      await userRef.update({ balance: newBalance });
+
+      // Mark the product as refunded
+      await userRef.collection('products').doc(trimmedNumberId).update({ refunded: true });
+
+      console.log('Service canceled and balance refunded');
+      res.json({ message: 'Service canceled and balance refunded', newBalance });
+    } else {
+      console.log('5sim API error:', cancelResponse.data);
+      throw new Error('Failed to cancel the number via 5sim');
+    }
+  } catch (error) {
+    console.error('Error canceling product:', error);
+    res.status(500).json({ error: 'Failed to cancel product' });
+  }
+});
+
+
+
+// Refund Route
+app.post('/api/refund', async (req: Request, res: Response) => {
+  const { uid, numberId } = req.body;
+
+  // Ensure numberId is treated as a string and trim it
+  const trimmedUid = uid?.trim();
+  const trimmedNumberId = String(numberId)?.trim();
+
+  // Check for missing or invalid values
+  if (!trimmedUid || !trimmedNumberId || trimmedNumberId === '') {
+    console.log('uid:', uid, 'numberId:', numberId);
+    console.log('Trimmed uid:', trimmedUid, 'Trimmed numberId:', trimmedNumberId);
+    return res.status(400).json({ error: 'Missing or invalid uid or numberId' });
+  }
+
+  try {
+    // Fetch purchased product details
+    const userRef = db.collection('users').doc(trimmedUid);
+    const productDoc = await userRef.collection('products').doc(trimmedNumberId).get();
+
+    if (!productDoc.exists) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const productData = productDoc.data();
+    if (!productData) {
+      return res.status(404).json({ error: 'Product data not found' });
+    }
+
+    const isExpired = new Date() > new Date(productData.expires);
+    if (!isExpired || productData.sms || productData.refunded) {
+      console.log('Product not eligible for refund:', productData);
+      return res.status(400).json({ error: 'Product not eligible for refund' });
+    }
+
+    // Refund the balance to the user
+    // const productCost = await getProductPrice(productData.country, productData.product);
+    const productCost = productData.updatedPrice;
+
+    const userDoc = await userRef.get();
+    const userBalance = userDoc.data()?.balance || 0; // Fetch balance from user data
+    const newBalance = userBalance + productCost;
+
+    await userRef.update({ balance: newBalance });
+
+    // Mark the product as refunded
+    await userRef.collection('products').doc(trimmedNumberId).update({ refunded: true });
+
+    console.log('Balance refunded');
+    res.json({ message: 'Balance refunded', newBalance });
+  } catch (error) {
+    console.error('Error refunding product:', error);
+    res.status(500).json({ error: 'Failed to refund product' });
   }
 });
 
