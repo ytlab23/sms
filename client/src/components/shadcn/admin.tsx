@@ -69,7 +69,7 @@ const [oldServices, setOldServices] = useState<any[]>([]);
   
       // Step 2: Fetch countries from external API if collection doesn't exist
       console.log('Countries collection not found, fetching from API...');
-      const response = await fetch('http://localhost:3000/api/countries', {
+      const response = await fetch('https://smsverify-server.vercel.app/api/countries', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ const [oldServices, setOldServices] = useState<any[]>([]);
       console.log('Fetching services for country: any');
   
       const response = await axios.get(
-        `http://localhost:3000/api/get-services?country=${lowercaseCountry}`,
+        `https://smsverify-server.vercel.app/api/get-services?country=${lowercaseCountry}`,
       );
   
       const formattedServices = Object.entries(response.data).map(

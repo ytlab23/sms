@@ -112,6 +112,8 @@ export const ChooseService: React.FC = () => {
   const [loadingServices, setLoadingServices] = useState(true);
   const [erroLoadingCountries, setErrorLoadingCountries] = useState(false);
   const [errorLoadingServices, setErrorLoadingServices] = useState(false);
+  const [failedToBuy, setFailedToBuy] = useState(false);
+  const [buying, setBuying] = useState(false);
 
   useEffect(() => {
     fetchCountries();
@@ -214,6 +216,8 @@ export const ChooseService: React.FC = () => {
   // };
   
   const buyProduct = async () => {
+    setBuying(true);
+    setFailedToBuy(false);
     console.log('buying product');
     const country = selectedCountry?.name.toLowerCase();
     const product = selectedService?.name.toLowerCase();
@@ -221,7 +225,7 @@ export const ChooseService: React.FC = () => {
     console.log('buying product', country, product);
   
     try {
-      const response = await axios.post('http://localhost:3000/api/buy-product', {
+      const response = await axios.post('https://smsverify-server.vercel.app/api/buy-product', {
         uid: currentUser?.uid,
         country,
       
@@ -236,14 +240,15 @@ export const ChooseService: React.FC = () => {
       setSelectedOperator(null);
   
       // Navigate to the SMS page
-      navigate(`/sms?id=${id}`);
-  
+      
       // Success toast notification
-      // toast({
-      //   variant: 'success',
-      //   title: 'Product purchased successfully',
-      //   description: 'You can now use the service.',
-      // });
+      toast({
+        variant: 'success',
+        title: 'Product purchased successfully',
+        description: 'You can now use the service.Refresh page to see the changes.',
+      });
+      navigate(`/sms?id=${id}`);
+      setBuying(false);
   
       // console.log('Purchase response:', response.data);
     } catch (error: any) {
@@ -264,8 +269,12 @@ export const ChooseService: React.FC = () => {
             title: 'Purchase failed',
             description:  'Something went wrong while purchasing the product.',
           });
+          setFailedToBuy(true);
+          setBuying(false);
         }
       } else {
+        setFailedToBuy(true);
+          setBuying(false);
         // Non-Axios or unknown errors
         toast({
           variant: 'destructive',
@@ -274,7 +283,8 @@ export const ChooseService: React.FC = () => {
           action: <ToastAction onClick={buyProduct} altText="Try again">Try again</ToastAction>,
         });
       }
-  
+      setFailedToBuy(true);
+      setBuying(false);
       console.error('Error purchasing product:', error);
     }
   };
@@ -699,13 +709,17 @@ export const ChooseService: React.FC = () => {
         </div>
       )} */}
       <div className="p-4">
-        <Button
+        {buying && !failedToBuy && <Loader2 height="20px"></Loader2>} 
+        { !buying &&(<Button
           onClick={buyProduct}
-          className="w-full text-white"
+          className="w-full "
           disabled={!selectedCountry || !selectedService}
         >
-          Buy number
-        </Button>
+
+        {failedToBuy && !buying && <span>Retry</span>}
+        {!failedToBuy && !buying && <span>Buy number</span>}
+        
+        </Button>)}
       </div>
     </div>
   );

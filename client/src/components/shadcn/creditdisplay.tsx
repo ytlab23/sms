@@ -21,7 +21,7 @@ export function CreditDisplay({ credit = 0 }: CreditDisplayProps) {
     const fetchBalance = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/balance?userId=${currentUser.uid}`,
+          `https://smsverify-server.vercel.app/api/balance?userId=${currentUser.uid}`,
         );
         console.log(response, '');
         if (!response.ok) {

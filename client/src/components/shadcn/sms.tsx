@@ -9,6 +9,7 @@ import { Loader2, RefreshCw, MessageSquare, AlertCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { useAuth } from '../../contexts/authcontext';
 import { toast } from './ui/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface SMS {
   id: string;
@@ -34,11 +35,12 @@ export default function Sms({ numberId }: { numberId: string }) {
   const { currentUser } = useAuth();
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isRefundDialogOpen, setIsRefundDialogOpen] = useState(false);
+ const navigate = useNavigate()
 
   const fetchSMS = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get('http://localhost:3000/api/get-sms', {
+      const response = await axios.get('https://smsverify-server.vercel.app/api/get-sms', {
         params: { uid: currentUser?.uid, numberId },
       });
 
@@ -76,7 +78,7 @@ export default function Sms({ numberId }: { numberId: string }) {
 // Cancel Service Function
 const cancelService = async (id: string) => {
   try {
-    const response = await axios.post('http://localhost:3000/api/cancel', {
+    const response = await axios.post('https://smsverify-server.vercel.app/api/cancel', {
       uid: currentUser?.uid,
       numberId: id,
     });
@@ -94,6 +96,7 @@ const cancelService = async (id: string) => {
         title: 'Service canceled',
         description: 'The service has been canceled and any applicable refunds processed.',
       });
+      navigate('/orders')
     }
   } catch (error: any) {
     console.error('Error canceling service:', error);
@@ -109,7 +112,7 @@ const cancelService = async (id: string) => {
 // Request Refund Function
 const requestRefund = async (id: string) => {
   try {
-    const response = await axios.post('http://localhost:3000/api/refund', {
+    const response = await axios.post('https://smsverify-server.vercel.app/api/refund', {
       uid: currentUser?.uid,
       numberId: id,
     });
@@ -127,6 +130,7 @@ const requestRefund = async (id: string) => {
         title: 'Refund processed',
         description: 'The refund has been processed successfully.',
       });
+      navigate('/orders')
     }
   } catch (error: any) {
     console.error('Error requesting refund:', error);

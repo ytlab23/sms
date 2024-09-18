@@ -90,8 +90,8 @@ const PaymentForm = () => {
 
   const handlePayment = async () => {
     try {
-      // const response = await fetch('https://smsverify-server.vercel.app/api/create-checkout-session', {
-        const response = await fetch('http://localhost:3000/api/create-checkout-session', {
+      const response = await fetch('https://smsverify-server.vercel.app/api/create-checkout-session', {
+        // const response = await fetch('http://localhost:3000/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
