@@ -115,6 +115,9 @@ export const ChooseService: React.FC = () => {
   const [failedToBuy, setFailedToBuy] = useState(false);
   const [buying, setBuying] = useState(false);
 
+  const [countryLoaded, setCountryLoaded] = useState(false);
+  const [serviceLoaded, setServiceLoaded] = useState(false);
+
   useEffect(() => {
     fetchCountries();
     fetchServices();
@@ -145,6 +148,7 @@ export const ChooseService: React.FC = () => {
   
       setCountries(formattedCountries); // Set state with formatted countries
       setLoadingCountries(false);
+      setCountryLoaded(true);
       console.log('Formatted Countries from Firestore:', formattedCountries);
     } catch (error) {
 
@@ -313,6 +317,7 @@ export const ChooseService: React.FC = () => {
       setServices(formattedServices); // Set state with formatted services
       setLoadingServices(false);
       setFilteredServices(formattedServices);
+      setServiceLoaded(true);
       // console.log('Formatted Services from Firestore:', formattedServices);
     } catch (error) {
       setLoadingServices(false);
@@ -516,7 +521,7 @@ export const ChooseService: React.FC = () => {
       
       {loadingCountries &&   <Loader2 height="200px"></Loader2>}
 
-      {erroLoadingCountries && !loadingCountries && <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 "><span>Error loading countries,Refresh</span> <RefreshCcw onClick={fetchCountries}></RefreshCcw> </div>}
+      {erroLoadingCountries && !loadingCountries && !countryLoaded && <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 "><span>Error loading countries,Refresh</span> <RefreshCcw onClick={fetchCountries}></RefreshCcw> </div>}
 
       {!selectedCountry && !loadingCountries && (
         <div className="h-[300px] overflow-hidden">
@@ -585,7 +590,7 @@ export const ChooseService: React.FC = () => {
         )}
       </div>
       {loadingServices &&      <Loader2 height="200px"></Loader2>}
-      {errorLoadingServices  && !loadingServices && <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 "><span>Error loading services,Refresh</span> <RefreshCcw onClick={fetchServices}></RefreshCcw> </div>}
+      {errorLoadingServices  && !loadingServices && !serviceLoaded &&   <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 "><span>Error loading services,Refresh</span> <RefreshCcw onClick={fetchServices}></RefreshCcw> </div>}
 
       {!selectedService && !loadingServices && (
         <div className="h-[300px] overflow-hidden">
