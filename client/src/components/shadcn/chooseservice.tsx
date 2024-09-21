@@ -2,15 +2,24 @@ import { useState, useMemo, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scrollarea';
-import { Search, Star, X,RefreshCcw } from 'lucide-react';
+import { Search, Star, X, RefreshCcw } from 'lucide-react';
 import Logo from '../../images/logo/logo-placeholder.svg';
 import axios from 'axios';
 import { useAuth } from '../../contexts/authcontext';
-import { collection, count, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import {
+  collection,
+  count,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
+import { db } from '../../firebase/config';
 import { useNavigate } from 'react-router-dom';
 import { ToastAction } from './ui/toast';
 import { toast } from './ui/use-toast';
-import { db } from '../../firebase/config';
 import Loader from '../../common/Loader';
 import Loader2 from '../../common/loader2';
 
@@ -106,7 +115,54 @@ export const ChooseService: React.FC = () => {
     operators: {},
   });
 
+  //under const
 
+  const [showMore, setShowMore] = useState(false);
+  const mainServices = filteredServices.filter(
+    (service) => service.main && service.isIncluded,
+  );
+  const includedServices = filteredServices.filter(
+    (service) => service.isIncluded,
+  );
+
+  const [allPricingData, setAllPricingData] = useState<{ [key: string]: number | null }>({});
+const [loadingPricing, setLoadingPricing] = useState(true);
+
+const fetchAllPricing = async () => {
+  try {
+    const pricingCollectionRef = collection(db, 'pricing');
+    const querySnapshot = await getDocs(pricingCollectionRef);
+
+    const pricingData: { [key: string]: number | null } = {};
+    querySnapshot.forEach((doc) => {
+      const { price } = doc.data();
+      pricingData[doc.id] = price; // The document ID format should be "countryname_servicename"
+    });
+
+    setAllPricingData(pricingData);
+    setLoadingPricing(false);
+  } catch (error) {
+    console.error('Error fetching pricing data', error);
+    setLoadingPricing(false);
+  }
+};
+
+// Fetch pricing data when the component mounts
+useEffect(() => {
+  fetchAllPricing();
+}, []);
+
+
+const getServicePrice = (serviceName: string, countryName: string | null): number | null => {
+  if (countryName) {
+    const countryServiceKey = `${countryName.toLowerCase()}_${serviceName.toLowerCase()}`;
+    return allPricingData[countryServiceKey] ?? null; // Use the pricing data if found, else return null
+  }
+  return null;
+};
+
+
+  //dont pas
 
   const [loadingCountries, setLoadingCountries] = useState(true);
   const [loadingServices, setLoadingServices] = useState(true);
@@ -123,137 +179,76 @@ export const ChooseService: React.FC = () => {
     fetchServices();
   }, []);
 
-
-
   // Fetch services
 
- 
   const fetchCountries = async () => {
     setLoadingCountries(true);
     console.log('Fetching countries from Firestore...');
     try {
       // Reference the 'countries' collection
       const countriesCollectionRef = collection(db, 'countries');
-  
+
       // Query Firestore to get countries where 'included' is true
       const q = query(countriesCollectionRef, where('included', '==', true));
       const querySnapshot = await getDocs(q);
-  
+
       // Format the fetched countries
       const formattedCountries = querySnapshot.docs.map((doc) => ({
         name: doc.data().name,
         iso: doc.data().iso,
         prefix: doc.data().prefix,
       }));
-  
+
       setCountries(formattedCountries); // Set state with formatted countries
       setLoadingCountries(false);
       setCountryLoaded(true);
       console.log('Formatted Countries from Firestore:', formattedCountries);
     } catch (error) {
-
       setErrorLoadingCountries(true);
       setLoadingCountries(false);
       console.error('Error fetching countries from Firestore:', error);
     }
   };
-  // const fetchCountries = async () => {
-  //   console.log('Checking if countries collection exists...');
-  
-  //   try {
-  //     // Step 1: Check if the countries collection exists
-  //     const countriesCollectionRef = collection(db, 'countries');
-  //     const querySnapshot = await getDocs(countriesCollectionRef);
-  
-  //     if (!querySnapshot.empty) {
-  //       console.log('Countries collection already exists, skipping fetch.');
-  //       return; // Exit if the collection exists
-  //     }
-  
-  //     // Step 2: Fetch countries from external API if collection doesn't exist
-  //     console.log('Countries collection not found, fetching from API...');
-  //     const response = await fetch('https://smsverify-server.vercel.app/api/countries', {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch countries from API');
-  //     }
-  
-  //     const data = await response.json();
-  
-  //     // Step 3: Format the countries data
-  //     const formattedCountries = Object.entries(data).map(
-  //       ([key, value]: [string, any]) => ({
-  //         name: value.text_en, // English name of the country
-  //         iso: Object.keys(value.iso)[0], // ISO code, e.g., 'af' for Afghanistan
-  //         prefix: Object.keys(value.prefix)[0], // Prefix, e.g., '+93' for Afghanistan
-  //       })
-  //     );
-  
-  //     // Step 4: Save each formatted country to Firestore
-  //     formattedCountries.forEach(async (country) => {
-  //       try {
-  //         const docRef = doc(countriesCollectionRef, country.name); // Use ISO code as the document ID
-  //         await setDoc(docRef, {
-  //           name: country.name,
-  //           prefix: country.prefix,
-  //           iso: country.iso,
-  //           included: false, // Add any other fields as necessary
-  //         });
-  //         console.log(`Country ${country.name} saved successfully`);
-  //       } catch (error) {
-  //         console.error(`Error saving country ${country.name}:`, error);
-  //       }
-  //     });
-  
-  //     // Step 5: Update state with formatted countries (if needed)
-  //     setCountries(formattedCountries);
-  //     console.log('Formatted Countries:', formattedCountries);
-      
-  //   } catch (error) {
-  //     console.error('Error fetching countries:', error);
-  //   }
-  // };
-  
+
   const buyProduct = async () => {
     setBuying(true);
     setFailedToBuy(false);
     console.log('buying product');
     const country = selectedCountry?.name.toLowerCase();
     const product = selectedService?.name.toLowerCase();
-  
+
     console.log('buying product', country, product);
-  
+
     try {
-      const response = await axios.post('https://smsverify-server.vercel.app/api/buy-product', {
-        uid: currentUser?.uid,
-        country,
-      
-        product,
-      });
-  
+      const response = await axios.post(
+        'https://smsverify-server.vercel.app/api/buy-product',
+        {
+          uid: currentUser?.uid,
+          country,
+
+          product,
+        },
+      );
+
       const id = response.data?.product?.id ?? null;
-  
+
       // Reset the selected states
       setSelectedCountry(null);
       setSelectedService(null);
       setSelectedOperator(null);
-  
+
       // Navigate to the SMS page
-      
+
       // Success toast notification
       toast({
         variant: 'success',
         title: 'Product purchased successfully',
-        description: 'You can now use the service.Refresh page to see the changes.',
+        description:
+          'You can now use the service.Refresh page to see the changes.',
       });
       navigate(`/sms?id=${id}`);
       setBuying(false);
-  
+
       // console.log('Purchase response:', response.data);
     } catch (error: any) {
       // Handle different error types
@@ -264,27 +259,38 @@ export const ChooseService: React.FC = () => {
             variant: 'destructive',
             title: 'Insufficient balance',
             description: 'Please top up your account to complete the purchase.',
-            action: <ToastAction onClick={() => navigate('/pay')} altText="Go to payment">Go to Payment</ToastAction>,
+            action: (
+              <ToastAction
+                onClick={() => navigate('/pay')}
+                altText="Go to payment"
+              >
+                Go to Payment
+              </ToastAction>
+            ),
           });
         } else {
           // General Axios error
           toast({
             variant: 'destructive',
             title: 'Purchase failed',
-            description:  'Something went wrong while purchasing the product.',
+            description: 'Something went wrong while purchasing the product.',
           });
           setFailedToBuy(true);
           setBuying(false);
         }
       } else {
         setFailedToBuy(true);
-          setBuying(false);
+        setBuying(false);
         // Non-Axios or unknown errors
         toast({
           variant: 'destructive',
           title: 'Unknown error',
           description: 'An unknown error occurred. Please try again.',
-          action: <ToastAction onClick={buyProduct} altText="Try again">Try again</ToastAction>,
+          action: (
+            <ToastAction onClick={buyProduct} altText="Try again">
+              Try again
+            </ToastAction>
+          ),
         });
       }
       setFailedToBuy(true);
@@ -292,19 +298,19 @@ export const ChooseService: React.FC = () => {
       console.error('Error purchasing product:', error);
     }
   };
- //fetching services
+  //fetching services
 
   const fetchServices = async () => {
     setLoadingServices(true);
     console.log('Fetching services from Firestore...');
-  
+
     try {
       // Reference to the 'services' collection
       const servicesCollectionRef = collection(db, 'services');
-      
+
       // Query Firestore to get all services
       const querySnapshot = await getDocs(servicesCollectionRef);
-  
+
       // Format the fetched services
       const formattedServices = querySnapshot.docs.map((doc) => ({
         name: doc.data().name,
@@ -312,8 +318,9 @@ export const ChooseService: React.FC = () => {
         quantity: doc.data().quantity,
         price: doc.data().price,
         main: doc.data().main || false, // 'main' field if it exists
+        isIncluded: doc.data().isIncluded || false, // 'isIncluded' field if it exists
       }));
-  
+
       setServices(formattedServices); // Set state with formatted services
       setLoadingServices(false);
       setFilteredServices(formattedServices);
@@ -323,77 +330,9 @@ export const ChooseService: React.FC = () => {
       setLoadingServices(false);
       setErrorLoadingServices(true);
       console.error('Failed to fetch services from Firestore', error);
-
     }
   };
 
-  // const fetchServices = async () => {
-  //   console.log('Checking if services collection exists...');
-  
-  //   try {
-  //     // Step 1: Check if the services collection has any documents
-  //     const servicesCollectionRef = collection(db, 'services');
-  //     const servicesSnapshot = await getDocs(servicesCollectionRef);
-  
-  //     if (!servicesSnapshot.empty) {
-  //       console.log('Services collection already exists, skipping API fetch.');
-  //       return; // Exit if the services collection exists
-  //     }
-  
-  //     // Step 2: Always fetch services for 'any' as the country parameter
-  //     const lowercaseCountry = 'any'; // Always use 'any'
-  //     console.log('Fetching services for country: any');
-  
-  //     const response = await axios.get(
-  //       `https://smsverify-server.vercel.app/api/get-services?country=${lowercaseCountry}`,
-  //     );
-  
-  //     const formattedServices = Object.entries(response.data).map(
-  //       ([key, value]: [string, any]) => ({
-  //         name: key, // Service name like '115com'
-  //         category: (value as { Category: string }).Category, // Service category
-  //         quantity: (value as { Qty: number }).Qty, // Available quantity
-  //         price: 0.7, // Set default service price
-  //         main: false, // Initially set to false
-  //       })
-  //     );
-  
-  //     // Step 3: Save each service to Firestore
-  //     formattedServices.forEach(async (service) => {
-  //       try {
-  //         const serviceDocRef = doc(servicesCollectionRef, service.name);
-  //         const docSnapshot = await getDoc(serviceDocRef);
-  
-  //         if (!docSnapshot.exists()) {
-  //           // Service doesn't exist, set 'main' to false and save
-  //           await setDoc(serviceDocRef, {
-  //             name: service.name,
-  //             category: service.category,
-  //             quantity: service.quantity,
-  //             price: service.price,
-  //             country: lowercaseCountry, // Store the country context ('any')
-  //             main: false, // Set main to false initially
-  //           });
-  //           console.log(`Service ${service.name} saved successfully with main: false`);
-  //         } else {
-  //           // If service already exists, use the existing value of 'main'
-  //           const existingService = docSnapshot.data();
-  //           service.main = existingService?.main || false; // Use the saved 'main' value
-  //           console.log(`Service ${service.name} already exists, main: ${service.main}`);
-  //         }
-  //       } catch (error) {
-  //         console.error(`Error saving service ${service.name}:`, error);
-  //       }
-  //     });
-  
-  //     setServices(formattedServices); // Set state with formatted services
-  //     console.log('Formatted Services:', formattedServices);
-  
-  //   } catch (error) {
-  //     console.error('Failed to fetch services', error);
-  //   }
-  // };
-  
   const fetchOperator = async () => {
     const lowercaseCountry = (selectedCountry?.name as string).toLowerCase();
     const lowercaseService = (selectedService?.name as string).toLowerCase();
@@ -518,10 +457,15 @@ export const ChooseService: React.FC = () => {
           </div>
         )}
       </div>
-      
-      {loadingCountries &&   <Loader2 height="200px"></Loader2>}
 
-      {erroLoadingCountries && !loadingCountries && !countryLoaded && <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 "><span>Error loading countries,Refresh</span> <RefreshCcw onClick={fetchCountries}></RefreshCcw> </div>}
+      {loadingCountries && <Loader2 height="200px"></Loader2>}
+
+      {erroLoadingCountries && !loadingCountries && !countryLoaded && (
+        <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 ">
+          <span>Error loading countries,Refresh</span>{' '}
+          <RefreshCcw onClick={fetchCountries}></RefreshCcw>{' '}
+        </div>
+      )}
 
       {!selectedCountry && !loadingCountries && (
         <div className="h-[300px] overflow-hidden">
@@ -546,13 +490,7 @@ export const ChooseService: React.FC = () => {
                         toggleFavorite('countries', country.name);
                       }}
                     />
-                    {/* <img
-                      src={Logo}
-                      alt={`Flag of ${country.name}`}
-                      className={`flags flags-${country.iso} mr-2`}
-                      width={20}
-                      height={20}
-                    /> */}
+
                     <img
                       src={`https://flagcdn.com/w20/${country.iso.toLowerCase()}.png`} // Using the ISO code
                       alt={`Flag of ${country.name}`}
@@ -569,7 +507,7 @@ export const ChooseService: React.FC = () => {
           </ScrollArea>
         </div>
       )}
-      <div className="p-4 ">
+      <div className="p-4">
         <h2 className="text-lg font-semibold mb-4">2. Select service</h2>
         {selectedService ? (
           <SelectedTile
@@ -589,142 +527,158 @@ export const ChooseService: React.FC = () => {
           </div>
         )}
       </div>
-      {loadingServices &&      <Loader2 height="200px"></Loader2>}
-      {errorLoadingServices  && !loadingServices && !serviceLoaded &&   <div className="bg-white  dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4 "><span>Error loading services,Refresh</span> <RefreshCcw onClick={fetchServices}></RefreshCcw> </div>}
 
-      {!selectedService && !loadingServices && (
-        <div className="h-[300px] overflow-hidden">
-          <ScrollArea className="h-full">
-            <div className="p-4 space-y-2">
-              {filteredServices.map((service, index) => (
-                
-                <Button
-                  key={`${service.name}-${index}`}
-                  variant="ghost"
-                  className="w-full dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-start font-normal h-14"
-                  onClick={() => handleServiceSelect(service)}
-                >
-                  <div className="flex items-center w-full">
-                    <Star
-                      className={`h-5 w-5 mr-2 ${
-                        favorites.services[service.icon]
-                          ? 'text-yellow-400 '
-                          : 'text-gray-400'
-                      } cursor-pointer`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite('services', service.icon);
-                      }}
-                    />
-                    {/* <img
-                      src={Logo}
-                      alt={`Icon of ${service.name}`}
-                      className={`products products-${service.icon} mr-2`}
-                      width={20}
-                      height={20}
-                    /> */}
-                    <img
-                      src={`https://logo.clearbit.com/${service.name.toLowerCase()}.com`}
-                      alt={`Icon of ${service.name}`}
-                      className="mr-2"
-                      width={20}
-                      height={20}
-                      onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                        (e.target as HTMLImageElement).onerror = null; // Prevent infinite loop
-                        (e.target as HTMLImageElement).src = ''; // Remove broken image
-                        (e.target as HTMLImageElement).replaceWith(document.createTextNode('')); // Replace with "?" fallback
-                      }}
-                    />
-                    <div className="flex flex-row justify-end">
-                      <span className="mr-6">{service.name}</span>
-                      <div className="flex flex-col">
-                        
+      {loadingServices && <Loader2 height="200px" />}
 
-                        <span className="text-md text-blue-300">
-                          price  {service.price}{''}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </Button>
-              ))}
-            </div>
-          </ScrollArea>
+      {errorLoadingServices && !loadingServices && !serviceLoaded && (
+        <div className="bg-white dark:bg-boxdark border-red-20 rounded p-4 flex flex-row gap-4">
+          <span>Error loading services, refresh</span>
+          <RefreshCcw onClick={fetchServices} />
         </div>
       )}
-      {/* <div className="p-4 ">
-        <h2 className="text-lg font-semibold mb-4">3. Select operator</h2>
-        {selectedOperator ? (
-          <SelectedTile
-            item={selectedOperator}
-            onCancel={handleOperatorCancel}
-            type="operator"
-          />
-        ) : selectedCountry && selectedService ? (
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Find operator"
-              className="pl-8 dark:bg-boxdark"
-              value={operatorSearch}
-              onChange={(e) => setOperatorSearch(e.target.value)}
-            />
-          </div>
-        ) : (
-          <div className="bg-white  dark:bg-boxdark border-blue-20 rounded p-4 ">
-            Select country and service first
-          </div>
-        )}
-      </div>
-      {selectedCountry && selectedService && !selectedOperator && (
-        <div className="h-[200px] overflow-hidden">
-          <ScrollArea className="h-full">
-            <div className="p-4 space-y-2">
-              {operators.map((operator, index) => (
-                <Button
-                  key={`${operator.name}-${index}`}
-                  variant="ghost"
-                  className="w-full dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-start font-normal h-14"
-                  onClick={() => handleOperatorSelect(operator)}
-                >
-                  <div className="flex items-center w-full">
-                    <Star
-                      className={`h-5 w-5 mr-2 ${
-                        favorites.operators[operator.name]
-                          ? 'text-yellow-400'
-                          : 'text-gray-400'
-                      } cursor-pointer`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite('operators', operator.name);
-                      }}
-                    />
-                    <span className="flex-grow">{operator.name}</span>
-                    <div className="text-right">
-                      <div className="text-sm">from {operator.cost}₽</div>
-                      <div className="text-xs text-green-500">
-                        {operator.count} numbers
-                      </div>
+
+      {/* Main Services */}
+      {!showMore && !selectedService && !loadingServices && (
+        <div className="space-y-2">
+          {mainServices.map((service, index) => {
+            const countrySpecificPrice = selectedCountry
+              ? getServicePrice(service.name, selectedCountry.name)
+              : null;
+            return (
+              <Button
+                key={`${service.name}-${index}`}
+                variant="ghost"
+                className="w-full dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-start font-normal h-14"
+                onClick={() => handleServiceSelect(service)}
+              >
+                <div className="flex items-center w-full">
+                  <Star
+                    className={`h-5 w-5 mr-2 ${
+                      favorites.services[service.icon]
+                        ? 'text-yellow-400 '
+                        : 'text-gray-400'
+                    } cursor-pointer`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite('services', service.icon);
+                    }}
+                  />
+                  <img
+                    src={`https://logo.clearbit.com/${service.name.toLowerCase()}.com`}
+                    alt={`Icon of ${service.name}`}
+                    className="mr-2"
+                    width={20}
+                    height={20}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src = '';
+                      target.replaceWith(document.createTextNode(''));
+                    }}
+                  />
+                  <div className="flex flex-row justify-end">
+                    <span className="mr-6">{service.name}</span>
+                    <div className="flex flex-col">
+                      <span className="text-md text-blue-300">
+                        price {countrySpecificPrice !== null ? countrySpecificPrice : service.price}
+                      </span>
                     </div>
                   </div>
-                </Button>
-              ))}
-            </div>
-          </ScrollArea>
+                </div>
+              </Button>
+            );
+          })}
         </div>
-      )} */}
-      <div className="p-4">
-        {buying && !failedToBuy && <Loader2 height="20px"></Loader2>} 
-        { !buying &&(<Button
-          onClick={buyProduct}
-          className="w-full "
-          disabled={!selectedCountry || !selectedService}
-        >
+      )}
 
-        {failedToBuy && !buying && <span>Retry</span>}
-        {!failedToBuy && !buying && <span>Buy number</span>}
-        
-        </Button>)}
+      {/* Show more/less button */}
+      {!selectedService && !loadingServices && (
+        <>
+          {showMore && (
+            <div className="h-[300px] overflow-hidden">
+              <ScrollArea className="h-full">
+                <div className="p-4 space-y-2">
+                  {includedServices.map((service, index) => {
+                    const countrySpecificPrice = selectedCountry
+                      ? getServicePrice(service.name, selectedCountry.name)
+                      : null;
+                    return (
+                      <Button
+                        key={`${service.name}-${index}`}
+                        variant="ghost"
+                        className="w-full dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-start font-normal h-14"
+                        onClick={() => handleServiceSelect(service)}
+                      >
+                        <div className="flex items-center w-full">
+                          <Star
+                            className={`h-5 w-5 mr-2 ${
+                              favorites.services[service.icon]
+                                ? 'text-yellow-400 '
+                                : 'text-gray-400'
+                            } cursor-pointer`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleFavorite('services', service.icon);
+                            }}
+                          />
+                          <img
+                            src={`https://logo.clearbit.com/${service.name.toLowerCase()}.com`}
+                            alt={`Icon of ${service.name}`}
+                            className="mr-2"
+                            width={20}
+                            height={20}
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.onerror = null;
+                              target.src = '';
+                              target.replaceWith(document.createTextNode(''));
+                            }}
+                          />
+                          <div className="flex flex-row justify-end">
+                            <span className="mr-6">{service.name}</span>
+                            <div className="flex flex-col">
+                              <span className="text-md text-blue-300">
+                                price {countrySpecificPrice !== null ? countrySpecificPrice : service.price}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Button>
+                    );
+                  })}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
+          <button
+            onClick={() => setShowMore(!showMore)}
+            className="text-blue-500 mt-4"
+          >
+            {showMore
+              ? `See Less (${mainServices.length}) services`
+              : `See More (${includedServices.length}) services`}
+          </button>
+        </>
+      )}
+
+      {/* change it back to the above */}
+
+      <div className="p-4">
+        {buying && !failedToBuy && <Loader2 height="20px"></Loader2>}
+        {!buying && (
+          <Button
+            onClick={buyProduct}
+            className="w-full "
+            disabled={!selectedCountry || !selectedService}
+          >
+            {failedToBuy && !buying && (
+              <span className="text-whiten">Retry</span>
+            )}
+            {!failedToBuy && !buying && (
+              <span className="text-whiten">Buy number</span>
+            )}
+          </Button>
+        )}
       </div>
     </div>
   );

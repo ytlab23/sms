@@ -1,31 +1,82 @@
-import { Button } from "./ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
-import { UserPlus, LogIn, Globe, Phone, CreditCard, MessageSquare, CheckCircle, ShieldCheck } from "lucide-react"
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import {
+  UserPlus,
+  LogIn,
+  Globe,
+  Phone,
+  CreditCard,
+  MessageSquare,
+  CheckCircle,
+  ShieldCheck,
+} from 'lucide-react';
 
 export default function Component() {
   const steps = [
-    { icon: <UserPlus className="h-6 w-6" />, title: "Sign Up", description: "Click on the \"Sign Up\" button to create your account." },
-    { icon: <LogIn className="h-6 w-6" />, title: "Log In", description: "After signing up, log in to your account using your credentials." },
-    { icon: <Globe className="h-6 w-6" />, title: "Select Country", description: "Navigate to the phone number selection section. Choose the country where you need a temporary phone number." },
-    { icon: <Phone className="h-6 w-6" />, title: "Choose a Service", description: "Select the specific service or platform (e.g., WhatsApp, Facebook) for which you need the number." },
-    { icon: <CreditCard className="h-6 w-6" />, title: "Purchase a Number", description: "Browse the available numbers and select one. Proceed to payment and complete the purchase." },
-    { icon: <MessageSquare className="h-6 w-6" />, title: "Receive SMS", description: "Use the purchased number to receive SMS verification codes. Check your account dashboard for incoming messages." },
-    { icon: <CheckCircle className="h-6 w-6" />, title: "Verify", description: "Enter the received verification code on the platform you are signing up for." },
-  ]
+    {
+      icon: <UserPlus className="h-6 w-6" />,
+      title: 'Sign Up',
+      description: 'Click on the "Sign Up" button to create your account.',
+    },
+    {
+      icon: <LogIn className="h-6 w-6" />,
+      title: 'Log In',
+      description:
+        'After signing up, log in to your account using your credentials.',
+    },
+    {
+      icon: <Globe className="h-6 w-6" />,
+      title: 'Select Country',
+      description:
+        'Navigate to the phone number selection section. Choose the country where you need a temporary phone number.',
+    },
+    {
+      icon: <Phone className="h-6 w-6" />,
+      title: 'Choose a Service',
+      description:
+        'Select the specific service or platform (e.g., WhatsApp, Facebook) for which you need the number.',
+    },
+    {
+      icon: <CreditCard className="h-6 w-6" />,
+      title: 'Purchase a Number',
+      description:
+        'Browse the available numbers and select one. Proceed to payment and complete the purchase.',
+    },
+    {
+      icon: <MessageSquare className="h-6 w-6" />,
+      title: 'Receive SMS',
+      description:
+        'Use the purchased number to receive SMS verification codes. Check your account dashboard for incoming messages.',
+    },
+    {
+      icon: <CheckCircle className="h-6 w-6" />,
+      title: 'Verify',
+      description:
+        'Enter the received verification code on the platform you are signing up for.',
+    },
+  ];
 
   const tips = [
-    { icon: <ShieldCheck className="h-5 w-5 text-green-500" />, text: "Our service is verified and reliable. Issues like unavailable numbers or failed verifications are extremely rare." },
-  ]
+    {
+      icon: <ShieldCheck className="h-5 w-5 text-green-500" />,
+      text: 'Our service is verified and reliable. Issues like unavailable numbers or failed verifications are extremely rare.',
+    },
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">How to Buy a Temporary Phone Number for SMS Verify</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">
+        How to Buy a Temporary Phone Number for SMS App
+      </h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {steps.map((step, index) => (
-          <Card key={index} className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1">
+          <Card
+            key={index}
+            className="transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1"
+          >
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center">
+                <span className="bg-primary text-whiten rounded-full w-8 h-8 flex items-center justify-center">
                   {index + 1}
                 </span>
                 {step.title}
@@ -33,7 +84,7 @@ export default function Component() {
             </CardHeader>
             <CardContent>
               <div className="flex items-start gap-4">
-                {step.icon}
+                <div className="text-green-500"> {step.icon}</div>
                 <p>{step.description}</p>
               </div>
             </CardContent>
@@ -58,9 +109,9 @@ export default function Component() {
           </ul>
         </CardContent>
       </Card>
-      <div className="mt-8 text-center">
+      <div className="mt-8 text-center text-white">
         <Button size="lg">Get Started Now</Button>
       </div>
     </div>
-  )
+  );
 }

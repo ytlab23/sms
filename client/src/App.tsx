@@ -58,7 +58,7 @@ function App() {
             index
             element={
               <>
-                <PageTitle title="Home | SMSVerify" />
+                <PageTitle title="Home | SMS App" />
                 <MainPage />
               </>
             }
@@ -70,7 +70,7 @@ function App() {
                 {/* Wrap the PaymentForm in the <Elements> provider */}
                 <ProtectedRoute>
                   <div>
-                    <PageTitle title="Pay | SMSVerify" />
+                    <PageTitle title="Pay | SMS App" />
                     <PaymentForm />
                   </div>
                 </ProtectedRoute>
@@ -83,7 +83,7 @@ function App() {
             path="/faq"
             element={
               <>
-                <PageTitle title="Faq | SMSVerify" />
+                <PageTitle title="Faq | SMS App" />
                 <Faq />
               </>
             }
@@ -94,7 +94,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title="Settings | SMSVerify" />
+                  <PageTitle title="Settings | SMS App" />
                   <Settings />
                 </>
               </ProtectedRoute>
@@ -105,7 +105,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title="Your Orders | SMSVerify" />
+                  <PageTitle title="Your Orders | SMS App" />
                   <OrdersPage />
                 </>
               </ProtectedRoute>
@@ -116,7 +116,7 @@ function App() {
             path="/auth/signin"
             element={
               <>
-                <PageTitle title="Signin | SMSVerify" />
+                <PageTitle title="Signin | SMS App" />
                 <SignIn />
               </>
             }
@@ -125,7 +125,7 @@ function App() {
             path="/auth/signup"
             element={
               <>
-                <PageTitle title="Signup | SMSVerify" />
+                <PageTitle title="Signup | SMS App" />
                 <SignUp />
               </>
             }
@@ -134,7 +134,7 @@ function App() {
             path="/howtobuy"
             element={
               <>
-                <PageTitle title="How to Buy | SMSVerify" />
+                <PageTitle title="How to Buy | SMS App" />
                 <HowToBuy />
               </>
             }
@@ -144,7 +144,7 @@ function App() {
             element={
               <ProtectedRoute>
               <>
-                <PageTitle title="SMS | SMSVerify" />
+                <PageTitle title="SMS | SMS App" />
                 <SmsPage />
               </></ProtectedRoute>
             }
@@ -155,7 +155,7 @@ function App() {
               // <ProtectedRoute>
               <AdminProtectedRoute>
               <>
-                <PageTitle title="Admin | SMSVerify" />
+                <PageTitle title="Admin | SMS App" />
                 <AdminPage></AdminPage></></AdminProtectedRoute>
             }
           />

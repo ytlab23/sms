@@ -4,7 +4,7 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-placeholder.svg';
 import Logo from '../../images/logo/logo-placeholder.svg';
 import { auth, db } from '../../firebase/config';
-import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 
@@ -64,8 +64,56 @@ const SignIn: React.FC = () => {
         setAuthLoading(false); // Hide loading indicator
       });
   }
-  function handleSignIn() {
+  // function handleSignIn() {
 
+  //   if (!email.includes('@')) {
+  //     setMessage('Please enter a valid email');
+  //     console.log('Please enter a valid email');
+  //     return;
+  //   }
+  //   if (password.length < 6) {
+  //     setMessage('Password must be at least 6 characters');
+  //     console.log('Password must be at least 6 characters');
+  //     return;
+  //   }
+  //   signInWithEmailAndPassword(auth, email, password)
+  //   .then((userCredential) => {
+  //     // Signed in
+  //     const user = userCredential.user;
+  //     console.log("auth success");
+  //     navigate('/');
+  //     // Additional actions on successful sign-in
+  //   })
+  //   .catch((error) => {
+  //     const errorCode = error.code;
+  //     const errorMessage = error.message;
+  
+  //     // Handle specific error codes
+  //     switch (errorCode) {
+  //       case 'auth/user-not-found':
+  //         setMessage('Account does not exist. Please sign up first.');
+  //         break;
+  //       case 'auth/wrong-password':
+  //         setMessage('Incorrect password. Please try again.');
+  //         break;
+  //       case 'auth/invalid-email':
+  //         setMessage('The email address is not valid. Please check and try again.');
+  //         break;
+  //       case 'auth/invalid-credential':
+  //         setMessage('Invalid credentials');
+  //         break;
+
+  //       default:
+  //         setMessage("invalid credentials");
+  //         break;
+  //     }
+  
+  //     console.log(errorMessage);
+  //   });
+  
+  
+  // }
+  function handleSignIn() {
     if (!email.includes('@')) {
       setMessage('Please enter a valid email');
       console.log('Please enter a valid email');
@@ -76,43 +124,63 @@ const SignIn: React.FC = () => {
       console.log('Password must be at least 6 characters');
       return;
     }
+  
     signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      console.log("auth success");
-      navigate('/');
-      // Additional actions on successful sign-in
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      .then((userCredential) => {
+        const user = userCredential.user;
   
-      // Handle specific error codes
-      switch (errorCode) {
-        case 'auth/user-not-found':
-          setMessage('Account does not exist. Please sign up first.');
-          break;
-        case 'auth/wrong-password':
-          setMessage('Incorrect password. Please try again.');
-          break;
-        case 'auth/invalid-email':
-          setMessage('The email address is not valid. Please check and try again.');
-          break;
-        case 'auth/invalid-credential':
-          setMessage('Invalid credentials');
-          break;
-
-        default:
-          setMessage("invalid credentials");
-          break;
-      }
+        // Check if the email is verified
+        if (!user.emailVerified) {
+          setMessage('Please verify your email before logging in.');
+          console.log('Your account needs verification. Please check your email and verify your account.');
+          // alert('Your account needs verification. Please check your email and verify your account.');
   
-      console.log(errorMessage);
-    });
+          // Send verification email if needed
+          sendEmailVerification(user)
+            .then(() => {
+              // alert('A new verification email has been sent to your inbox.');
+              console.log('A new verification email has been sent to your inbox.')
+            })
+            .catch((error) => {
+              console.error('Error sending verification email:', error.message);
+            });
   
+          // Sign out the user since their email is not verified
+          signOut(auth);
+          return;
+        }
   
+        // Email is verified, proceed with login
+        console.log("auth success");
+        navigate('/');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+  
+        // Handle specific error codes
+        switch (errorCode) {
+          case 'auth/user-not-found':
+            setMessage('Account does not exist. Please sign up first.');
+            break;
+          case 'auth/wrong-password':
+            setMessage('Incorrect password. Please try again.');
+            break;
+          case 'auth/invalid-email':
+            setMessage('The email address is not valid. Please check and try again.');
+            break;
+          case 'auth/invalid-credential':
+            setMessage('Invalid credentials');
+            break;
+          default:
+            setMessage('Invalid credentials');
+            break;
+        }
+  
+        console.log(errorMessage);
+      });
   }
+  
   
   return (
     <>

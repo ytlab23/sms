@@ -3,19 +3,20 @@ import { Link,useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-placeholder.svg';
 import Logo from '../../images/logo/logo-placeholder.svg';
-import { createUserWithEmailAndPassword ,signInWithPopup, GoogleAuthProvider,AuthError } from 'firebase/auth';
+import { createUserWithEmailAndPassword ,signInWithPopup, GoogleAuthProvider,AuthError, sendEmailVerification, signOut } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import { db } from '../../firebase/config'; // Firestore instance
 import { doc, getDoc, setDoc } from 'firebase/firestore'; // Firestore functions
 
 import Loader from '../../common/Loader';
+import { toast } from '../../components/shadcn/ui/use-toast';
 const SignUp: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const navigate = useNavigate(); 
 
   const [username, setUsername] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState(''); 
+  const [confirmPassword, setConfirmPassword] = React.useState('');
 
   const [message, setMessage] = React.useState('');
   const [authLoading, setAuthLoading] = React.useState(false);
@@ -79,80 +80,165 @@ const SignUp: React.FC = () => {
       setAuthLoading(false); // Stop loading
     }
   }
-  async function handleSignup() {
-// mae it log error if there the confirm password is not the same as the password
+//   async function handleSignup() {
+// // mae it log error if there the confirm password is not the same as the password
    
-    if (!email.includes('@')) {
-      setMessage('Invalid email');
+//     if (!email.includes('@')) {
+//       setMessage('Invalid email');
+//     return;
+//     }
+//   if (username === '' || email === '' || password === '' || confirmPassword === '' ) {
+//       setMessage('Please fill in all fields');
+//       return;
+//   }
+//   if (password.length < 6) {
+//     setMessage('Password must be at least 6 characters');
+//     return;
+//   }
+ 
+
+//   if (password !== confirmPassword) {
+//     setMessage('Passwords do not match');
+//     console.log("error from password");
+//     return;
+//   }
+//     console.log(authLoading, 'before');
+//     console.log(authLoading, 'after');
+//     setAuthLoading(true);
+
+//     console.log(authLoading);
+//     console.log('handle it');
+
+//     await createUserWithEmailAndPassword(auth, email, password)
+//       .then( (userCredential) => {
+//         // Signed up successfully
+//         console.log('Success');
+//         console.log(authLoading, 'before success');
+
+//         setAuthLoading(false);
+//         console.log(authLoading, 'after success');
+//         if (auth.currentUser) {
+//           sendEmailVerification(auth.currentUser).then(()=>{
+//             alert("verify your email")
+//           })
+//         } else {
+//           console.error('No authenticated user found.');
+//         }
+
+//         const user = userCredential.user;
+//         console.log(user.email);
+//          setDoc(doc(db, 'users', user.uid), {
+//           username: username, // replace this with your actual username state
+//           email: user.email,
+
+//         });
+//         getDoc(doc(db, 'users', user.uid)).then((doc) => {   
+//           if (doc.exists()) {
+//             console.log('Document data:', doc.data());
+//           } else {
+//             // doc.data() will be undefined in this case
+//             console.log('No such document!');
+//           }
+//          });
+//          navigate('/');
+//       })
+//       .catch((error) => {
+//         setAuthLoading(false);
+
+//         const errorCode = error.code;
+//         const errorMessage = error.message;
+//         console.log(errorCode, errorMessage);
+
+//         if (errorCode === 'auth/email-already-in-use') {
+//           console.log(
+//             'This email is already registered. Please try logging in or use a different email.',
+//           );
+//           setMessage('This email is already registered. Please try logging in or use a different email.');
+//         } else {
+//           console.log(errorMessage);
+//         }
+
+//         console.log('Error:', errorCode, errorMessage);
+//       });
+//   }
+async function handleSignup() {
+  // Validate form inputs
+  if (!email.includes('@')) {
+    setMessage('Invalid email');
     return;
-    }
-  if (username === '' || email === '' || password === '' || confirmPassword === '' ) {
-      setMessage('Please fill in all fields');
-      return;
+  }
+  if (username === '' || email === '' || password === '' || confirmPassword === '') {
+    setMessage('Please fill in all fields');
+    return;
   }
   if (password.length < 6) {
     setMessage('Password must be at least 6 characters');
     return;
   }
- 
-
   if (password !== confirmPassword) {
     setMessage('Passwords do not match');
-    console.log("error from password");
+    console.log('error from password');
     return;
   }
-    console.log(authLoading, 'before');
-    console.log(authLoading, 'after');
-    setAuthLoading(true);
 
-    console.log(authLoading);
-    console.log('handle it');
+  setAuthLoading(true);
 
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then( (userCredential) => {
-        // Signed up successfully
-        console.log('Success');
-        console.log(authLoading, 'before success');
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-        setAuthLoading(false);
-        console.log(authLoading, 'after success');
-
-        const user = userCredential.user;
-        console.log(user.email);
-         setDoc(doc(db, 'users', user.uid), {
-          username: username, // replace this with your actual username state
-          email: user.email,
-
-        });
-        getDoc(doc(db, 'users', user.uid)).then((doc) => {   
-          if (doc.exists()) {
-            console.log('Document data:', doc.data());
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!');
-          }
-         });
-         navigate('/');
-      })
-      .catch((error) => {
-        setAuthLoading(false);
-
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-
-        if (errorCode === 'auth/email-already-in-use') {
-          console.log(
-            'This email is already registered. Please try logging in or use a different email.',
-          );
-          setMessage('This email is already registered. Please try logging in or use a different email.');
-        } else {
-          console.log(errorMessage);
-        }
-
-        console.log('Error:', errorCode, errorMessage);
+    // Send email verification
+    if (auth.currentUser) {
+      await setDoc(doc(db, 'users', user.uid), {
+        username: username,
+        email: user.email,
       });
+  
+      // Log user document data for testing
+      const docSnap = await getDoc(doc(db, 'users', user.uid));
+      if (docSnap.exists()) {
+        console.log('Document data:', docSnap.data());
+      } else {
+        console.log('No such document!');
+      }
+      await sendEmailVerification(auth.currentUser);
+      console.log('A verification email has been sent to your inbox. Please verify your email before logging in.');
+    } else {
+      console.error('No authenticated user found.');
+      setAuthLoading(false);
+      return;
+    }
+
+    // Immediately sign the user out
+    await signOut(auth);
+    toast({
+      variant: 'success',
+      title: 'Account Created Successfully',
+      description: 'A verification email has been sent to your inbox. Please verify your email before logging in.',
+    });
+    navigate('/auth/signin'); // Redirect to login after signing out
+
+    console.log('User signed out after registration. Email verification required.');
+
+    // Create user document in Firestore
+   
+
+    setAuthLoading(false);
+  } catch (error) {
+    setAuthLoading(false);
+    const authError = error as AuthError;
+    const errorCode = authError.code;
+    const errorMessage = authError.message;
+    console.error('Error:', errorCode, errorMessage);
+
+    if (errorCode === 'auth/email-already-in-use') {
+      setMessage('This email is already registered. Please try logging in or use a different email.');
+    } else {
+      setMessage(errorMessage);
+    }
   }
+}
+
 
   return (
     <>

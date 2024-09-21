@@ -105,7 +105,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { RefreshCcw} from 'lucide-react';
+import { RefreshCcw } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -139,7 +139,7 @@ export default function Orders() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
- const [errorLoading, setErrorLoading] = useState(false);
+  const [errorLoading, setErrorLoading] = useState(false);
   // Fetch orders from Firestore
   const fetchOrders = async () => {
     setIsRefreshing(true);
@@ -169,7 +169,6 @@ export default function Orders() {
       console.error('Error fetching orders:', error);
       setLoading(false);
       setErrorLoading(true);
-
     } finally {
       setIsRefreshing(false);
     }
@@ -272,7 +271,10 @@ export default function Orders() {
                 {/* <TableCell>
                   <Badge className="text-white">{order.status}</Badge>
                 </TableCell> */}
-                <TableCell>{order.expiresAt}</TableCell>
+                {/* <TableCell>{order.expiresAt}</TableCell> */}
+                <TableCell>
+                  {new Date(order.expiresAt).toLocaleString()}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -290,10 +292,12 @@ export default function Orders() {
         </p>
         // <Loader2 height={'100px'}></Loader2>
       )}
-      {errorLoading && (<>
-        <p className="text-center text-gray-500 mt-4">
-          Error loading orders. Please try again.
-        </p></>
+      {errorLoading && (
+        <>
+          <p className="text-center text-gray-500 mt-4">
+            Error loading orders. Please try again.
+          </p>
+        </>
       )}
     </div>
   );

@@ -44,12 +44,12 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
+    <div className="border  border-gray-200 rounded-lg overflow-hidden">
       <button
-        className="flex justify-between items-center w-full p-4 text-left bg-white hover:bg-gray-50 transition-colors duration-200"
+        className="flex dark:bg-boxdark justify-between items-center w-full p-4 text-left bg-white hover:bg-gray-50 transition-colors duration-200"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="text-lg font-semibold">{question}</span>
+        <span className="text-lg  font-semibold">{question}</span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3 }}
@@ -65,7 +65,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div className="p-4 bg-gray-50 text-gray-700 text-lg leading-relaxed">
+            <div className="p-4 font-satoshi bg-gray-50 text-gray-700 text-lg leading-relaxed">
               {answer}
             </div>
           </motion.div>

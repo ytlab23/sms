@@ -7,7 +7,7 @@ export  default function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold">SMSVerify</h3>
+            <h3 className="text-2xl font-bold">SMS App</h3>
             <p className="text-gray-300">Your trusted partner for secure and reliable phone number verification services.</p>
             <div className="flex space-x-4">
               <NavLink to="/" className="hover:text-blue-400 transition-colors" aria-label="Facebook">
