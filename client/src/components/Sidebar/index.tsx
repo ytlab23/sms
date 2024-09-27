@@ -143,7 +143,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import Logo from '../../images/logo/logo-placeholder.svg';
+import Logo from '../../../public/smsapp.svg';
 import { Home, HelpCircle, UserPlus, LogIn, Settings, ShoppingBag, BookOpen ,Shield} from 'lucide-react';
 import { useAuth } from '../../contexts/authcontext'; // Import useAuth for authentication
 
@@ -273,16 +273,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to="/">
-          <img src={Logo} alt="Logo" />
+       <div className="flex items-center justify-between gap-2 ">
+        <NavLink to="/" className="flex items-center gap-2">
+          <img className="h-8" src={Logo} alt="Logo" />
+          <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
         </NavLink>
+      </div>
 
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-controls="sidebar"
           aria-expanded={sidebarOpen}
-          className="block lg:hidden"
+          className="block lg:hidden text-whiten"
         >
           <svg
             className="fill-current"
@@ -303,7 +306,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
+        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6 text-whiten">
           {/* <!-- Menu Group --> */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
@@ -325,7 +328,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       }`}
                   >
                     <item.icon className="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110" />
-                    <span className="relative">
+                    <span className="relative ">
                       {item.name}
                       <span className="absolute inset-x-0 bottom-0 h-0.5 bg-blue-600 transform origin-left scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
                     </span>

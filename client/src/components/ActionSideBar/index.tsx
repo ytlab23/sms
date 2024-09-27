@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import Logo from '../../images/logo/logo-placeholder.svg';
+import Logo from '../../../public/smsapp.svg';
 import Buttons from '../../pages/UiElements/Buttons';
 import SelectGroupOne from '../Forms/SelectGroup/SelectGroupOne';
 import SelectGroupTwo from '../Forms/SelectGroup/SelectGroupTwo';
@@ -34,10 +34,10 @@ const ActionSidebar = ({
       }`}
     >
       {/* <!-- ASIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to="/">
+      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 ml-8">
+        <NavLink to="/" className="flex items-center gap-2">
           <img className="h-12" src={Logo} alt="Logo" />
-          {/* <h1 className='font-bold text-xl '>SMS VERIFICATION</h1> */}
+          <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
         </NavLink>
       </div>
       {/* <!-- ASIDEBAR HEADER --> */}

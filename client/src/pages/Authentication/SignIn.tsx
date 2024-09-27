@@ -1,36 +1,39 @@
 import React, { useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import LogoDark from '../../images/logo/logo-placeholder.svg';
-import Logo from '../../images/logo/logo-placeholder.svg';
+import LogoDark from '../../../public/smsapp.svg';
+import Logo from '../../../public/smsapp.svg';
 import { auth, db } from '../../firebase/config';
-import { getAuth, GoogleAuthProvider, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const [message, setMessage] = React.useState<string>('');
   const [authLoading, setAuthLoading] = React.useState<boolean>(false);
-  const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
 
   function handleGoogleSignIn() {
-   
-  
-    setAuthLoading(true); 
-  
+    setAuthLoading(true);
+
     const provider = new GoogleAuthProvider();
-  
+
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
         console.log('Google Sign-In Success:', user.email);
-  
+
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
-  
+
         if (!userDoc.exists()) {
           await setDoc(userDocRef, {
             username: user.displayName || 'New User',
@@ -39,25 +42,29 @@ const SignIn: React.FC = () => {
           });
           console.log('New user document created');
         }
-  
+
         navigate('/'); // Redirect to the homepage
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-  
+
         switch (errorCode) {
           case 'auth/account-exists-with-different-credential':
-            setMessage('An account already exists with the same email address but different credentials.');
+            setMessage(
+              'An account already exists with the same email address but different credentials.',
+            );
             break;
           case 'auth/popup-closed-by-user':
-            setMessage('The popup was closed before the sign-in was completed.');
+            setMessage(
+              'The popup was closed before the sign-in was completed.',
+            );
             break;
           default:
             setMessage('An error occurred during Google Sign-In.');
             break;
         }
-  
+
         console.log('Google Sign-In Error:', errorMessage);
       })
       .finally(() => {
@@ -87,7 +94,7 @@ const SignIn: React.FC = () => {
   //   .catch((error) => {
   //     const errorCode = error.code;
   //     const errorMessage = error.message;
-  
+
   //     // Handle specific error codes
   //     switch (errorCode) {
   //       case 'auth/user-not-found':
@@ -107,11 +114,10 @@ const SignIn: React.FC = () => {
   //         setMessage("invalid credentials");
   //         break;
   //     }
-  
+
   //     console.log(errorMessage);
   //   });
-  
-  
+
   // }
   function handleSignIn() {
     if (!email.includes('@')) {
@@ -124,40 +130,44 @@ const SignIn: React.FC = () => {
       console.log('Password must be at least 6 characters');
       return;
     }
-  
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-  
+
         // Check if the email is verified
         if (!user.emailVerified) {
           setMessage('Please verify your email before logging in.');
-          console.log('Your account needs verification. Please check your email and verify your account.');
+          console.log(
+            'Your account needs verification. Please check your email and verify your account.',
+          );
           // alert('Your account needs verification. Please check your email and verify your account.');
-  
+
           // Send verification email if needed
           sendEmailVerification(user)
             .then(() => {
               // alert('A new verification email has been sent to your inbox.');
-              console.log('A new verification email has been sent to your inbox.')
+              console.log(
+                'A new verification email has been sent to your inbox.',
+              );
             })
             .catch((error) => {
               console.error('Error sending verification email:', error.message);
             });
-  
+
           // Sign out the user since their email is not verified
           signOut(auth);
           return;
         }
-  
+
         // Email is verified, proceed with login
-        console.log("auth success");
+        console.log('auth success');
         navigate('/');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-  
+
         // Handle specific error codes
         switch (errorCode) {
           case 'auth/user-not-found':
@@ -167,7 +177,9 @@ const SignIn: React.FC = () => {
             setMessage('Incorrect password. Please try again.');
             break;
           case 'auth/invalid-email':
-            setMessage('The email address is not valid. Please check and try again.');
+            setMessage(
+              'The email address is not valid. Please check and try again.',
+            );
             break;
           case 'auth/invalid-credential':
             setMessage('Invalid credentials');
@@ -176,12 +188,11 @@ const SignIn: React.FC = () => {
             setMessage('Invalid credentials');
             break;
         }
-  
+
         console.log(errorMessage);
       });
   }
-  
-  
+
   return (
     <>
       <Breadcrumb pageName="Sign In" />
@@ -190,13 +201,19 @@ const SignIn: React.FC = () => {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
-              <Link className="mb-5.5 inline-block" to="/">
+              {/* <Link className="mb-5.5 inline-block" to="/">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
-              </Link>
+              </Link> */}
+              <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 ml-4">
+                <Link to="/" className="flex items-center gap-2">
+                  <img className="h-12" src={Logo} alt="Logo" />
+                  <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
+                </Link>
+              </div>
 
               <p className="2xl:px-10">
-              Welcome back! Your secure SMS verifications await
+                Welcome back! Your secure SMS verifications await
               </p>
 
               <span className="mt-15 inline-block">
@@ -338,10 +355,10 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
                       type="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -373,10 +390,10 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
                       type="password"
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -405,29 +422,26 @@ const SignIn: React.FC = () => {
                     </span>
                   </div>
                 </div>
-<span className='text-red-600'>{message}</span>
+                <span className="text-red-600">{message}</span>
                 <div className="mb-5">
                   <input
                     type="submit"
-                    onClick={
-                      (e) => {
-                        e.preventDefault();
-                        handleSignIn();
-                      }
-                      }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSignIn();
+                    }}
                     value="Sign In"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   />
                 </div>
 
                 <button
-                onClick={
-                  (e) => {
+                  onClick={(e) => {
                     e.preventDefault();
                     handleGoogleSignIn();
-                  }
-                  }
-                className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                  }}
+                  className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50"
+                >
                   <span>
                     <svg
                       width="20"

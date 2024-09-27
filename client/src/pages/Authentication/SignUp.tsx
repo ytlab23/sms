@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import LogoDark from '../../images/logo/logo-placeholder.svg';
-import Logo from '../../images/logo/logo-placeholder.svg';
+import LogoDark from '../../../public/smsapp.svg';
+import Logo from '../../../public/smsapp.svg';
 import { createUserWithEmailAndPassword ,signInWithPopup, GoogleAuthProvider,AuthError, sendEmailVerification, signOut } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import { db } from '../../firebase/config'; // Firestore instance
@@ -248,10 +248,16 @@ async function handleSignup() {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
-              <Link className="mb-5.5 inline-block" to="/">
+              {/* <Link className="mb-5.5 inline-block" to="/">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
-              </Link>
+              </Link> */}
+               <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 ml-4 ">
+        <Link to="/" className="flex items-center gap-2">
+          <img className="h-12" src={Logo} alt="Logo" />
+          <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
+        </Link>
+      </div>
               <p className="2xl:px-10">
                 Join us to simplify your SMS verifications
               </p>
