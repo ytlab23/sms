@@ -4,6 +4,8 @@ import DropdownUser from './DropdownUser';
 import LogoIcon from '../../../public/smsapp.svg';
 import DarkModeSwitcher from './DarkModeSwitcher';
 import { Button } from '../shadcn/ui/button';
+import { useTranslation } from 'react-i18next';
+
 import {
   Home,
   HelpCircle,
@@ -14,6 +16,7 @@ import {
   Shield,
 } from 'lucide-react'; // Import an icon for Admin
 import { useAuth } from '../../contexts/authcontext';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 // Utility function to check if the user is an admin
 const isAdminEmail = (email: string | null | undefined): boolean => {
@@ -33,6 +36,7 @@ const Header = (props: {
   const location = useLocation();
   const currentPath = location.pathname;
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Navigation items visible to all users
   const commonNavItems = [
@@ -116,7 +120,7 @@ const Header = (props: {
           <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/" className="flex items-center gap-2">
           <img className="h-6" src={LogoIcon} alt="Logo" />
-          <h1 className="font-bold text-xl text-blue-600">SmsApp</h1>
+          <h1 className="font-bold text-xl text-blue-600">{t('welcome')}SmsApp</h1>
         </NavLink>
       </div>
         </div>
@@ -147,6 +151,7 @@ const Header = (props: {
           <ul className="flex items-center align-middle gap-2 2xsm:gap-4">
             {/* Dark Mode Toggler */}
             <DarkModeSwitcher />
+            <LanguageSwitcher></LanguageSwitcher>
           </ul>
 
           {/* Show user dropdown only if logged in */}

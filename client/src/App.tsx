@@ -32,7 +32,8 @@ import Sms from './components/shadcn/sms';
 import SmsPage from './pages/sms/smspage';
 import AdminPage from './pages/admin/AdminPage';
 import AdminProtectedRoute from './contexts/AdminProtectedRoute';
-
+import StatsPage from './pages/statistics/statistics';
+import FreeNumberPage from './pages/FreePage/freepage';
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -85,6 +86,25 @@ function App() {
               <>
                 <PageTitle title="Faq | SMS App" />
                 <Faq />
+              </>
+            }
+          />
+          <Route
+            path="/statistics"
+            element={
+              <>
+                <PageTitle title="Statistics | SMS App" />
+                <StatsPage></StatsPage>
+              </>
+            }
+          />
+          <Route
+            path="/freenumber"
+            element={
+              <>
+                <PageTitle title="Free Number | SMS App" />
+                <FreeNumberPage></FreeNumberPage>
+                
               </>
             }
           />

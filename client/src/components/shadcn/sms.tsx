@@ -149,6 +149,13 @@ export default function Sms({ numberId }: { numberId: string }) {
   // Request Refund Function
   const requestRefund = async (id: string) => {
     try {
+      // const response = await axios.post(
+      //   'http://localhost:3000/api/refund',
+      //   {
+      //     uid: currentUser?.uid,
+      //     numberId: id,
+      //   },
+      // );
       const response = await axios.post(
         'https://smsverify-server.vercel.app/api/refund',
         {
