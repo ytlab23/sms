@@ -5,7 +5,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import axios from 'axios';
 import { doc, getDoc } from 'firebase/firestore';
+import { FieldValue } from 'firebase-admin/firestore';
 import { error } from 'console';
+import admin from 'firebase-admin';
 
 
 const app = express();
@@ -574,6 +576,61 @@ app.post('/api/cancel', async (req: Request, res: Response) => {
 
 
 // Refund Route
+// app.post('/api/refund', async (req: Request, res: Response) => {
+//   const { uid, numberId } = req.body;
+
+//   // Ensure numberId is treated as a string and trim it
+//   const trimmedUid = uid?.trim();
+//   const trimmedNumberId = String(numberId)?.trim();
+
+//   // Check for missing or invalid values
+//   if (!trimmedUid || !trimmedNumberId || trimmedNumberId === '') {
+//     console.log('uid:', uid, 'numberId:', numberId);
+//     console.log('Trimmed uid:', trimmedUid, 'Trimmed numberId:', trimmedNumberId);
+//     return res.status(400).json({ error: 'Missing or invalid uid or numberId' });
+//   }
+
+//   try {
+//     // Fetch purchased product details
+//     const userRef = db.collection('users').doc(trimmedUid);
+//     const productDoc = await userRef.collection('products').doc(trimmedNumberId).get();
+
+//     if (!productDoc.exists) {
+//       return res.status(404).json({ error: 'Product not found' });
+//     }
+
+//     const productData = productDoc.data();
+//     if (!productData) {
+//       return res.status(404).json({ error: 'Product data not found' });
+//     }
+
+//     const isExpired = new Date() > new Date(productData.expires);
+//     if (!isExpired || productData.sms || productData.refunded) {
+//       console.log('Product not eligible for refund:', productData);
+//       return res.status(400).json({ error: 'Product not eligible for refund' });
+//     }
+
+//     // Refund the balance to the user
+//     // const productCost = await getProductPrice(productData.country, productData.product);
+//     const productCost = productData.updatedPrice;
+
+//     const userDoc = await userRef.get();
+//     const userBalance = userDoc.data()?.balance || 0; // Fetch balance from user data
+//     const newBalance = userBalance + productCost;
+
+//     await userRef.update({ balance: newBalance });
+
+//     // Mark the product as refunded
+//     await userRef.collection('products').doc(trimmedNumberId).update({ refunded: true });
+
+//     console.log('Balance refunded');
+//     res.json({ message: 'Balance refunded', newBalance });
+//   } catch (error) {
+//     console.error('Error refunding product:', error);
+//     res.status(500).json({ error: 'Failed to refund product' });
+//   }
+// });
+
 app.post('/api/refund', async (req: Request, res: Response) => {
   const { uid, numberId } = req.body;
 
@@ -588,6 +645,8 @@ app.post('/api/refund', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Missing or invalid uid or numberId' });
   }
 
+  let productData: any;
+
   try {
     // Fetch purchased product details
     const userRef = db.collection('users').doc(trimmedUid);
@@ -597,23 +656,48 @@ app.post('/api/refund', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    const productData = productDoc.data();
+    productData = productDoc.data();
     if (!productData) {
       return res.status(404).json({ error: 'Product data not found' });
     }
 
+    const country = productData.country;
+    const service = productData.product;
+    const countryServiceKey = `${country}_${service}`; // Combine country and service
+
+    // Reference to the statistics document
+    const statisticsRef = db.collection('statistics').doc(countryServiceKey);
+
+    // Initialize missing fields if they don't exist
+    const statisticsSnapshot = await statisticsRef.get();
+    if (!statisticsSnapshot.exists) {
+      await statisticsRef.set({
+        successfulRefunds: 0,
+        unsuccessfulRefunds: 0
+      });
+    }
+
+    // Check product eligibility for refund
     const isExpired = new Date() > new Date(productData.expires);
     if (!isExpired || productData.sms || productData.refunded) {
       console.log('Product not eligible for refund:', productData);
+
+      // Increment unsuccessful refund count and ensure successfulRefunds exists
+      await statisticsRef.set(
+        {
+          unsuccessfulRefunds: FieldValue.increment(1),
+          successfulRefunds: statisticsSnapshot.data()?.successfulRefunds || 0 // Initialize to 0 if not present
+        },
+        { merge: true }
+      );
+
       return res.status(400).json({ error: 'Product not eligible for refund' });
     }
 
     // Refund the balance to the user
-    // const productCost = await getProductPrice(productData.country, productData.product);
     const productCost = productData.updatedPrice;
-
     const userDoc = await userRef.get();
-    const userBalance = userDoc.data()?.balance || 0; // Fetch balance from user data
+    const userBalance = userDoc.data()?.balance || 0;
     const newBalance = userBalance + productCost;
 
     await userRef.update({ balance: newBalance });
@@ -621,11 +705,195 @@ app.post('/api/refund', async (req: Request, res: Response) => {
     // Mark the product as refunded
     await userRef.collection('products').doc(trimmedNumberId).update({ refunded: true });
 
+    // Increment successful refund count and ensure unsuccessfulRefunds exists
+    await statisticsRef.set(
+      {
+        successfulRefunds: FieldValue.increment(1),
+        unsuccessfulRefunds: statisticsSnapshot.data()?.unsuccessfulRefunds || 0 // Initialize to 0 if not present
+      },
+      { merge: true }
+    );
+
     console.log('Balance refunded');
     res.json({ message: 'Balance refunded', newBalance });
   } catch (error) {
     console.error('Error refunding product:', error);
+
+    // Increment unsuccessful refund count in case of an error
+    if (productData) {
+      const country = productData.country;
+      const service = productData.product;
+      const countryServiceKey = `${country}_${service}`;
+      const statisticsRef = db.collection('statistics').doc(countryServiceKey);
+
+      const statisticsSnapshot = await statisticsRef.get();
+      if (!statisticsSnapshot.exists) {
+        await statisticsRef.set({
+          successfulRefunds: 0,
+          unsuccessfulRefunds: 0
+        });
+      }
+
+      await statisticsRef.set(
+        {
+          unsuccessfulRefunds: FieldValue.increment(1),
+          successfulRefunds: statisticsSnapshot.data()?.successfulRefunds || 0 // Initialize to 0 if not present
+        },
+        { merge: true }
+      );
+    }
+
     res.status(500).json({ error: 'Failed to refund product' });
+  }
+});
+
+//UNTESTED
+// app.get('/api/check-free-number', async (req: Request, res: Response) => {
+//   const { uid } = req.query; // Assume UID is passed in the query parameters
+//   const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
+
+//   try {
+//     // Check if user already claimed a free number by IP or user ID
+//     const freeNumberRef = db.collection('free_numbers').doc(uid as string);
+//     const freeNumberDoc = await freeNumberRef.get();
+
+//     if (freeNumberDoc.exists) {
+//       // User has already claimed a free number
+//       return res.status(403).json({ eligible: false, message: 'You have already claimed your free number' });
+//     }
+
+//     // The user is eligible for a free number
+//     res.json({ eligible: true, message: 'You are eligible for a free number' });
+//   } catch (error) {
+//     console.error('Error checking free number eligibility:', error);
+//     res.status(500).json({ error: 'Failed to check free number eligibility' });
+//   }
+// });
+// app.post('/api/claim-free-number', async (req: Request, res: Response) => {
+//   const { uid, country, product } = req.body;
+//   const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
+
+//   try {
+//     // Step 1: Check if user is eligible for a free number
+//     const freeNumberRef = db.collection('free_numbers').doc(uid);
+//     const freeNumberDoc = await freeNumberRef.get();
+
+//     if (freeNumberDoc.exists) {
+//       return res.status(403).json({ message: 'You have already claimed your free number' });
+//     }
+
+//     // Step 2: Purchase the free number from 5sim API
+//     const url = `https://5sim.net/v1/user/buy/activation/${country}/any/${product}`;
+//     const purchaseResponse = await axios.get(url, {
+//       headers: {
+//         'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
+//         'Accept': 'application/json',
+//       },
+//     });
+
+//     const purchasedNumber = purchaseResponse.data;
+
+//     // Step 3: Save the free number info in Firestore with the 'free' field set to true
+//     await freeNumberRef.set({
+//       ...purchasedNumber,
+//       uid,
+//       free: true, // Mark this number as free
+//       purchaseDate: new Date(),
+//       refunded: false,
+//     });
+
+//     console.log('Free number saved to Firestore:', purchasedNumber);
+
+//     // Step 4: Return the free phone number to the user
+//     res.json({ message: 'Free number claimed successfully', number: purchasedNumber });
+//   } catch (error) {
+//     console.error('Error claiming free number:', error);
+//     res.status(500).json({ error: 'Failed to claim free number' });
+//   }
+// });
+app.get('/api/check-free-number', async (req: Request, res: Response) => {
+  const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
+
+  try {
+    // Check if the user IP has already claimed a free number
+    const ipRef = db.collection('ip_addresses').doc(userIp);
+    const ipDoc = await ipRef.get();
+
+    if (ipDoc.exists) {
+      // IP already claimed a free number
+      return res.status(403).json({ eligible: false, message: 'You have already claimed your free number' });
+    }
+
+    // The user is eligible for a free number
+    res.json({ eligible: true, message: 'You are eligible for a free number' });
+  } catch (error) {
+    console.error('Error checking free number eligibility:', error);
+    res.status(500).json({ error: 'Failed to check free number eligibility' });
+  }
+});
+app.post('/api/claim-free-number', async (req: Request, res: Response) => {
+  const { uid, country, product } = req.body;
+  const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
+
+  try {
+    // Step 1: Check if user IP already claimed a free number
+    const ipRef = db.collection('ip_addresses').doc(userIp);
+    const ipDoc = await ipRef.get();
+
+    if (ipDoc.exists) {
+      return res.status(403).json({ message: 'You have already claimed your free number' });
+    }
+
+    // Step 2: Purchase the free number from 5sim API
+    const url = `https://5sim.net/v1/user/buy/activation/${country}/any/${product}`;
+    const purchaseResponse = await axios.get(url, {
+      headers: {
+        'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
+        'Accept': 'application/json',
+      },
+    });
+
+    const purchasedNumber = purchaseResponse.data;
+
+    // Step 3: Check if the user document exists in Firestore
+    const userRef = db.collection('users').doc(uid);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      // If the user document doesn't exist, create it
+      await userRef.set({
+        products: [{
+          ...purchasedNumber,
+          free: true, // Mark this product as free
+          purchaseDate: new Date(),
+          refunded: false,
+        }],
+      });
+    } else {
+      // If the user document exists, update the products array
+      await userRef.update({
+        products: admin.firestore.FieldValue.arrayUnion({
+          ...purchasedNumber,
+          free: true, // Mark this product as free
+          purchaseDate: new Date(),
+          refunded: false,
+        }),
+      });
+    }
+
+    // Step 4: Save the user IP in the ip_addresses collection to prevent future claims
+    await ipRef.set({
+      ip: userIp,
+      claimedDate: new Date(),
+    });
+
+    console.log('Free number saved to Firestore:', purchasedNumber);
+
+    // Step 5: Return the free phone number to the user
+    res.json({ message: 'Free number claimed successfully', number: purchasedNumber });
+  } catch (error) {
+    console.error('Error claiming free number:', error);
+    res.status(500).json({ error: 'Failed to claim free number' });
   }
 });
 
