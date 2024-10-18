@@ -66,7 +66,7 @@ const FreeNumberPage: React.FC = () => {
       const userIp = ipResponse.data.ip;
     
       // Make the request to check eligibility, including the user IP in the query string
-      const response = await axios.get(`http://localhost:3000/api/check-free-number?uid=${currentUser?.uid}&ip=${userIp}`);
+      const response = await axios.get(`https://smsverify-server.vercel.app/api/check-free-number?uid=${currentUser?.uid}&ip=${userIp}`);
       
       const { eligible, message } = response.data;
       setEligible(eligible);
@@ -89,7 +89,7 @@ const FreeNumberPage: React.FC = () => {
       console.log(userIp, "userIp");
       
       // Make the request to claim a free number, including the user IP in the request body
-      const response = await axios.post('http://localhost:3000/api/claim-free-number', {
+      const response = await axios.post('https://smsverify-server.vercel.app/api/claim-free-number', {
         uid: currentUser?.uid,  // Ensure uid is properly defined here
         country: 'russia', // Replace with dynamic country value if needed
         product: 'telegram', // Replace with dynamic product value if needed
