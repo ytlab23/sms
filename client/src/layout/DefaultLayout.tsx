@@ -7,6 +7,7 @@ import { ChooseService } from '../components/shadcn/chooseservice';
 import ActionSidebar from '../components/ActionSideBar';
 import Footer from '../components/shadcn/footer';
 import { Toaster } from '../components/shadcn/ui/toaster';
+import { Outlet } from 'react-router-dom';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -36,7 +37,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
           throw new Error('Function not implemented.');
         } }></ActionSidebar> */}
         
-              {children}
+        <Outlet />
             </div>
            <Footer></Footer>
 

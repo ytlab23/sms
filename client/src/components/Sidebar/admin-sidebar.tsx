@@ -1,16 +1,21 @@
+
 // import React, { useEffect, useRef, useState } from 'react';
 // import { NavLink, useLocation } from 'react-router-dom';
 // import SidebarLinkGroup from './SidebarLinkGroup';
-// import Logo from '../../images/logo/logo-placeholder.svg';
-// import { Home, HelpCircle, UserPlus, LogIn, Settings } from 'lucide-react';
+// import Logo from '../../../public/smsapp.svg';
+// import { Home, HelpCircle, UserPlus, LogIn, Settings, ShoppingBag, BookOpen ,Shield} from 'lucide-react';
+// import { useAuth } from '../../contexts/authcontext'; // Import useAuth for authentication
+
 // interface SidebarProps {
 //   sidebarOpen: boolean;
 //   setSidebarOpen: (arg: boolean) => void;
 // }
 
-// const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+// const AdminSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 //   const location = useLocation();
 //   const { pathname } = location;
+
+//   const { currentUser } = useAuth(); // Get the current user from AuthContext
 
 //   const trigger = useRef<any>(null);
 //   const sidebar = useRef<any>(null);
@@ -20,7 +25,7 @@
 //     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
 //   );
 
-//   // close on click outside
+//   // Close on click outside
 //   useEffect(() => {
 //     const clickHandler = ({ target }: MouseEvent) => {
 //       if (!sidebar.current || !trigger.current) return;
@@ -36,7 +41,7 @@
 //     return () => document.removeEventListener('click', clickHandler);
 //   });
 
-//   // close if the esc key is pressed
+//   // Close if the esc key is pressed
 //   useEffect(() => {
 //     const keyHandler = ({ keyCode }: KeyboardEvent) => {
 //       if (!sidebarOpen || keyCode !== 27) return;
@@ -54,13 +59,47 @@
 //       document.querySelector('body')?.classList.remove('sidebar-expanded');
 //     }
 //   }, [sidebarExpanded]);
-//   const navItems = [
+
+  
+//   const isAdminEmail = (email: string | null | undefined): boolean => {
+//     if (!email) return false;
+    
+//     const adminEmails = import.meta.env.VITE_ADMIN_EMAILS?.split(',').map((email: string) => email.trim().toLowerCase());
+//     const normalizedEmail = email.trim().toLowerCase();
+    
+//     return adminEmails?.includes(normalizedEmail) || false;
+//   };
+  
+//   // Navigation items for all users
+//   const commonNavItems = [
 //     { name: 'HOME', href: '/', icon: Home },
 //     { name: 'FAQ', href: '/faq', icon: HelpCircle },
+//     { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen },
+//   ];
+  
+//   // Navigation items for unauthenticated users
+//   const guestNavItems = [
 //     { name: 'SIGN UP', href: '/auth/signup', icon: UserPlus },
 //     { name: 'LOGIN', href: '/auth/signin', icon: LogIn },
-//     { name: 'Account Setting', href: '/setting', icon: Settings },
 //   ];
+  
+//   // Navigation items for authenticated users
+//   const authNavItems = [
+//     { name: 'Account Setting', href: '/settings', icon: Settings },
+//     { name: 'YOUR ORDERS', href: '/orders', icon: ShoppingBag },
+//   ];
+  
+//   // Navigation item for admin users
+//   const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms', icon: Shield };
+  
+//   // Combine navigation items based on user authentication and admin status
+//   const navItems = currentUser
+//     ? [
+//         ...commonNavItems,
+//         ...authNavItems,
+//         ...(isAdminEmail(currentUser?.email) ? [adminNavItem] : []), // Add Admin link if the user is an admin
+//       ]
+//     : [...commonNavItems, ...guestNavItems];
 
 //   return (
 //     <aside
@@ -71,16 +110,19 @@
 //     >
 //       {/* <!-- SIDEBAR HEADER --> */}
 //       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-//         <NavLink to="/">
-//           <img src={Logo} alt="Logo" />
+//        <div className="flex items-center justify-between gap-2 ">
+//         <NavLink to="/" className="flex items-center gap-2">
+//           <img className="h-8" src={Logo} alt="Logo" />
+//           <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
 //         </NavLink>
+//       </div>
 
 //         <button
 //           ref={trigger}
 //           onClick={() => setSidebarOpen(!sidebarOpen)}
 //           aria-controls="sidebar"
 //           aria-expanded={sidebarOpen}
-//           className="block lg:hidden"
+//           className="block lg:hidden text-whiten"
 //         >
 //           <svg
 //             className="fill-current"
@@ -101,13 +143,13 @@
 
 //       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
 //         {/* <!-- Sidebar Menu --> */}
-//         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
+//         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6 text-whiten">
 //           {/* <!-- Menu Group --> */}
 //           <div>
 //             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
 //               MENU
 //             </h3>
-//             <ul className="mt-4 mb-5.5 border-b  lg:flex gap-2 pl-6">
+//             <ul className="mt-4 mb-5.5 border-b lg:flex gap-2 pl-6">
 //               {navItems.map((item) => (
 //                 <li key={item.name}>
 //                   <NavLink
@@ -116,14 +158,14 @@
 //                     }}
 //                     to={item.href}
 //                     className={`group relative flex items-center gap-2 mb-2 rounded-md px-4 py-2 font-medium transition-all duration-300 ease-in-out
-//               ${
-//                 pathname === item.href
-//                   ? 'text-blue-600 bg-blue-100 dark:bg-boxdark-2'
-//                   : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-boxdark-2'
-//               }`}
+//                       ${
+//                         pathname === item.href
+//                           ? 'text-blue-600 bg-blue-100 dark:bg-boxdark-2'
+//                           : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-boxdark-2'
+//                       }`}
 //                   >
 //                     <item.icon className="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110" />
-//                     <span className="relative">
+//                     <span className="relative ">
 //                       {item.name}
 //                       <span className="absolute inset-x-0 bottom-0 h-0.5 bg-blue-600 transform origin-left scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
 //                     </span>
@@ -139,24 +181,20 @@
 //   );
 // };
 
-// export default Sidebar;
+// export default AdminSidebar;
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import SidebarLinkGroup from './SidebarLinkGroup';
+import { Home, Edit, PlusCircle, DollarSign } from 'lucide-react';
 import Logo from '../../../public/smsapp.svg';
-import { Home, HelpCircle, UserPlus, LogIn, Settings, ShoppingBag, BookOpen ,Shield, Server, BarChart4Icon} from 'lucide-react';
-import { useAuth } from '../../contexts/authcontext'; // Import useAuth for authentication
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+const AdminSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
-
-  const { currentUser } = useAuth(); // Get the current user from AuthContext
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
@@ -201,70 +239,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     }
   }, [sidebarExpanded]);
 
-  // Navigation items for all users
-  // const commonNavItems = [
-  //   { name: 'HOME', href: '/', icon: Home },
-  //   { name: 'FAQ', href: '/faq', icon: HelpCircle },
-  //   { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen },
-  // ];
-
-  // // Navigation items for unauthenticated users
-  // const guestNavItems = [
-  //   { name: 'SIGN UP', href: '/auth/signup', icon: UserPlus },
-  //   { name: 'LOGIN', href: '/auth/signin', icon: LogIn },
-  // ];
-
-  // // Navigation items for authenticated users
-  // const authNavItems = [
-  //   { name: 'Account Setting', href: '/settings', icon: Settings },
-  //   { name: 'YOUR ORDERS', href: '/orders', icon: ShoppingBag },
-  // ];
-
-  // // Combine navigation items based on user authentication status
-  // const navItems = currentUser
-  //   ? [...commonNavItems, ...authNavItems]
-  //   : [...commonNavItems, ...guestNavItems];
-  const isAdminEmail = (email: string | null | undefined): boolean => {
-    if (!email) return false;
-    
-    const adminEmails = import.meta.env.VITE_ADMIN_EMAILS?.split(',').map((email: string) => email.trim().toLowerCase());
-    const normalizedEmail = email.trim().toLowerCase();
-    
-    return adminEmails?.includes(normalizedEmail) || false;
-  };
-  
-  // Navigation items for all users
-  const commonNavItems = [
-    { name: 'HOME', href: '/', icon: Home },
-    { name: 'FAQ', href: '/faq', icon: HelpCircle },
-    { name: 'SERVICES', href: '/ourservices', icon: Server },
-    { name: 'STATISTICS', href: '/statistics', icon: BarChart4Icon },
-    { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen },
+  // Navigation items for admin users
+  const adminNavItems = [
+    { name: 'Add Page', href: '/admin382013453sms/add', icon: PlusCircle },
+    { name: 'Edit Page', href: '/admin382013453sms/edit', icon: Edit },
+    { name: 'Set Pricing', href: '/admin382013453sms/set-pricing', icon: DollarSign },
   ];
-  
-  // Navigation items for unauthenticated users
-  const guestNavItems = [
-    { name: 'SIGN UP', href: '/auth/signup', icon: UserPlus },
-    { name: 'LOGIN', href: '/auth/signin', icon: LogIn },
-  ];
-  
-  // Navigation items for authenticated users
-  const authNavItems = [
-    { name: 'Account Setting', href: '/settings', icon: Settings },
-    { name: 'YOUR ORDERS', href: '/orders', icon: ShoppingBag },
-  ];
-  
-  // Navigation item for admin users
-  const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms', icon: Shield };
-  
-  // Combine navigation items based on user authentication and admin status
-  const navItems = currentUser
-    ? [
-        ...commonNavItems,
-        ...authNavItems,
-        ...(isAdminEmail(currentUser?.email) ? [adminNavItem] : []), // Add Admin link if the user is an admin
-      ]
-    : [...commonNavItems, ...guestNavItems];
 
   return (
     <aside
@@ -275,12 +255,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-       <div className="flex items-center justify-between gap-2 ">
-        <NavLink to="/" className="flex items-center gap-2">
-          <img className="h-8" src={Logo} alt="Logo" />
-          <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
-        </NavLink>
-      </div>
+        <div className="flex items-center justify-between gap-2">
+          <NavLink to="/" className="flex items-center gap-2">
+            <img className="h-8" src={Logo} alt="Logo" />
+            <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
+          </NavLink>
+        </div>
 
         <button
           ref={trigger}
@@ -312,10 +292,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* <!-- Menu Group --> */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              MENU
+              ADMIN MENU
             </h3>
-            <ul className="mt-4 mb-5.5 border-b lg:flex gap-2 pl-6">
-              {navItems.map((item) => (
+            <ul className="mt-4 mb-5.5 border-b lg:flex flex-col gap-2 pl-6">
+              {adminNavItems.map((item) => (
                 <li key={item.name}>
                   <NavLink
                     onClick={() => {
@@ -346,4 +326,4 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

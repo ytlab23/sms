@@ -14,6 +14,8 @@ import {
   ShoppingBag,
   BookOpen,
   Shield,
+  Server,
+  BarChart4Icon
 } from 'lucide-react'; // Import an icon for Admin
 import { useAuth } from '../../contexts/authcontext';
 import LanguageSwitcher from '../LanguageSwitcher';
@@ -42,6 +44,8 @@ const Header = (props: {
   const commonNavItems = [
     { name: 'HOME', href: '/', icon: Home },
     { name: 'FAQ', href: '/faq', icon: HelpCircle },
+    { name: 'SERVICES', href: '/ourservices', icon: Server },
+    { name: 'STATISTICS', href: '/statistics', icon: BarChart4Icon },
     { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen }, // New common navigation item
   ];
 
@@ -117,14 +121,25 @@ const Header = (props: {
           {/* <Link className="block flex-shrink-0 lg:hidden" to="/">
             <img className="h-6" src={LogoIcon} alt="Logo" />
           </Link> */}
-          <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+          
+          <div className="flex lg:block hidden items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/" className="flex items-center gap-2">
           <img className="h-6" src={LogoIcon} alt="Logo" />
           <h1 className="font-bold text-xl text-blue-600">{t('welcome')}SmsApp</h1>
         </NavLink>
       </div>
         </div>
+        <div className='flex flex-col'>
+        <div className="flex items-center    gap-3 2xsm:gap-7">
+          <ul className="flex items-center  align-middle gap-2 2xsm:gap-4">
+            {/* Dark Mode Toggler */}
+            <DarkModeSwitcher />
+            <LanguageSwitcher></LanguageSwitcher>
+          </ul>
 
+          {/* Show user dropdown only if logged in */}
+          {currentUser && <DropdownUser />}
+        </div>
         <ul className="mt-4 mb-5.5 hidden lg:flex gap-2 pl-6">
           {navItems.map((item) => (
             <li key={item.name}>
@@ -145,18 +160,9 @@ const Header = (props: {
               </NavLink>
             </li>
           ))}
-        </ul>
+        </ul></div>
 
-        <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-center align-middle gap-2 2xsm:gap-4">
-            {/* Dark Mode Toggler */}
-            <DarkModeSwitcher />
-            <LanguageSwitcher></LanguageSwitcher>
-          </ul>
-
-          {/* Show user dropdown only if logged in */}
-          {currentUser && <DropdownUser />}
-        </div>
+        
       </div>
     </header>
   );

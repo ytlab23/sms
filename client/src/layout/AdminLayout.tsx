@@ -1,54 +1,59 @@
-import { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
 
-interface AdminLayoutProps {
-  children: ReactNode;
-}
 
-const AdminLayout = ({ children }: AdminLayoutProps) => {
+// export default AdminLayout;
+import React, { useState, ReactNode } from 'react';
+import Header from '../components/Header/index';
+import Sidebar from '../components/Sidebar/index';
+import { Input } from '../components/shadcn/ui/input';
+import { Button } from '../components/shadcn/ui/button';
+import { ChooseService } from '../components/shadcn/chooseservice';
+import ActionSidebar from '../components/ActionSideBar';
+import Footer from '../components/shadcn/footer';
+import { Toaster } from '../components/shadcn/ui/toaster';
+import { Outlet } from 'react-router-dom';
+import AdminSidebar from '../components/Sidebar/admin-sidebar';
+
+const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-800 text-white p-6">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+    <div className="dark:bg-boxdark-2 dark:text-bodydark">
+      {/* <!-- ===== Page Wrapper Start ===== --> */}
+      <div className="flex h-screen overflow-hidden">
+        {/* <!-- ===== Sidebar Start ===== --> */}
+        <div className="block ">
+        {/* <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
+        
+        <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}></AdminSidebar>
         </div>
-        <nav>
-          <ul className="space-y-4">
-            <li>
-              <Link
-                to="/admin382013453sms"
-                className="text-white hover:bg-gray-700 rounded px-3 py-2 block"
-              >
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin382013453sms/settings"
-                className="text-white hover:bg-gray-700 rounded px-3 py-2 block"
-              >
-                Settings
-              </Link>
-            </li>
-            {/* Add more links as needed */}
-          </ul>
-        </nav>
-      </aside>
+        {/* <!-- ===== Sidebar End ===== --> */}
+       
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="bg-gray-100 p-4 shadow-md">
-          <h2 className="text-xl font-semibold">Welcome to the Admin Dashboard</h2>
-          {/* Add other header elements like logout button or notifications */}
-        </header>
+        {/* <!-- ===== Content Area Start ===== --> */}
+        <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+          {/* <!-- ===== Header Start ===== --> */}
+          {/* <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
+          {/* <!-- ===== Header End ===== --> */}
 
-        {/* Page Content */}
-        <main className="flex-1 p-6 bg-gray-50"><p>Admin Layout</p>
-          {children}
-        </main>
-      </div>
+          {/* <!-- ===== Main Content Start ===== --> */}
+          <main>
+            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+            {/* <ActionSidebar actionSidebarOpen={false} setActionSidebarOpen={function (arg: boolean): void {
+          throw new Error('Function not implemented.');
+        } }></ActionSidebar> */}
+        
+             
+            </div>
+           
+            <Outlet />
+
+          </main>
+          {/* <!-- ===== Main Content End ===== --> */}
+        </div>
+        {/* <!-- ===== Content Area End ===== --> */}
+<Toaster></Toaster>
+      </div> 
+      {/* <!-- ===== Page Wrapper End ===== --> */}
     </div>
   );
 };

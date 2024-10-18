@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
@@ -34,6 +33,13 @@ import AdminPage from './pages/admin/AdminPage';
 import AdminProtectedRoute from './contexts/AdminProtectedRoute';
 import StatsPage from './pages/statistics/statistics';
 import FreeNumberPage from './pages/FreePage/freepage';
+import PaymentFailure from './components/shadcn/payment-failure';
+import PaymentSuccess from './components/shadcn/payment-success';
+import InternalPagesShowcase from './components/shadcn/our-services';
+import InternalPage from './components/shadcn/services';
+import AdminInternalPageCreator from './components/shadcn/internalpagecreator';
+import AdminLayout from './layout/AdminLayout';
+import InternalPagesList from './components/shadcn/edit-delete-pages';
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -53,8 +59,8 @@ function App() {
     <Loader />
   ) : (
     <AuthProvider>
-      <DefaultLayout>
-        <Routes>
+      <Routes>
+        <Route element={<DefaultLayout children={undefined} />}>
           <Route
             index
             element={
@@ -68,18 +74,15 @@ function App() {
             path="/pay"
             element={
               <Elements stripe={stripePromise}>
-                {/* Wrap the PaymentForm in the <Elements> provider */}
                 <ProtectedRoute>
                   <div>
                     <PageTitle title="Pay | SMS App" />
                     <PaymentForm />
                   </div>
                 </ProtectedRoute>
-                
               </Elements>
             }
           />
-
           <Route
             path="/faq"
             element={
@@ -94,7 +97,56 @@ function App() {
             element={
               <>
                 <PageTitle title="Statistics | SMS App" />
-                <StatsPage></StatsPage>
+                <StatsPage />
+              </>
+            }
+          />
+          <Route
+            path="/paymentfailure"
+            element={
+              <>
+                <PageTitle title="Payment Failure | SMS App" />
+                <PaymentFailure />
+              </>
+            }
+          />
+          <Route
+            path="/paymentsuccess"
+            element={
+              <>
+                <PageTitle title="Payment Success | SMS App" />
+                <PaymentSuccess />
+              </>
+            }
+          />
+          <Route
+            path="/ourservices"
+            element={
+              <>
+                <PageTitle title="Our Services | SMS App" />
+                <InternalPagesShowcase />
+              </>
+            }
+          />
+          <Route
+            path="/internalpages"
+            element={
+              <>
+                <PageTitle title="InternalPage | SMS App" />
+                <InternalPage />
+              </>
+            }
+          />
+          <Route
+        path="/services/:slug"
+        element={<InternalPage />}
+      />
+          <Route
+            path="/internalpagesadmin"
+            element={
+              <>
+                <PageTitle title="InternalPage Admin | SMS App" />
+                <AdminInternalPageCreator />
               </>
             }
           />
@@ -103,12 +155,10 @@ function App() {
             element={
               <>
                 <PageTitle title="Free Number | SMS App" />
-                <FreeNumberPage></FreeNumberPage>
-                
+                <FreeNumberPage />
               </>
             }
           />
-
           <Route
             path="/settings"
             element={
@@ -131,7 +181,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/auth/signin"
             element={
@@ -163,25 +212,73 @@ function App() {
             path="/sms"
             element={
               <ProtectedRoute>
-              <>
-                <PageTitle title="SMS | SMS App" />
-                <SmsPage />
-              </></ProtectedRoute>
+                <>
+                  <PageTitle title="SMS | SMS App" />
+                  <SmsPage />
+                </>
+              </ProtectedRoute>
             }
           />
+        </Route>
+        <Route
+          element={
+            <AdminLayout
+              children={
+                <AdminProtectedRoute>
+                  <></>
+                </AdminProtectedRoute>
+              }
+            />
+          }
+        >
           <Route
             path="/admin382013453sms"
             element={
-              // <ProtectedRoute>
               <AdminProtectedRoute>
-              <>
-                <PageTitle title="Admin | SMS App" />
-                <AdminPage></AdminPage></></AdminProtectedRoute>
+                <>
+                  <PageTitle title="Admin | SMS App" />
+                  <AdminInternalPageCreator></AdminInternalPageCreator>
+                </>
+              </AdminProtectedRoute>
             }
           />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </DefaultLayout>
+          <Route
+            path="/admin382013453sms/set-pricing"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Admin | SMS App" />
+                  <AdminPage />
+                </>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin382013453sms/edit"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Admin Edit | SMS App" />
+                  <InternalPagesList></InternalPagesList>
+                </>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin382013453sms/add"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Admin Edit | SMS App" />{' '}
+                  <AdminInternalPageCreator></AdminInternalPageCreator>
+                </>
+              </AdminProtectedRoute>
+            }
+          />
+        </Route>
+
+        {/* <Route path="*" element={<Navigate to="/" />} /> */}
+      </Routes>
     </AuthProvider>
   );
 }

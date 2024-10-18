@@ -289,11 +289,11 @@ export default function Sms({ numberId }: { numberId: string }) {
           )}
 
           <div>
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex  justify-between items-center mb-2">
               <h3 className="text-lg font-semibold">Received SMS</h3>
-              <Button
+              {numberDetails?.status != 'expired' && (<Button
                 onClick={requestNewSMS}
-                disabled={isLoading || numberDetails?.status === 'expired'}
+                disabled={isLoading }
               >
                 {isLoading ? (
                   <>
@@ -305,7 +305,7 @@ export default function Sms({ numberId }: { numberId: string }) {
                     <RefreshCw className="mr-2 h-4 w-4 " /> Request New SMS
                   </>
                 )}
-              </Button>
+              </Button>)}
               <>
                 {/* Cancel Service Button and Dialog */}
                 {numberDetails &&
