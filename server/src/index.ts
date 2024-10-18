@@ -751,143 +751,92 @@ app.post('/api/refund', async (req: Request, res: Response) => {
 });
 
 //UNTESTED
+
+//new
 // app.get('/api/check-free-number', async (req: Request, res: Response) => {
-//   const { uid } = req.query; // Assume UID is passed in the query parameters
-//   const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
+//   // Capture the real user IP
+//   const userIp = req.headers['x-forwarded-for']?.toString() || req.ip;
 
 //   try {
-//     // Check if user already claimed a free number by IP or user ID
-//     const freeNumberRef = db.collection('free_numbers').doc(uid as string);
-//     const freeNumberDoc = await freeNumberRef.get();
+//     const { uid } = req.query; // Assuming you're sending the user ID via query params
 
-//     if (freeNumberDoc.exists) {
-//       // User has already claimed a free number
-//       return res.status(403).json({ eligible: false, message: 'You have already claimed your free number' });
-//     }
-
-//     // The user is eligible for a free number
-//     res.json({ eligible: true, message: 'You are eligible for a free number' });
-//   } catch (error) {
-//     console.error('Error checking free number eligibility:', error);
-//     res.status(500).json({ error: 'Failed to check free number eligibility' });
-//   }
-// });
-// app.post('/api/claim-free-number', async (req: Request, res: Response) => {
-//   const { uid, country, product } = req.body;
-//   const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
-
-//   try {
-//     // Step 1: Check if user is eligible for a free number
-//     const freeNumberRef = db.collection('free_numbers').doc(uid);
-//     const freeNumberDoc = await freeNumberRef.get();
-
-//     if (freeNumberDoc.exists) {
-//       return res.status(403).json({ message: 'You have already claimed your free number' });
-//     }
-
-//     // Step 2: Purchase the free number from 5sim API
-//     const url = `https://5sim.net/v1/user/buy/activation/${country}/any/${product}`;
-//     const purchaseResponse = await axios.get(url, {
-//       headers: {
-//         'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
-//         'Accept': 'application/json',
-//       },
-//     });
-
-//     const purchasedNumber = purchaseResponse.data;
-
-//     // Step 3: Save the free number info in Firestore with the 'free' field set to true
-//     await freeNumberRef.set({
-//       ...purchasedNumber,
-//       uid,
-//       free: true, // Mark this number as free
-//       purchaseDate: new Date(),
-//       refunded: false,
-//     });
-
-//     console.log('Free number saved to Firestore:', purchasedNumber);
-
-//     // Step 4: Return the free phone number to the user
-//     res.json({ message: 'Free number claimed successfully', number: purchasedNumber });
-//   } catch (error) {
-//     console.error('Error claiming free number:', error);
-//     res.status(500).json({ error: 'Failed to claim free number' });
-//   }
-// });
-//ip
-// app.get('/api/check-free-number', async (req: Request, res: Response) => {
-//   const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
-
-//   try {
-//     // Check if the user IP has already claimed a free number
-//     const ipRef = db.collection('ip_addresses').doc(userIp);
+//     // Check if the IP has already claimed a free number
+//     const ipRef = db.collection('ip_addresses').doc(userIp || '');
 //     const ipDoc = await ipRef.get();
 
-//     if (ipDoc.exists) {
-//       // IP already claimed a free number
-//       return res.status(403).json({ eligible: false, message: 'You have already claimed your free number' });
-//     }
-
-//     // The user is eligible for a free number
-//     res.json({ eligible: true, message: 'You are eligible for a free number' });
-//   } catch (error) {
-//     console.error('Error checking free number eligibility:', error);
-//     res.status(500).json({ error: 'Failed to check free number eligibility' });
-//   }
-// });
-// app.post('/api/claim-free-number', async (req: Request, res: Response) => {
-//   const { uid, country, product } = req.body;
-//   const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
-
-//   try {
-//     // Step 1: Check if user IP already claimed a free number
-//     const ipRef = db.collection('ip_addresses').doc(userIp);
-//     const ipDoc = await ipRef.get();
-
-//     if (ipDoc.exists) {
-//       return res.status(403).json({ message: 'You have already claimed your free number' });
-//     }
-
-//     // Step 2: Purchase the free number from 5sim API
-//     const url = `https://5sim.net/v1/user/buy/activation/${country}/any/${product}`;
-//     const purchaseResponse = await axios.get(url, {
-//       headers: {
-//         'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
-//         'Accept': 'application/json',
-//       },
-//     });
-
-//     const purchasedNumber = purchaseResponse.data;
-
-//     // Step 3: Check if the user document exists in Firestore
-//     const userRef = db.collection('users').doc(uid);
+//     // Check if the user ID has already claimed a free number
+//     const userRef = db.collection('claimed_users').doc(uid as string);
 //     const userDoc = await userRef.get();
 
+//     if (ipDoc.exists || userDoc.exists) {
+//       // Either the IP or the user ID has already claimed a free number
+//       return res.status(403).json({ eligible: false, message: 'You have already claimed your free number' });
+//     }
+
+//     // The user is eligible for a free number
+//     res.json({ eligible: true, message: 'You are eligible for a free number' });
+//   } catch (error) {
+//     console.error('Error checking free number eligibility:', error);
+//     res.status(500).json({ error: 'Failed to check free number eligibility' });
+//   }
+// });
+// app.post('/api/claim-free-number', async (req: Request, res: Response) => {
+//   const { uid, country, product ,userIp} = req.body;
+//   // const userIp = req.headers['x-forwarded-for']?.toString() || req.ip;
+//   console.log(userIp,"userIp",uid,"uid",country,"country",product,"product");
+
+//   try {
+//     // Step 1: Check if the user IP or user ID has already claimed a free number
+//     const ipRef = db.collection('ip_addresses').doc(userIp || '');
+//     const ipDoc = await ipRef.get();
+
+//     const userRef = db.collection('claimed_users').doc(uid);
+//     const userDoc = await userRef.get();
+
+//     if (ipDoc.exists || userDoc.exists) {
+//       return res.status(403).json({ message: 'You have already claimed your free number' });
+//     }
+
+//     // Step 2: Purchase the free number from 5sim API
+//     const url = `https://5sim.net/v1/user/buy/activation/${country}/any/${product}`;
+//     const purchaseResponse = await axios.get(url, {
+//       headers: {
+//         'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
+//         'Accept': 'application/json',
+//       },
+//     });
+
+//     const purchasedNumber = purchaseResponse.data;
+
+//     // Step 3: Save the user data (number) in Firestore
 //     if (!userDoc.exists) {
-//       // If the user document doesn't exist, create it
 //       await userRef.set({
 //         products: [{
 //           ...purchasedNumber,
-//           free: true, // Mark this product as free
+//           free: true,
 //           purchaseDate: new Date(),
 //           refunded: false,
 //         }],
 //       });
 //     } else {
-//       // If the user document exists, update the products array
 //       await userRef.update({
 //         products: admin.firestore.FieldValue.arrayUnion({
 //           ...purchasedNumber,
-//           free: true, // Mark this product as free
+//           free: true,
 //           purchaseDate: new Date(),
 //           refunded: false,
 //         }),
 //       });
 //     }
 
-//     // Step 4: Save the user IP in the ip_addresses collection to prevent future claims
+//     // Step 4: **Only after successfully saving the number**, save the IP and UID
 //     await ipRef.set({
 //       ip: userIp,
+//       claimedDate: new Date(),
+//     });
+
+//     await db.collection('claimed_users').doc(uid).set({
+//       uid: uid,
 //       claimedDate: new Date(),
 //     });
 
@@ -895,28 +844,27 @@ app.post('/api/refund', async (req: Request, res: Response) => {
 
 //     // Step 5: Return the free phone number to the user
 //     res.json({ message: 'Free number claimed successfully', number: purchasedNumber });
+
 //   } catch (error) {
 //     console.error('Error claiming free number:', error);
 //     res.status(500).json({ error: 'Failed to claim free number' });
 //   }
 // });
 app.get('/api/check-free-number', async (req: Request, res: Response) => {
-  const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
-  const { uid } = req.query; // Assuming you pass the user ID in the query
+  // Capture the user IP from query parameters
+  const userIp = req.query.ip?.toString() || req.ip;
+  const { uid } = req.query;
 
   try {
-    // Check if the user ID or IP has already claimed a free number
-    if (!uid) {
-      return res.status(400).json({ error: 'Missing uid' });
-    }
-    const userRef = db.collection('users').doc(uid.toString());
-    const userDoc = await userRef.get();
-    
-    const ipRef = db.collection('ip_addresses').doc(userIp);
+    // Check if the IP has already claimed a free number
+    const ipRef = db.collection('ip_addresses').doc(userIp || '');
     const ipDoc = await ipRef.get();
 
-    if (userDoc.exists || ipDoc.exists) {
-      // Either the user or the IP has already claimed a free number
+    // Check if the user ID has already claimed a free number
+    const userRef = db.collection('claimed_users').doc(uid as string);
+    const userDoc = await userRef.get();
+
+    if (ipDoc.exists || userDoc.exists) {
       return res.status(403).json({ eligible: false, message: 'You have already claimed your free number' });
     }
 
@@ -929,18 +877,29 @@ app.get('/api/check-free-number', async (req: Request, res: Response) => {
 });
 
 app.post('/api/claim-free-number', async (req: Request, res: Response) => {
-  const { uid, country, product } = req.body;
-  const userIp = req.ip || req.headers['x-forwarded-for']?.toString() || '';
+  const { uid, country, product, userIp } = req.body;
+
+  // Log the received values for debugging
+  console.log(userIp, "userIp", uid, "uid", country, "country", product, "product");
+
+  // Validate that userIp and uid are properly defined
+  if (!userIp) {
+    return res.status(400).json({ error: 'Invalid request: Missing user IP' });
+  }
+
+  if (!uid) {
+    return res.status(400).json({ error: 'Invalid request: Missing user ID' });
+  }
 
   try {
-    // Step 1: Check if user ID or IP already claimed a free number
-    const userRef = db.collection('users').doc(uid.toString());
-    const userDoc = await userRef.get();
-
-    const ipRef = db.collection('ip_addresses').doc(userIp);
+    // Step 1: Check if the user IP or user ID has already claimed a free number
+    const ipRef = db.collection('ip_addresses').doc(userIp); // No need for a fallback, check is done above
     const ipDoc = await ipRef.get();
 
-    if (userDoc.exists || ipDoc.exists) {
+    const userRef = db.collection('claimed_users').doc(uid);
+    const userDoc = await userRef.get();
+
+    if (ipDoc.exists || userDoc.exists) {
       return res.status(403).json({ message: 'You have already claimed your free number' });
     }
 
@@ -948,41 +907,56 @@ app.post('/api/claim-free-number', async (req: Request, res: Response) => {
     const url = `https://5sim.net/v1/user/buy/activation/${country}/any/${product}`;
     const purchaseResponse = await axios.get(url, {
       headers: {
-        'Authorization': `Bearer YOUR_API_KEY_HERE`,
+        'Authorization': `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
         'Accept': 'application/json',
       },
     });
 
     const purchasedNumber = purchaseResponse.data;
 
-    // Step 3: Save the user and IP data to Firestore
-    const userData = {
-      products: [{
-        ...purchasedNumber,
-        free: true, // Mark this product as free
-        purchaseDate: new Date(),
-        refunded: false,
-      }],
-    };
+    // Step 3: Save the user data (number) in Firestore
+    if (!userDoc.exists) {
+      await userRef.set({
+        products: [{
+          ...purchasedNumber,
+          free: true,
+          purchaseDate: new Date(),
+          refunded: false,
+        }],
+      });
+    } else {
+      await userRef.update({
+        products: admin.firestore.FieldValue.arrayUnion({
+          ...purchasedNumber,
+          free: true,
+          purchaseDate: new Date(),
+          refunded: false,
+        }),
+      });
+    }
 
-    await userRef.set(userData); // Save under user ID
-
-    // Save the IP to prevent future claims
+    // Step 4: **Only after successfully saving the number**, save the IP and UID
     await ipRef.set({
       ip: userIp,
       claimedDate: new Date(),
-      userId: uid, // Also save the user ID in the IP document
+    });
+
+    await db.collection('claimed_users').doc(uid).set({
+      uid: uid,
+      claimedDate: new Date(),
     });
 
     console.log('Free number saved to Firestore:', purchasedNumber);
 
-    // Step 4: Return the free phone number to the user
+    // Step 5: Return the free phone number to the user
     res.json({ message: 'Free number claimed successfully', number: purchasedNumber });
+
   } catch (error) {
     console.error('Error claiming free number:', error);
     res.status(500).json({ error: 'Failed to claim free number' });
   }
 });
+
 
 
 
