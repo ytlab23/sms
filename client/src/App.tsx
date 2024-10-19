@@ -254,12 +254,26 @@ function App() {
             }
           />
           <Route
+            path="/admin382013453sms/edit/:slug"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Admin Edit | SMS App" />
+                  {/* <InternalPagesList></InternalPagesList> */}
+                                    <AdminInternalPageCreator></AdminInternalPageCreator>
+
+                </>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
             path="/admin382013453sms/edit"
             element={
               <AdminProtectedRoute>
                 <>
                   <PageTitle title="Admin Edit | SMS App" />
                   <InternalPagesList></InternalPagesList>
+
                 </>
               </AdminProtectedRoute>
             }

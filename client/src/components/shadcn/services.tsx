@@ -359,7 +359,8 @@ export default function InternalPage() {
         const pageSnapshot = await getDoc(pageRef);
         if (pageSnapshot.exists()) {
           const data = pageSnapshot.data();
-          setPageData(data.en); // Assuming the data for English is under the 'en' key
+          const content = data.pageContent?.en || {}; 
+          setPageData(content); // Assuming the data for English is under the 'en' key
         } else {
           console.error('No such page!');
         }

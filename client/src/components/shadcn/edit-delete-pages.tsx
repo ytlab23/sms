@@ -1,35 +1,74 @@
 
-
-// import { useState } from 'react'
-// import { Button } from "./ui/button"
-// import { Input } from "./ui/input"
-// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
-// import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
-// import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
-// import { Pencil, Trash2, Search } from "lucide-react"
-// import { Link } from 'react-router-dom'
-
-// // Mock data for existing pages
-// const mockPages = [
-//   { id: 1, slug: 'buy-number-for-google', metaTitle: 'Buy Number for Google', createdAt: '2023-05-15' },
-//   { id: 2, slug: 'virtual-phone-numbers', metaTitle: 'Virtual Phone Numbers', createdAt: '2023-05-16' },
-//   { id: 3, slug: 'sms-verification-service', metaTitle: 'SMS Verification Service', createdAt: '2023-05-17' },
-// ]
+// import { useState, useEffect } from 'react';
+// import { Button } from "./ui/button";
+// import { Input } from "./ui/input";
+// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+// import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+// import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+// import { Pencil, Trash2, Search } from "lucide-react";
+// import { Link } from 'react-router-dom';
+// import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+// import { db } from '../../firebase/config'; // Ensure this points to your Firebase setup
 
 // export default function InternalPagesList() {
-//   const [pages, setPages] = useState(mockPages)
-//   const [searchTerm, setSearchTerm] = useState('')
-//   const [pageToDelete, setPageToDelete] = useState<{ id: number; slug: string; metaTitle: string; createdAt: string } | null>(null)
+//   type Page = {
+//     id: string;
+//     slug: string;
+//     metaTitle: string;
+//     createdAt: string;
+//     heading: string;
+//   };
 
-//   const filteredPages = pages.filter(page => 
+//   const [pages, setPages] = useState<Page[]>([]);
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [pageToDelete, setPageToDelete] = useState<Page | null>(null);
+
+//   // Fetch pages from Firestore when the component mounts
+//   useEffect(() => {
+//     const fetchPages = async () => {
+//       try {
+//         const pagesCollection = collection(db, "internal_pages");
+//         const pagesSnapshot = await getDocs(pagesCollection);
+//         const pagesList = pagesSnapshot.docs.map((doc) => {
+//           const data = doc.data().en;
+//           return {
+//             id: doc.id,
+//             slug: data.slug || '', // Default empty string if undefined
+//             metaTitle: data.metaTitle || '', // Default empty string if undefined
+//             createdAt: data.createdAt || 'Unknown', // Default value if not present
+//             heading: data.heading || 'Unknown' // Default value if not present
+//           };
+//         });
+//         setPages(pagesList);
+//       } catch (error) {
+//         console.error("Error fetching pages:", error);
+//       }
+//     };
+
+//     fetchPages();
+//   }, []);
+
+//   // Filter pages based on search term
+//   const filteredPages = pages.filter((page) => 
 //     page.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
 //     page.metaTitle.toLowerCase().includes(searchTerm.toLowerCase())
-//   )
+//   );
 
-//   const handleDelete = (id: number) => {
-//     setPages(pages.filter(page => page.id !== id))
-//     setPageToDelete(null)
-//   }
+//   // Handle page deletion
+//   const handleDelete = async (id: string) => {
+//     try {
+//       await deleteDoc(doc(db, "internal_pages", id));
+//       setPages(pages.filter(page => page.id !== id));
+//       setPageToDelete(null);
+//     } catch (error) {
+//       console.error('Error deleting page:', error);
+//     }
+//   };
+
+//   // Placeholder for the edit functionality
+//   const handleEdit = (id: string) => {
+//     alert(`Page with id: ${id} is being edited!`);
+//   };
 
 //   return (
 //     <div className="container mx-auto p-4">
@@ -49,16 +88,16 @@
 //                 className="pl-8"
 //               />
 //             </div>
-//             <Link to="/create-page">
-//               <Button>Create New Page</Button>
+//             <Link to="/admin382013453sms/add">
+//               <Button className='text-white'>Create New Page</Button>
 //             </Link>
 //           </div>
 //           <Table>
 //             <TableHeader>
 //               <TableRow>
 //                 <TableHead>Slug</TableHead>
-//                 <TableHead>Meta Title</TableHead>
-//                 <TableHead>Created At</TableHead>
+//                 <TableHead>Heading</TableHead>
+//                 {/* <TableHead>Created At</TableHead> */}
 //                 <TableHead className="text-right">Actions</TableHead>
 //               </TableRow>
 //             </TableHeader>
@@ -66,15 +105,14 @@
 //               {filteredPages.map((page) => (
 //                 <TableRow key={page.id}>
 //                   <TableCell className="font-medium">{page.slug}</TableCell>
-//                   <TableCell>{page.metaTitle}</TableCell>
-//                   <TableCell>{page.createdAt}</TableCell>
+//                   <TableCell>{page.heading}</TableCell>
+//                   {/* <TableCell>{page.createdAt}</TableCell> */}
 //                   <TableCell className="text-right">
-//                     <Link to={`/edit-page/${page.id}`}>
-//                       <Button variant="ghost" size="icon" className="mr-2">
-//                         <Pencil className="h-4 w-4" />
-//                         <span className="sr-only">Edit</span>
-//                       </Button>
-//                     </Link>
+//                     <Button variant="ghost" size="icon" className="mr-2" onClick={() => handleEdit(page.id)}>
+//                       <Pencil className="h-4 w-4" />
+//                       <span className="sr-only">Edit</span>
+//                     </Button>
+
 //                     <Dialog>
 //                       <DialogTrigger asChild>
 //                         <Button variant="ghost" size="icon" onClick={() => setPageToDelete(page)}>
@@ -104,7 +142,7 @@
 //         </CardContent>
 //       </Card>
 //     </div>
-//   )
+//   );
 // }
 import { useState, useEffect } from 'react';
 import { Button } from "./ui/button";
@@ -137,13 +175,13 @@ export default function InternalPagesList() {
         const pagesCollection = collection(db, "internal_pages");
         const pagesSnapshot = await getDocs(pagesCollection);
         const pagesList = pagesSnapshot.docs.map((doc) => {
-          const data = doc.data().en;
+          const data = doc.data().en; // Access the 'en' locale content
           return {
             id: doc.id,
-            slug: data.slug || '', // Default empty string if undefined
-            metaTitle: data.metaTitle || '', // Default empty string if undefined
-            createdAt: data.createdAt || 'Unknown', // Default value if not present
-            heading: data.heading || 'Unknown' // Default value if not present
+            slug: doc.data().slug || '', // Use a fallback empty string if slug is not present
+            metaTitle: doc.data().metaTitle || '', // Use a fallback empty string for metaTitle
+            createdAt: doc.data().createdAt || 'Unknown', // Use a default value if createdAt is missing
+            heading: data ? data.heading : 'Unknown', // Use 'Unknown' if no heading is found
           };
         });
         setPages(pagesList);
@@ -173,9 +211,11 @@ export default function InternalPagesList() {
   };
 
   // Placeholder for the edit functionality
-  const handleEdit = (id: string) => {
-    alert(`Page with id: ${id} is being edited!`);
-  };
+  // const handleEdit = (id: string,slug: String ) => {
+  //   alert(`Page with id: ${id} is being edited!`);
+  //   //navigate to the edit page
+    
+  // };
 
   return (
     <div className="container mx-auto p-4">
@@ -215,10 +255,10 @@ export default function InternalPagesList() {
                   <TableCell>{page.heading}</TableCell>
                   {/* <TableCell>{page.createdAt}</TableCell> */}
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" className="mr-2" onClick={() => handleEdit(page.id)}>
+                  <Link to={`/admin382013453sms/edit/${page.slug}`}>  <Button variant="ghost" size="icon" className="mr-2" >
                       <Pencil className="h-4 w-4" />
                       <span className="sr-only">Edit</span>
-                    </Button>
+                    </Button></Link>
 
                     <Dialog>
                       <DialogTrigger asChild>

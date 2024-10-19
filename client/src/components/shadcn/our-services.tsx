@@ -285,7 +285,7 @@ import { db } from '../../firebase/config'; // Ensure the path is correct to you
 
 export default function InternalPagesShowcase() {
   const [pages, setPages] = useState<Page[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
   const [filteredPages, setFilteredPages] = useState<Page[]>([]);
 
   type Page = {
@@ -296,37 +296,45 @@ export default function InternalPagesShowcase() {
     tags: string[];
   };
 
-  // Fetch pages from Firestore
-  useEffect(() => {
-    const fetchPages = async () => {
-      try {
-        const pagesCollection = collection(db, 'internal_pages');
-        const pagesSnapshot = await getDocs(pagesCollection);
+  
+ useEffect(() => {
+  const fetchPages = async () => {
+    try {
+      const pagesCollection = collection(db, 'internal_pages');
+      const pagesSnapshot = await getDocs(pagesCollection);
 
-        const pagesList = pagesSnapshot.docs.map((doc) => {
-          const data = doc.data();
+      const pagesList = pagesSnapshot.docs.map((doc) => {
+        const data = doc.data();
+        console.log('Document Data:', data); // Log the entire document
+        console.log('Keys in Document Data:', Object.keys(data)); // Log the keys
 
-          // Access the 'en' content or provide defaults if not available
-          const content = data.en || {};
+        const content = data.pageContent.en || {};
+        console.log('Content:', content,data); // Log the content for debugging
 
-          return {
-            id: doc.id,                   // Document ID as fallback for slug
-            slug: doc.id,                 // Assuming slug should be the document ID
-            title: content.heading || '',   // Safely access the title
-            description: content.bodyText || '', // Safely access description
-            tags: content.tags || [],     // Ensure tags is an array, or fallback to an empty array
-          };
-        });
+        const title = content.heading || 'Untitled';
+        const description = content.bodyText || 'No description available.';
+        const tags = Array.isArray(content.tags) ? content.tags : []; // Ensure tags is an array
+        console.log(`Title: ${title}, Description: ${description}, Tags: ${tags}`);
 
-        setPages(pagesList); // Set the fetched pages to the state
-        console.log('Pages:', pagesList); // Debugging output
-      } catch (error) {
-        console.error('Error fetching pages:', error);
-      }
-    };
+        return {
+          id: doc.id,
+          slug: doc.id,
+          title: title,
+          description: description,
+          tags: tags,
+        };
+      });
 
-    fetchPages();
-  }, []);
+      setPages(pagesList); // Set the fetched pages to the state
+      console.log('Pages:', pagesList); // Debugging output
+    } catch (error) {
+      console.error('Error fetching pages:', error);
+    }
+  };
+
+  fetchPages();
+}, []);
+
 
   // Filter pages based on search term and when pages data changes
   useEffect(() => {
