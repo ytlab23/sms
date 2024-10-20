@@ -8,6 +8,7 @@ import ActionSidebar from '../components/ActionSideBar';
 import Footer from '../components/shadcn/footer';
 import { Toaster } from '../components/shadcn/ui/toaster';
 import { Outlet } from 'react-router-dom';
+import FreeNumberBanner from '../pages/FreePage/freepage';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,6 +34,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+              <FreeNumberBanner></FreeNumberBanner>
             {/* <ActionSidebar actionSidebarOpen={false} setActionSidebarOpen={function (arg: boolean): void {
           throw new Error('Function not implemented.');
         } }></ActionSidebar> */}
