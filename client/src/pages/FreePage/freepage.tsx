@@ -129,11 +129,12 @@ export default function FreeNumberCard() {
   const [error, setError] = useState<string | null>(null)
   const { currentUser } = useAuth()
 
-  const checkEligibility = async () => {
+  const checkEligibility = async (uid: String) => {
     try {
       const ipResponse = await axios.get('https://api.ipify.org?format=json')
       const userIp = ipResponse.data.ip
-      const response = await axios.get(`https://smsverify-server.vercel.app/api/check-free-number?uid=${currentUser?.uid}&ip=${userIp}`)
+      const response = await axios.get(`https://smsverify-server.vercel.app/api/check-free-number?uid=${uid}&ip=${userIp}`)
+      console.log(uid, "uid11");
       const { eligible, message } = response.data
       setEligible(eligible)
       setMessage(message)
@@ -149,6 +150,7 @@ export default function FreeNumberCard() {
       setLoading(true)
       const ipResponse = await axios.get('https://api.ipify.org?format=json')
       const userIp = ipResponse.data.ip
+      console.log(currentUser?.uid, "uid");
       const response = await axios.post('https://smsverify-server.vercel.app/api/claim-free-number', {
         uid: currentUser?.uid,
         country: 'russia',
@@ -165,11 +167,17 @@ export default function FreeNumberCard() {
   }
 
   useEffect(() => {
-    checkEligibility()
-  }, [])
+    // console.log(currentUser?.uid, "uid8");
+    if (currentUser?.uid) {
+      checkEligibility(currentUser.uid);
+    } else {
+      setError('User ID is not available');
+      setLoading(false);
+    }
+  }, [currentUser?.uid])
 
-  return (
-    <Card className="w-full max-w-md overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg">
+  return (<>
+    {eligible &&(<Card className="w-full max-w-md overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg">
       <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-300 opacity-20 rounded-full -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-300 opacity-20 rounded-full translate-y-1/2 -translate-x-1/2" />
       <CardHeader className="text-center relative z-10 pb-2">
@@ -230,6 +238,6 @@ export default function FreeNumberCard() {
           </Button>
         )}
       </CardFooter>
-    </Card>
+    </Card>)}</>
   )
 }

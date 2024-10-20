@@ -853,7 +853,8 @@ app.post('/api/refund', async (req: Request, res: Response) => {
 app.get('/api/check-free-number', async (req: Request, res: Response) => {
   // Capture the user IP from query parameters
   const userIp = req.query.ip?.toString() || req.ip;
-  const { uid } = req.query;
+  const uid = req.query.uid?.toString() || '';
+  console.log(uid, "uid", userIp, "userIp", req.query);
 
   try {
     // Check if the IP has already claimed a free number

@@ -240,10 +240,15 @@ const AdminSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   }, [sidebarExpanded]);
 
   // Navigation items for admin users
-  const adminNavItems = [
+  const pagesNavItems = [
     { name: 'Add Page', href: '/admin382013453sms/add', icon: PlusCircle },
     { name: 'Edit Page', href: '/admin382013453sms/edit', icon: Edit },
     { name: 'Set Pricing', href: '/admin382013453sms/set-pricing', icon: DollarSign },
+  ];
+  const pricingNavItems = [
+    { name: 'Add Country', href: '/admin382013453sms/add-country', icon: PlusCircle },
+    { name: 'Country-Service Pricing', href: '/admin382013453sms/edit', icon: Edit },
+    { name: 'Edit Services', href: '/admin382013453sms/set-pricing', icon: DollarSign },
   ];
 
   return (
@@ -292,10 +297,39 @@ const AdminSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* <!-- Menu Group --> */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              ADMIN MENU
+              Pages MENU
             </h3>
             <ul className="mt-4 mb-5.5 border-b lg:flex flex-col gap-2 pl-6">
-              {adminNavItems.map((item) => (
+              {pagesNavItems.map((item) => (
+                <li key={item.name}>
+                  <NavLink
+                    onClick={() => {
+                      setSidebarOpen(false);
+                    }}
+                    to={item.href}
+                    className={`group relative flex items-center gap-2 mb-2 rounded-md px-4 py-2 font-medium transition-all duration-300 ease-in-out
+                      ${
+                        pathname === item.href
+                          ? 'text-blue-600 bg-blue-100 dark:bg-boxdark-2'
+                          : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-boxdark-2'
+                      }`}
+                  >
+                    <item.icon className="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110" />
+                    <span className="relative ">
+                      {item.name}
+                      <span className="absolute inset-x-0 bottom-0 h-0.5 bg-blue-600 transform origin-left scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
+                    </span>
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+              PRICING MENU
+            </h3>
+            <ul className="mt-4 mb-5.5 border-b lg:flex flex-col gap-2 pl-6">
+              {pricingNavItems.map((item) => (
                 <li key={item.name}>
                   <NavLink
                     onClick={() => {
