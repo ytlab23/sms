@@ -40,12 +40,23 @@ import InternalPage from './components/shadcn/services';
 import AdminInternalPageCreator from './components/shadcn/internalpagecreator';
 import AdminLayout from './layout/AdminLayout';
 import InternalPagesList from './components/shadcn/edit-delete-pages';
+import AddCountries from './components/shadcn/admin/add-country';
+import CountryServicePrices from './components/shadcn/admin/set-country-service-price';
+import ServicesMenu from './components/shadcn/admin/services';
+import { Card, CardContent, CardHeader, CardTitle } from './components/shadcn/ui/card';
+import { ScrollArea } from './components/shadcn/ui/scrollarea';
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
+
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = () => {
+    setRefreshKey(prevKey => prevKey + 1);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -285,6 +296,67 @@ function App() {
                 <>
                   <PageTitle title="Admin Edit | SMS App" />{' '}
                   <AdminInternalPageCreator></AdminInternalPageCreator>
+                </>
+              </AdminProtectedRoute>
+            }
+          />
+        
+          <Route
+            path="/admin382013453sms/edit-country"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Edit Country | SMS App" />{' '}
+                  <AddCountries key={`add-countries-${refreshKey}`} onCountryChange={handleRefresh} />
+
+                </>
+              </AdminProtectedRoute>
+            }
+          />
+          {/* <Route
+            path="/admin382013453sms/country-service-pricing"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Country Service Pricing | SMS App" />{' '}
+                  <CountryServicePrices key={`country-service-prices-${refreshKey}`} />
+
+
+                </>
+              </AdminProtectedRoute>
+            }
+          /> */}
+          <Route
+              path="/admin382013453sms/country-service-pricing"
+              element={
+                <AdminProtectedRoute>
+                  <>
+                    <PageTitle title="Country Service Pricing | SMS App" />
+                    <div className="mt-8">
+                      <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                        <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                          <CardTitle className="text-2xl font-bold">Country Service Pricing</CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-6">
+                          <ScrollArea className="h-[calc(100vh-300px)]">
+                            <CountryServicePrices key={`country-service-prices-${refreshKey}`} />
+                          </ScrollArea>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </>
+                </AdminProtectedRoute>
+              }
+            />
+          <Route
+            path="/admin382013453sms/edit-services"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Edit Services | SMS App" />{' '}
+                  <ServicesMenu key={`services-menu-${refreshKey}`} />
+
+
                 </>
               </AdminProtectedRoute>
             }

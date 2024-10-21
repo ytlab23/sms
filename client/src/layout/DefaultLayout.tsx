@@ -47,7 +47,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
           {/* <!-- ===== Main Content End ===== --> */}
         </div>
         {/* <!-- ===== Content Area End ===== --> */}
-<Toaster></Toaster>
+{/* <Toaster></Toaster> */}
       </div> 
       {/* <!-- ===== Page Wrapper End ===== --> */}
     </div>

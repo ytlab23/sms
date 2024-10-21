@@ -126,7 +126,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { db } from "../../firebase/config"; // Replace with your Firebase config
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 
 interface CountryServiceData {
   id: string;
@@ -151,56 +151,150 @@ export default function SMSStats() {
   const [smsData, setSmsData] = useState<CountryServiceData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // useEffect(() => {
+  //   const fetchStatisticsAndPricing = async () => {
+  //     try {
+  //       const statisticsCollection = collection(db, "statistics");
+  //       const pricingCollection = collection(db, "pricing");
+  //       const servicesCollection = collection(db, "services");
+
+  //       const statisticsSnapshot = await getDocs(statisticsCollection);
+  //       const pricingSnapshot = await getDocs(pricingCollection);
+  //       const servicesSnapshot = await getDocs(servicesCollection);
+
+  //       const servicesPricingMap: { [serviceName: string]: any } = {};
+  //       servicesSnapshot.docs.forEach((doc) => {
+  //         servicesPricingMap[doc.id.toLowerCase()] = doc.data();
+  //       });
+
+  //       const combinedData = statisticsSnapshot.docs.map((doc) => {
+  //         const data = doc.data();
+  //         const [country, service] = doc.id.split("_"); // Split the country_service key
+  //         const successfulRefunds = data.successfulRefunds || 0;
+  //         const unsuccessfulRefunds = data.unsuccessfulRefunds || 0;
+  //         const totalRefunds = successfulRefunds + unsuccessfulRefunds;
+  //         const successRate =
+  //           totalRefunds === 0 ? 100 :100 - ((unsuccessfulRefunds / totalRefunds) * 100);
+  //         const failureRate = 100 - successRate;
+
+  //         // Find matching pricing data for the country_service
+  //         const pricingData = pricingSnapshot.docs.find(
+  //           (pricingDoc) =>
+  //             pricingDoc.id.toLowerCase() ===
+  //             `${country.toLowerCase()}_${service.toLowerCase()}`
+  //         );
+  //         const priceInfo = pricingData
+  //           ? pricingData.data()
+  //           : servicesPricingMap[service.toLowerCase()] || {}; // Fallback to service pricing
+
+  //         return {
+  //           id: doc.id,
+  //           country,
+  //           service,
+  //           successRate,
+  //           successfulRefunds,
+  //           unsuccessfulRefunds,
+  //           price: priceInfo?.price || 0, // Default price if no pricing found
+  //           currency: priceInfo?.currency || "$", // Default currency
+  //           quantity: data.quantity || 0, // Quantity
+  //           failureRate,
+  //         };
+  //       });
+
+  //       setSmsData(combinedData);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching data from Firestore:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchStatisticsAndPricing();
+  // }, []);
   useEffect(() => {
     const fetchStatisticsAndPricing = async () => {
       try {
         const statisticsCollection = collection(db, "statistics");
         const pricingCollection = collection(db, "pricing");
         const servicesCollection = collection(db, "services");
-
+        const countriesCollection = collection(db, "countries");
+  
+        // Fetch countries where 'included' is true
+        const countriesQuery = query(countriesCollection, where("included", "==", true));
+        const countriesSnapshot = await getDocs(countriesQuery);
+  
+        // Fetch services where 'isIncluded' is true
+        const servicesQuery = query(servicesCollection, where("isIncluded", "==", true));
+        const servicesSnapshot = await getDocs(servicesQuery);
+  
+        const includedCountries = countriesSnapshot.docs.map((doc) => doc.id.toLowerCase());
+        const includedServices = servicesSnapshot.docs.map((doc) => doc.id.toLowerCase());
+  
         const statisticsSnapshot = await getDocs(statisticsCollection);
         const pricingSnapshot = await getDocs(pricingCollection);
-        const servicesSnapshot = await getDocs(servicesCollection);
-
+  
+        // Map services for pricing fallback
         const servicesPricingMap: { [serviceName: string]: any } = {};
         servicesSnapshot.docs.forEach((doc) => {
           servicesPricingMap[doc.id.toLowerCase()] = doc.data();
         });
-
-        const combinedData = statisticsSnapshot.docs.map((doc) => {
-          const data = doc.data();
-          const [country, service] = doc.id.split("_"); // Split the country_service key
-          const successfulRefunds = data.successfulRefunds || 0;
-          const unsuccessfulRefunds = data.unsuccessfulRefunds || 0;
-          const totalRefunds = successfulRefunds + unsuccessfulRefunds;
-          const successRate =
-            totalRefunds === 0 ? 100 :100 - ((unsuccessfulRefunds / totalRefunds) * 100);
-          const failureRate = 100 - successRate;
-
-          // Find matching pricing data for the country_service
-          const pricingData = pricingSnapshot.docs.find(
-            (pricingDoc) =>
-              pricingDoc.id.toLowerCase() ===
-              `${country.toLowerCase()}_${service.toLowerCase()}`
-          );
-          const priceInfo = pricingData
-            ? pricingData.data()
-            : servicesPricingMap[service.toLowerCase()] || {}; // Fallback to service pricing
-
-          return {
-            id: doc.id,
-            country,
-            service,
-            successRate,
-            successfulRefunds,
-            unsuccessfulRefunds,
-            price: priceInfo?.price || 0, // Default price if no pricing found
-            currency: priceInfo?.currency || "$", // Default currency
-            quantity: data.quantity || 0, // Quantity
-            failureRate,
-          };
-        });
-
+  
+        const combinedData = [];
+  
+        // Loop through each included country and service to build the combination
+        for (const country of includedCountries) {
+          for (const service of includedServices) {
+            // Check if there's an existing entry in statistics
+            const statisticEntry = statisticsSnapshot.docs.find(
+              (statDoc) => statDoc.id.toLowerCase() === `${country}_${service}`
+            );
+  
+            let data = statisticEntry ? statisticEntry.data() : {};
+  
+            // If no entry in statistics, create a default one
+            if (!statisticEntry) {
+              data = {
+                successfulRefunds: 0,
+                unsuccessfulRefunds: 0,
+                quantity: 0,
+              };
+  
+              // Create a new document in statistics with the default values
+              await setDoc(doc(db, "statistics", `${country}_${service}`), data);
+            }
+  
+            const successfulRefunds = data.successfulRefunds || 0;
+            const unsuccessfulRefunds = data.unsuccessfulRefunds || 0;
+            const totalRefunds = successfulRefunds + unsuccessfulRefunds;
+            const successRate =
+              totalRefunds === 0 ? 100 : 100 - (unsuccessfulRefunds / totalRefunds) * 100;
+            const failureRate = 100 - successRate;
+  
+            // Find matching pricing data for the country_service combination
+            const pricingData = pricingSnapshot.docs.find(
+              (pricingDoc) =>
+                pricingDoc.id.toLowerCase() === `${country}_${service}`
+            );
+            const priceInfo = pricingData
+              ? pricingData.data()
+              : servicesPricingMap[service.toLowerCase()] || {}; // Fallback to service pricing
+  
+            // Build the combined data entry
+            combinedData.push({
+              id: `${country}_${service}`,
+              country,
+              service,
+              successRate,
+              successfulRefunds,
+              unsuccessfulRefunds,
+              price: priceInfo?.price || 0, // Default price if no pricing found
+              currency: priceInfo?.currency || "$", // Default currency
+              quantity: data.quantity || 0, // Quantity
+              failureRate,
+            });
+          }
+        }
+  
         setSmsData(combinedData);
         setLoading(false);
       } catch (error) {
@@ -208,9 +302,10 @@ export default function SMSStats() {
         setLoading(false);
       }
     };
-
+  
     fetchStatisticsAndPricing();
   }, []);
+  
 
   const countries = useMemo(
     () => [...new Set(smsData.map((item) => item.country))],

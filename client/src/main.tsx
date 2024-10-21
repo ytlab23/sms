@@ -7,12 +7,14 @@ import './css/satoshi.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import './i18n';
+import { Toaster } from './components/shadcn/ui/toaster';
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Router>
       <App />
+      <Toaster></Toaster>
     </Router>
   </React.StrictMode>,
 );

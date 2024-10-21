@@ -246,9 +246,9 @@ const AdminSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     { name: 'Set Pricing', href: '/admin382013453sms/set-pricing', icon: DollarSign },
   ];
   const pricingNavItems = [
-    { name: 'Add Country', href: '/admin382013453sms/add-country', icon: PlusCircle },
-    { name: 'Country-Service Pricing', href: '/admin382013453sms/edit', icon: Edit },
-    { name: 'Edit Services', href: '/admin382013453sms/set-pricing', icon: DollarSign },
+    { name: 'Add Country', href: '/admin382013453sms/edit-country', icon: PlusCircle },
+    { name: 'Country-Service Pricing', href: '/admin382013453sms/country-service-pricing', icon: Edit },
+    { name: 'Edit Services', href: '/admin382013453sms/edit-services', icon: DollarSign },
   ];
 
   return (
