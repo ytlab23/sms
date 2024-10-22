@@ -175,7 +175,8 @@ export default function InternalPagesList() {
         const pagesCollection = collection(db, "internal_pages");
         const pagesSnapshot = await getDocs(pagesCollection);
         const pagesList = pagesSnapshot.docs.map((doc) => {
-          const data = doc.data().en; // Access the 'en' locale content
+          const data = doc.data().pageContent.en; // Access the 'en' locale content
+          console.log(data)
           return {
             id: doc.id,
             slug: doc.data().slug || '', // Use a fallback empty string if slug is not present

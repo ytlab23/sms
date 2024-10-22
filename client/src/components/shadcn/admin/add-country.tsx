@@ -282,8 +282,8 @@ export default function AddCountries({ onCountryChange }: { onCountryChange: () 
 
   return (
     <div>
-      <h3 className="font-bold mb-4">1. Manage Countries</h3>
-      <ScrollArea className="h-[300px] border rounded-md">
+      {/* <h3 className="font-bold mb-4">1. Manage Countries</h3> */}
+      <ScrollArea className="h-[500px] border rounded-md">
         <Table>
           <TableHeader>
             <TableRow>

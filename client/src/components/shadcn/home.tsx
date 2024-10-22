@@ -17,7 +17,7 @@ interface FeatureProps {
 export function Features() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold text-center mb-8">Welcome to SMSVerify</h1>
+      <h1 className="text-4xl font-bold text-center mb-8">Welcome to SMSApp</h1>
       
       <p className="text-xl text-center mb-12">
         Your trusted partner for secure and reliable phone number verification services.

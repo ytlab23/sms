@@ -61,7 +61,7 @@ const Header = (props: {
   ];
 
   // Add admin navigation item if the user is an admin
-  const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms', icon: Shield };
+  const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms/setup', icon: Shield };
 
   // Combine navigation items based on user authentication status
   const navItems = currentUser

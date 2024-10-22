@@ -469,8 +469,8 @@ export default function ServicesMenu() {
 
   return (
     <div>
-      <h2 className="font-bold mb-4">3. Update Default Pricing for Services</h2>
-      <ScrollArea className="h-[calc(100vh-400px)] border rounded-md">
+      {/* <h2 className="font-bold mb-4">3. Update Default Pricing for Services</h2> */}
+      <ScrollArea className="h-[500px] border rounded-md p-4">
         <Table>
           <TableHeader>
             <TableRow>

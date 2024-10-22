@@ -12,9 +12,11 @@ import Footer from '../components/shadcn/footer';
 import { Toaster } from '../components/shadcn/ui/toaster';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from '../components/Sidebar/admin-sidebar';
+import AdminHeader from '../components/Header/admin-header';
 
 const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
@@ -34,6 +36,7 @@ const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
           {/* <!-- ===== Header Start ===== --> */}
           {/* <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
           {/* <!-- ===== Header End ===== --> */}
+          {/* <AdminHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}></AdminHeader> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>

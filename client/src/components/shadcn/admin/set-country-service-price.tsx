@@ -826,7 +826,7 @@ export default function CountryServicePrices() {
 
   return (
     <div>
-      <h2 className="font-bold mb-4">2. Edit Country Service Prices</h2>
+      {/* <h2 className="font-bold mb-4">2. Edit Country Service Prices</h2> */}
       <Table>
         <TableHeader>
           <TableRow>

@@ -241,9 +241,9 @@ const AdminSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   // Navigation items for admin users
   const pagesNavItems = [
+    { name: 'Setup', href: '/admin382013453sms/setup', icon: DollarSign },
     { name: 'Add Page', href: '/admin382013453sms/add', icon: PlusCircle },
     { name: 'Edit Page', href: '/admin382013453sms/edit', icon: Edit },
-    { name: 'Set Pricing', href: '/admin382013453sms/set-pricing', icon: DollarSign },
   ];
   const pricingNavItems = [
     { name: 'Add Country', href: '/admin382013453sms/edit-country', icon: PlusCircle },

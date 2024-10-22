@@ -43,7 +43,12 @@ import InternalPagesList from './components/shadcn/edit-delete-pages';
 import AddCountries from './components/shadcn/admin/add-country';
 import CountryServicePrices from './components/shadcn/admin/set-country-service-price';
 import ServicesMenu from './components/shadcn/admin/services';
-import { Card, CardContent, CardHeader, CardTitle } from './components/shadcn/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from './components/shadcn/ui/card';
 import { ScrollArea } from './components/shadcn/ui/scrollarea';
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
@@ -55,7 +60,7 @@ function App() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleRefresh = () => {
-    setRefreshKey(prevKey => prevKey + 1);
+    setRefreshKey((prevKey) => prevKey + 1);
   };
 
   useEffect(() => {
@@ -148,10 +153,7 @@ function App() {
               </>
             }
           />
-          <Route
-        path="/services/:slug"
-        element={<InternalPage />}
-      />
+          <Route path="/services/:slug" element={<InternalPage />} />
           <Route
             path="/internalpagesadmin"
             element={
@@ -242,24 +244,47 @@ function App() {
             />
           }
         >
-          <Route
+          {/* <Route
             path="/admin382013453sms"
             element={
               <AdminProtectedRoute>
                 <>
                   <PageTitle title="Admin | SMS App" />
-                  <AdminInternalPageCreator></AdminInternalPageCreator>
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Create  Internal Pages
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                          <AdminInternalPageCreator></AdminInternalPageCreator>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </>
               </AdminProtectedRoute>
             }
-          />
+          /> */}
           <Route
-            path="/admin382013453sms/set-pricing"
+            path="/admin382013453sms/setup"
             element={
               <AdminProtectedRoute>
                 <>
                   <PageTitle title="Admin | SMS App" />
-                  <AdminPage />
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Admin Setup
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                          <AdminPage />
+                        
+                      </CardContent>
+                    </Card>
+                  </div>
                 </>
               </AdminProtectedRoute>
             }
@@ -271,8 +296,20 @@ function App() {
                 <>
                   <PageTitle title="Admin Edit | SMS App" />
                   {/* <InternalPagesList></InternalPagesList> */}
-                                    <AdminInternalPageCreator></AdminInternalPageCreator>
-
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Update Internal Pages
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        {/* <ScrollArea className="h-[calc(100vh-300px)]"> */}
+                          <AdminInternalPageCreator></AdminInternalPageCreator>
+                        {/* </ScrollArea> */}
+                      </CardContent>
+                    </Card>
+                  </div>
                 </>
               </AdminProtectedRoute>
             }
@@ -283,8 +320,21 @@ function App() {
               <AdminProtectedRoute>
                 <>
                   <PageTitle title="Admin Edit | SMS App" />
-                  <InternalPagesList></InternalPagesList>
 
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Manage Internal Pages
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        {/* <ScrollArea className="h-[calc(100vh-300px)]"> */}
+                          <InternalPagesList></InternalPagesList>{' '}
+                        {/* </ScrollArea> */}
+                      </CardContent>
+                    </Card>
+                  </div>
                 </>
               </AdminProtectedRoute>
             }
@@ -295,68 +345,98 @@ function App() {
               <AdminProtectedRoute>
                 <>
                   <PageTitle title="Admin Edit | SMS App" />{' '}
-                  <AdminInternalPageCreator></AdminInternalPageCreator>
+                  
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                        Create  Internal Pages
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                     <AdminInternalPageCreator></AdminInternalPageCreator>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </>
               </AdminProtectedRoute>
             }
           />
-        
+
           <Route
             path="/admin382013453sms/edit-country"
             element={
               <AdminProtectedRoute>
                 <>
                   <PageTitle title="Edit Country | SMS App" />{' '}
-                  <AddCountries key={`add-countries-${refreshKey}`} onCountryChange={handleRefresh} />
-
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Manage Countries
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        {/* <ScrollArea className="h-[calc(100vh-250px)]"> */}
+                          <AddCountries
+                            key={`add-countries-${refreshKey}`}
+                            onCountryChange={handleRefresh}
+                          />
+                        {/* </ScrollArea> */}
+                      </CardContent>
+                    </Card>
+                  </div>
                 </>
               </AdminProtectedRoute>
             }
           />
-          {/* <Route
+
+          <Route
             path="/admin382013453sms/country-service-pricing"
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Country Service Pricing | SMS App" />{' '}
-                  <CountryServicePrices key={`country-service-prices-${refreshKey}`} />
-
-
+                  <PageTitle title="Country Service Pricing | SMS App" />
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Country Service Pricing
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        {/* <ScrollArea className="h-[calc(100vh-250px)]"> */}
+                          <CountryServicePrices
+                            key={`country-service-prices-${refreshKey}`}
+                          />
+                        {/* </ScrollArea> */}
+                      </CardContent>
+                    </Card>
+                  </div>
                 </>
               </AdminProtectedRoute>
             }
-          /> */}
-          <Route
-              path="/admin382013453sms/country-service-pricing"
-              element={
-                <AdminProtectedRoute>
-                  <>
-                    <PageTitle title="Country Service Pricing | SMS App" />
-                    <div className="mt-8">
-                      <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
-                        <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
-                          <CardTitle className="text-2xl font-bold">Country Service Pricing</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-6">
-                          <ScrollArea className="h-[calc(100vh-300px)]">
-                            <CountryServicePrices key={`country-service-prices-${refreshKey}`} />
-                          </ScrollArea>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </>
-                </AdminProtectedRoute>
-              }
-            />
+          />
           <Route
             path="/admin382013453sms/edit-services"
             element={
               <AdminProtectedRoute>
                 <>
                   <PageTitle title="Edit Services | SMS App" />{' '}
-                  <ServicesMenu key={`services-menu-${refreshKey}`} />
-
-
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Manage Services
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        {/* <ScrollArea className="h-[calc(100vh-250px)]"> */}
+                          <ServicesMenu key={`services-menu-${refreshKey}`} />{' '}
+                        {/* </ScrollArea> */}
+                      </CardContent>
+                    </Card>
+                  </div>
                 </>
               </AdminProtectedRoute>
             }

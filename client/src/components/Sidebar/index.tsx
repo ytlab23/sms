@@ -256,7 +256,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   ];
   
   // Navigation item for admin users
-  const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms', icon: Shield };
+  const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms/setup', icon: Shield };
   
   // Combine navigation items based on user authentication and admin status
   const navItems = currentUser
