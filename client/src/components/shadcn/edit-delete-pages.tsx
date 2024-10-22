@@ -257,18 +257,18 @@ export default function InternalPagesList() {
                   {/* <TableCell>{page.createdAt}</TableCell> */}
                   <TableCell className="text-right">
                   <Link to={`/admin382013453sms/edit/${page.slug}`}>  <Button variant="ghost" size="icon" className="mr-2" >
-                      <Pencil className="h-4 w-4" />
+                      <Pencil className="h-4 w-4 text-yellow-500" />
                       <span className="sr-only">Edit</span>
                     </Button></Link>
 
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="ghost" size="icon" onClick={() => setPageToDelete(page)}>
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4 text-red-600" />
                           <span className="sr-only">Delete</span>
                         </Button>
                       </DialogTrigger>
-                      <DialogContent>
+                      <DialogContent className ="bg-white">
                         <DialogHeader>
                           <DialogTitle>Are you sure you want to delete this page?</DialogTitle>
                           <DialogDescription>
@@ -277,8 +277,8 @@ export default function InternalPagesList() {
                           </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
-                          <Button variant="outline" onClick={() => setPageToDelete(null)}>Cancel</Button>
-                          <Button variant="destructive" onClick={() => pageToDelete && handleDelete(pageToDelete.id)}>Delete</Button>
+                          {/* <Button variant="outline" onClick={() => setPageToDelete(page)}>Cancel</Button> */}
+                          <Button className='bg-red-600' variant="destructive" onClick={() => pageToDelete && handleDelete(pageToDelete.id)}>Delete</Button>
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>

@@ -247,6 +247,7 @@ export default function AddCountries({ onCountryChange }: { onCountryChange: () 
       ));
       onCountryChange();
       toast({
+       
         title: "Success",
         description: `${countryName} has been ${!currentIncluded ? 'added to' : 'removed from'} the list.`,
       })
@@ -298,18 +299,19 @@ export default function AddCountries({ onCountryChange }: { onCountryChange: () 
                 <TableCell>{country.name}</TableCell>
                 <TableCell>{country.included ? 'Included' : 'Not Included'}</TableCell>
                 <TableCell>
-                  <Button
+                    <Button
                     onClick={() => handleToggleCountry(country.name, country.included)}
-                    className="mr-2"
-                  >
+                    className={`mr-2 ${country.included ? 'bg-red-600 hover:bg-red-500' : ''}`}
+                    >
                     {country.included ? 'Remove' : 'Add'}
-                  </Button>
-                  <Button
+                    </Button>
+                  {/* <Button
+                  className='bg-red-600'
                     onClick={() => handleDeleteCountry(country.name)}
                     variant="destructive"
                   >
                     Delete
-                  </Button>
+                  </Button> */}
                 </TableCell>
               </TableRow>
             ))}

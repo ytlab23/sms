@@ -132,8 +132,10 @@ import { useAuth } from '../../contexts/authcontext'
 import { PhoneCall, Gift, Loader2, CheckCircle, Sparkles } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/shadcn/ui/card'
 import { Button } from '../../components/shadcn/ui/button'
+import { useNavigate } from 'react-router-dom'
 
 export default function FreeNumberBanner() {
+  const navigate = useNavigate();
   const [eligible, setEligible] = useState<boolean | null>(null)
   const [message, setMessage] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(true)
@@ -160,7 +162,7 @@ export default function FreeNumberBanner() {
       setLoading(true)
       const ipResponse = await axios.get('https://api.ipify.org?format=json')
       const userIp = ipResponse.data.ip
-      const response = await axios.post('http://localhost:3000/api/claim-free-number', {
+      const response = await axios.post('https://smsverify-server.vercel.app/api/claim-free-number', {
         uid: currentUser?.uid,
         // country: 'russia',
         // product: 'telegram',
@@ -168,6 +170,10 @@ export default function FreeNumberBanner() {
       })
       setMessage(response.data.message)
       setLoading(false)
+      const id = response.data?.product?.id ?? null;
+      console.log(response.data,"uufff")
+
+      navigate(`/sms?id=${id}`);
     } catch (error) {
       setError('Failed to claim free number')
       setLoading(false)
