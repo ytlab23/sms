@@ -1,4 +1,3 @@
-
 // import { useState, useMemo } from "react"
 // import { Card, CardContent } from "./ui/card"
 // import { Button } from "./ui/button"
@@ -37,7 +36,7 @@
 //   const services = useMemo(() => [...new Set(smsData.map(item => item.service))], [])
 
 //   const filteredData = useMemo(() => {
-//     return smsData.filter(item => 
+//     return smsData.filter(item =>
 //       (!selectedCountry || item.country === selectedCountry) &&
 //       (!selectedService || item.service === selectedService)
 //     )
@@ -46,7 +45,7 @@
 //   return (
 //     <div className="container mx-auto p-4 space-y-6">
 //       <h1 className="text-3xl font-bold mb-6">SMS Verification Services</h1>
-      
+
 //       <div className="flex space-x-4 mb-6">
 //         <Select onValueChange={setSelectedCountry}>
 //           <SelectTrigger className="w-[180px]">
@@ -114,19 +113,26 @@
 //   )
 // }
 
-import React, { useState, useMemo, useEffect } from "react";
-import { Card, CardContent } from "./ui/card";
-import { Button } from "./ui/button";
-import { ShoppingCart } from "lucide-react";
+import React, { useState, useMemo, useEffect } from 'react';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
+import { ShoppingCart } from 'lucide-react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { db } from "../../firebase/config"; // Replace with your Firebase config
-import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+} from './ui/select';
+import { db } from '../../firebase/config'; // Replace with your Firebase config
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 
 interface CountryServiceData {
   id: string;
@@ -143,10 +149,10 @@ interface CountryServiceData {
 
 export default function SMSStats() {
   const [selectedCountry, setSelectedCountry] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [selectedService, setSelectedService] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [smsData, setSmsData] = useState<CountryServiceData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -214,43 +220,53 @@ export default function SMSStats() {
   useEffect(() => {
     const fetchStatisticsAndPricing = async () => {
       try {
-        const statisticsCollection = collection(db, "statistics");
-        const pricingCollection = collection(db, "pricing");
-        const servicesCollection = collection(db, "services");
-        const countriesCollection = collection(db, "countries");
-  
+        const statisticsCollection = collection(db, 'statistics');
+        const pricingCollection = collection(db, 'pricing');
+        const servicesCollection = collection(db, 'services');
+        const countriesCollection = collection(db, 'countries');
+
         // Fetch countries where 'included' is true
-        const countriesQuery = query(countriesCollection, where("included", "==", true));
+        const countriesQuery = query(
+          countriesCollection,
+          where('included', '==', true),
+        );
         const countriesSnapshot = await getDocs(countriesQuery);
-  
+
         // Fetch services where 'isIncluded' is true
-        const servicesQuery = query(servicesCollection, where("isIncluded", "==", true));
+        const servicesQuery = query(
+          servicesCollection,
+          where('isIncluded', '==', true),
+        );
         const servicesSnapshot = await getDocs(servicesQuery);
-  
-        const includedCountries = countriesSnapshot.docs.map((doc) => doc.id.toLowerCase());
-        const includedServices = servicesSnapshot.docs.map((doc) => doc.id.toLowerCase());
-  
+
+        const includedCountries = countriesSnapshot.docs.map((doc) =>
+          doc.id.toLowerCase(),
+        );
+        const includedServices = servicesSnapshot.docs.map((doc) =>
+          doc.id.toLowerCase(),
+        );
+
         const statisticsSnapshot = await getDocs(statisticsCollection);
         const pricingSnapshot = await getDocs(pricingCollection);
-  
+
         // Map services for pricing fallback
         const servicesPricingMap: { [serviceName: string]: any } = {};
         servicesSnapshot.docs.forEach((doc) => {
           servicesPricingMap[doc.id.toLowerCase()] = doc.data();
         });
-  
+
         const combinedData = [];
-  
+
         // Loop through each included country and service to build the combination
         for (const country of includedCountries) {
           for (const service of includedServices) {
             // Check if there's an existing entry in statistics
             const statisticEntry = statisticsSnapshot.docs.find(
-              (statDoc) => statDoc.id.toLowerCase() === `${country}_${service}`
+              (statDoc) => statDoc.id.toLowerCase() === `${country}_${service}`,
             );
-  
+
             let data = statisticEntry ? statisticEntry.data() : {};
-  
+
             // If no entry in statistics, create a default one
             if (!statisticEntry) {
               data = {
@@ -258,27 +274,32 @@ export default function SMSStats() {
                 unsuccessfulRefunds: 0,
                 quantity: 0,
               };
-  
+
               // Create a new document in statistics with the default values
-              await setDoc(doc(db, "statistics", `${country}_${service}`), data);
+              await setDoc(
+                doc(db, 'statistics', `${country}_${service}`),
+                data,
+              );
             }
-  
+
             const successfulRefunds = data.successfulRefunds || 0;
             const unsuccessfulRefunds = data.unsuccessfulRefunds || 0;
             const totalRefunds = successfulRefunds + unsuccessfulRefunds;
             const successRate =
-              totalRefunds === 0 ? 100 : 100 - (unsuccessfulRefunds / totalRefunds) * 100;
+              totalRefunds === 0
+                ? 100
+                : 100 - (unsuccessfulRefunds / totalRefunds) * 100;
             const failureRate = 100 - successRate;
-  
+
             // Find matching pricing data for the country_service combination
             const pricingData = pricingSnapshot.docs.find(
               (pricingDoc) =>
-                pricingDoc.id.toLowerCase() === `${country}_${service}`
+                pricingDoc.id.toLowerCase() === `${country}_${service}`,
             );
             const priceInfo = pricingData
               ? pricingData.data()
               : servicesPricingMap[service.toLowerCase()] || {}; // Fallback to service pricing
-  
+
             // Build the combined data entry
             combinedData.push({
               id: `${country}_${service}`,
@@ -288,39 +309,42 @@ export default function SMSStats() {
               successfulRefunds,
               unsuccessfulRefunds,
               price: priceInfo?.price || 0, // Default price if no pricing found
-              currency: priceInfo?.currency || "$", // Default currency
+              currency: priceInfo?.currency || '$', // Default currency
               quantity: data.quantity || 0, // Quantity
               failureRate,
             });
           }
         }
-  
+
         setSmsData(combinedData);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data from Firestore:", error);
+        console.error('Error fetching data from Firestore:', error);
         setLoading(false);
       }
     };
-  
+
     fetchStatisticsAndPricing();
   }, []);
-  
 
   const countries = useMemo(
     () => [...new Set(smsData.map((item) => item.country))],
-    [smsData]
+    [smsData],
   );
   const services = useMemo(
     () => [...new Set(smsData.map((item) => item.service))],
-    [smsData]
+    [smsData],
   );
 
   const filteredData = useMemo(() => {
     return smsData.filter(
       (item) =>
-        (selectedCountry === "all-countries" || !selectedCountry || item.country === selectedCountry) &&
-        (selectedService === "all-services" || !selectedService || item.service === selectedService)
+        (selectedCountry === 'all-countries' ||
+          !selectedCountry ||
+          item.country === selectedCountry) &&
+        (selectedService === 'all-services' ||
+          !selectedService ||
+          item.service === selectedService),
     );
   }, [selectedCountry, selectedService, smsData]);
 
@@ -381,7 +405,9 @@ export default function SMSStats() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex-1">
                   <h2 className="text-2xl font-semibold">{item.country}</h2>
-                  <p className="text-lg text-muted-foreground">{item.service}</p>
+                  <p className="text-lg text-muted-foreground">
+                    {item.service}
+                  </p>
                 </div>
                 <div className="text-right">
                   {/* <p className="text-lg font-medium">Available</p>
@@ -395,7 +421,9 @@ export default function SMSStats() {
                   <div
                     className="bg-blue-400 h-full rounded-full"
                     style={{ width: `${100 - item.failureRate}%` }}
-                    aria-label={`Success rate: ${(100 - Number(item.failureRate)).toFixed(2)}%`}
+                    aria-label={`Success rate: ${(
+                      100 - Number(item.failureRate)
+                    ).toFixed(2)}%`}
                   ></div>
                 </div>
                 <span className="text-lg font-medium ml-4">

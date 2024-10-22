@@ -146,6 +146,7 @@ import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../../public/smsapp.svg';
 import { Home, HelpCircle, UserPlus, LogIn, Settings, ShoppingBag, BookOpen ,Shield, Server, BarChart4Icon} from 'lucide-react';
 import { useAuth } from '../../contexts/authcontext'; // Import useAuth for authentication
+import DarkModeSwitcher from '../Header/DarkModeSwitcher';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -337,6 +338,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </NavLink>
                 </li>
               ))}
+              <li className='m-8 flex'>
+            <DarkModeSwitcher />
+            <h4 className='ml-4 font-bold'>Mode</h4>
+
+              </li>
             </ul>
           </div>
         </nav>

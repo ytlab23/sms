@@ -68,7 +68,7 @@ const Header = (props: {
     ? [
         ...commonNavItems,
         ...authNavItems,
-        ...(isAdminEmail(currentUser?.email) ? [adminNavItem] : []), // Include Admin link if the user is an admin
+        // ...(isAdminEmail(currentUser?.email) ? [adminNavItem] : []), // Include Admin link if the user is an admin
       ]
     : [...commonNavItems, ...guestNavItems];
   return (
@@ -129,12 +129,17 @@ const Header = (props: {
         </NavLink>
       </div>
         </div>
-        <div className='flex flex-col'>
-        <div className="flex items-center    gap-3 2xsm:gap-7">
-          <ul className="flex items-center  align-middle gap-2 2xsm:gap-4">
+        <div className='flex flex-col w-full'>
+        <div className="flex items-end self-end   gap-3 2xsm:gap-7">
+          <ul className="flex   align-middle gap-2 2xsm:gap-4">
             {/* Dark Mode Toggler */}
+            <div className='hidden lg:block mt-1'>
+
             <DarkModeSwitcher />
-            <LanguageSwitcher></LanguageSwitcher>
+
+            </div>
+            <div className='mb-1'>
+            <LanguageSwitcher></LanguageSwitcher></div>
           </ul>
 
           {/* Show user dropdown only if logged in */}

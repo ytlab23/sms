@@ -160,10 +160,10 @@ export default function FreeNumberBanner() {
       setLoading(true)
       const ipResponse = await axios.get('https://api.ipify.org?format=json')
       const userIp = ipResponse.data.ip
-      const response = await axios.post('https://smsverify-server.vercel.app/api/claim-free-number', {
+      const response = await axios.post('http://localhost:3000/api/claim-free-number', {
         uid: currentUser?.uid,
-        country: 'russia',
-        product: 'telegram',
+        // country: 'russia',
+        // product: 'telegram',
         userIp: userIp,
       })
       setMessage(response.data.message)
