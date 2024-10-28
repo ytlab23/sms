@@ -170,8 +170,8 @@ export default function FreeNumberBanner() {
       })
       setMessage(response.data.message)
       setLoading(false)
-      const id = response.data?.product?.id ?? null;
-      console.log(response.data,"uufff")
+      const id = response.data?.number?.id ?? null;
+      console.log(response.data,"uufff",id)
 
       navigate(`/sms?id=${id}`);
     } catch (error) {

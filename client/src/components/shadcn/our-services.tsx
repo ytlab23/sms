@@ -410,7 +410,7 @@ export default function InternalPagesShowcase() {
                 </div>
               </CardContent>
               <CardFooter className="mt-auto">
-                <Link to={`/services/${page.slug}`} className="w-full">
+                <Link to={`/${page.slug}`} className="w-full">
                   <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                     Learn More
                     <ArrowRight className="ml-2 h-4 w-4" />

@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scrollarea';
-import { Search, Star, X, RefreshCcw } from 'lucide-react';
+import { Search, Star, X, RefreshCcw, HelpCircle } from 'lucide-react';
 import Logo from '../../images/logo/logo-placeholder.svg';
 import axios from 'axios';
 import { useAuth } from '../../contexts/authcontext';
@@ -22,6 +22,7 @@ import { ToastAction } from './ui/toast';
 import { toast } from './ui/use-toast';
 import Loader from '../../common/Loader';
 import Loader2 from '../../common/loader2';
+import React from 'react';
 
 interface Country {
   iso: string;
@@ -44,6 +45,7 @@ interface SelectedTileProps {
   item: Country | Service | Operator;
   onCancel: () => void;
   type: 'country' | 'service' | 'operator';
+  iso: String;
 }
 
 const servicesData: Record<string, Service> = {
@@ -55,34 +57,82 @@ const servicesData: Record<string, Service> = {
   amazon: { name: 'Amazon', icon: 'amazon' },
 };
 
+// const SelectedTile: React.FC<SelectedTileProps> = ({
+//   item,
+//   onCancel,
+//   type,
+//   iso
+// }) => (
+//   <div className="flex items-center dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-between bg-gray-100 p-2 rounded-md">
+//     <div className="flex items-center">
+//       <img
+//         src={`https://logo.clearbit.com/${item.name.toLowerCase()}.com`}
+//         src={`https://flagcdn.com/w20/${iso.toLowerCase()}.png`}
+        
+//         alt={
+//           type === 'country' ? `Flag of ${item.name}` : `Icon of ${item.name}`
+//         }
+//         className={
+//           type === 'country'
+//             ? `flags flags-${item as Country}`
+//             : `products products-${(item as Service).icon}`
+//         }
+//         width={20}
+//         height={20}
+//       />
+//       <span className="ml-2">{item.name}</span>
+//     </div>
+//     <Button variant="ghost" size="sm" onClick={onCancel}>
+//       <X className="h-4 w-4" />
+//     </Button>
+//   </div>
+// );
 const SelectedTile: React.FC<SelectedTileProps> = ({
   item,
   onCancel,
   type,
-}) => (
-  <div className="flex items-center dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-between bg-gray-100 p-2 rounded-md">
-    <div className="flex items-center">
-      <img
-        src={`https://logo.clearbit.com/${item.name.toLowerCase()}.com`}
-        alt={
-          type === 'country' ? `Flag of ${item.name}` : `Icon of ${item.name}`
-        }
-        className={
-          type === 'country'
-            ? `flags flags-${item as Country}`
-            : `products products-${(item as Service).icon}`
-        }
-        width={20}
-        height={20}
-      />
-      <span className="ml-2">{item.name}</span>
-    </div>
-    <Button variant="ghost" size="sm" onClick={onCancel}>
-      <X className="h-4 w-4" />
-    </Button>
-  </div>
-);
+  iso
+}) => {
+  const [imageError, setImageError] = React.useState(false);
 
+  const getImageSrc = () => {
+    if (type === 'country') {
+      return `https://flagcdn.com/w20/${iso.toLowerCase()}.png`;
+    } else {
+      return `https://logo.clearbit.com/${item.name.toLowerCase()}.com`;
+      // return `https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${item.name.toLowerCase()}.svg`;
+    }
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  return (
+    <div className="flex items-center dark:bg-boxdark bg-white transition-transform hover:scale-105 duration-300 ease-in-out justify-between bg-gray-100 p-2 rounded-md">
+      <div className="flex items-center">
+        {!imageError ? (
+          <img
+            src={getImageSrc()}
+            alt={type === 'country' ? `Flag of ${item.name}` : `Icon of ${item.name}`}
+            className={type === 'country' ? `flags flags-${iso}` : 'products'}
+            width={20}
+            height={20}
+            onError={handleImageError}
+          />
+        ) : (
+          <div className="w-5 h-5 flex items-center justify-center">
+            <HelpCircle className="h-5 w-5 text-gray-400" />
+          </div>
+        )}
+        <span className="ml-2">{item.name}</span>
+      </div>
+      <Button variant="ghost" size="sm" onClick={onCancel}>
+        <X className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+};
 export const ChooseService: React.FC = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -444,6 +494,7 @@ const getServicePrice = (serviceName: string, countryName: string | null): numbe
             item={selectedCountry}
             onCancel={handleCountryCancel}
             type="country"
+            iso={selectedCountry.iso}
           />
         ) : (
           <div className="relative">
@@ -513,8 +564,7 @@ const getServicePrice = (serviceName: string, countryName: string | null): numbe
           <SelectedTile
             item={selectedService}
             onCancel={handleServiceCancel}
-            type="service"
-          />
+            type="service" iso={''}          />
         ) : (
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
@@ -565,8 +615,9 @@ const getServicePrice = (serviceName: string, countryName: string | null): numbe
                   />
                   <img
                     src={`https://logo.clearbit.com/${service.name.toLowerCase()}.com`}
+                    // src={`https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${service.name.toLowerCase()}.svg`}
                     alt={`Icon of ${service.name}`}
-                    className="mr-2"
+                    className="mr-2 text-blue-400"
                     width={20}
                     height={20}
                     onError={(e) => {
@@ -622,6 +673,7 @@ const getServicePrice = (serviceName: string, countryName: string | null): numbe
                             }}
                           />
                           <img
+                            // src={`https://logo.clearbit.com/${service.name.toLowerCase()}.com`}
                             src={`https://logo.clearbit.com/${service.name.toLowerCase()}.com`}
                             alt={`Icon of ${service.name}`}
                             className="mr-2"

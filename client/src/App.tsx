@@ -50,6 +50,7 @@ import {
   CardTitle,
 } from './components/shadcn/ui/card';
 import { ScrollArea } from './components/shadcn/ui/scrollarea';
+import NotFound from './components/shadcn/404';
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -153,7 +154,7 @@ function App() {
               </>
             }
           />
-          <Route path="/services/:slug" element={<InternalPage />} />
+          <Route path="/:slug" element={<InternalPage />} />
           <Route
             path="/internalpagesadmin"
             element={
@@ -443,7 +444,9 @@ function App() {
           />
         </Route>
 
-        {/* <Route path="*" element={<Navigate to="/" />} /> */}
+        <Route path="*" element={
+          <NotFound />
+        } />
       </Routes>
     </AuthProvider>
   );
