@@ -786,6 +786,7 @@ export default function CountryServicePrices() {
       toast({
         title: "Success",
         description: `Price updated for ${service} in ${country}.`,
+        variant: "success",
       })
     } catch (error) {
       console.error('Error updating service price:', error);
@@ -813,6 +814,7 @@ export default function CountryServicePrices() {
       toast({
         title: "Success",
         description: `${service} is now free for ${country}.`,
+        variant: "success",
       })
     } catch (error) {
       console.error('Error setting free service:', error);

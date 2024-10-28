@@ -874,6 +874,7 @@ export default function InternalPage() {
   }
 
   if (!pageData) {
+    navigate('/404');
     return <p className="text-center py-8">{t('pageNotFound')}</p>
   }
 

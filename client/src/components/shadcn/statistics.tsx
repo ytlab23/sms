@@ -498,7 +498,7 @@ export default function SMSStats() {
 
       // Success toast notification
       toast({
-        variant: 'default',
+        variant: 'success',
         title: 'Product purchased successfully',
         description:
           'You can now use the service. Refresh page to see the changes.',

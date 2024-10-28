@@ -282,11 +282,13 @@ import { Search, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/config'; // Ensure the path is correct to your Firebase config
+import { useTranslation } from 'react-i18next';
 
 export default function InternalPagesShowcase() {
   const [pages, setPages] = useState<Page[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
   const [filteredPages, setFilteredPages] = useState<Page[]>([]);
+  const { t, i18n } = useTranslation()
 
   type Page = {
     id: string;
@@ -297,7 +299,7 @@ export default function InternalPagesShowcase() {
   };
 
   
- useEffect(() => {
+useEffect(() => {
   const fetchPages = async () => {
     try {
       const pagesCollection = collection(db, 'internal_pages');
@@ -305,11 +307,11 @@ export default function InternalPagesShowcase() {
 
       const pagesList = pagesSnapshot.docs.map((doc) => {
         const data = doc.data();
-        console.log('Document Data:', data); // Log the entire document
+        console.log(t('Document Data:'), data); // Log the entire document
         console.log('Keys in Document Data:', Object.keys(data)); // Log the keys
 
-        const content = data.pageContent.en || {};
-        console.log('Content:', content,data); // Log the content for debugging
+        const content = data.pageContent?.[i18n.language] || {};
+        console.log('Content:', content, data); // Log the content for debugging
 
         const title = content.heading || 'Untitled';
         const description = content.bodyText || 'No description available.';
@@ -333,7 +335,7 @@ export default function InternalPagesShowcase() {
   };
 
   fetchPages();
-}, []);
+}, [i18n.language]); // Add i18n.language to the dependency array
 
 
   // Filter pages based on search term and when pages data changes

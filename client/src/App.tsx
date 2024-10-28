@@ -51,6 +51,7 @@ import {
 } from './components/shadcn/ui/card';
 import { ScrollArea } from './components/shadcn/ui/scrollarea';
 import NotFound from './components/shadcn/404';
+import { Divide } from 'lucide-react';
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -444,8 +445,11 @@ function App() {
           />
         </Route>
 
-        <Route path="*" element={
-          <NotFound />
+        <Route path="/404" element={
+          <div>
+            <PageTitle title="404 | SMS App" />
+            <NotFound />
+          </div>
         } />
       </Routes>
     </AuthProvider>

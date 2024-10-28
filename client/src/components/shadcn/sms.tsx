@@ -596,6 +596,48 @@ export default function Sms({ numberId }: { numberId: string }) {
   const requestNewSMS = async () => {
     await fetchSMS();
   };
+  const requestRefund = async (id: string) => {
+    try {
+      // const response = await axios.post(
+      //   'http://localhost:3000/api/refund',
+      //   {
+      //     uid: currentUser?.uid,
+      //     numberId: id,
+      //   },
+      // );
+      const response = await axios.post(
+        'https://smsverify-server.vercel.app/api/refund',
+        {
+          uid: currentUser?.uid,
+          numberId: id,
+        },
+      );
+
+      if (response.status === 200) {
+        console.log('Refund requested for number:', numberDetails?.number);
+        // Update the local state to reflect the refund status
+        if (numberDetails) {
+          setNumberDetails({ ...numberDetails, refunded: true });
+        }
+
+        // Success toast notification
+        toast({
+          variant: 'success',
+          title: 'Refund processed',
+          description: 'The refund has been processed successfully.',
+        });
+        navigate('/orders');
+      }
+    } catch (error: any) {
+      console.error('Error requesting refund:', error);
+      // Handle errors related to the refund request
+      toast({
+        variant: 'destructive',
+        title: 'Refund failed',
+        description: 'Failed to process the refund. Please try again later.',
+      });
+    }
+  };
 
   const cancelService = async (id: string) => {
     try {
@@ -728,7 +770,7 @@ export default function Sms({ numberId }: { numberId: string }) {
                   numberDetails.status === 'active' && (
                     <Button
                       variant="destructive"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
                       onClick={() => setIsCancelDialogOpen(true)}
                     >
                       <AlertCircle className="mr-2 h-4 w-4" />
@@ -738,12 +780,12 @@ export default function Sms({ numberId }: { numberId: string }) {
                 {showRefundButton && (
                   <Button
                     variant="outline"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
                     onClick={() => {
-                      toast({
-                        title: "Refund Requested",
-                        description: "Your refund request has been submitted.",
-                      });
+                      if (numberDetails?.id) {
+                        requestRefund(numberDetails.id);
+                      }
+
                     }}
                   >
                     Request Refund
@@ -789,12 +831,14 @@ export default function Sms({ numberId }: { numberId: string }) {
           </DialogHeader>
           <DialogFooter>
             <Button
+            className='bg-blue-600 text-white hover:bg-blue-700'
               variant="outline"
               onClick={() => setIsCancelDialogOpen(false)}
             >
               No, keep the service
             </Button>
             <Button
+            className='bg-red-600 text-white hover:bg-red-700'
               variant="destructive"
               onClick={() => {
                 if (numberDetails?.id) {

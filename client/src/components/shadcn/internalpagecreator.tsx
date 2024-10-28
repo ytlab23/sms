@@ -1860,14 +1860,14 @@ export default function AdminInternalPageCreator() {
         <form onSubmit={handleSubmit} className="space-y-4 lg:col-span-2">
           <div>
             <Label htmlFor="language-select">Language</Label>
-            <Select value={currentLanguage} onValueChange={handleLanguageChange}>
+            <Select  value={currentLanguage} onValueChange={handleLanguageChange}>
               <SelectTrigger id="language-select">
                 <Globe className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Select Language" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-9999 bg-slate-100">
                 {languages.map((lang) => (
-                  <SelectItem key={lang.code} value={lang.code}>{lang.name}</SelectItem>
+                  <SelectItem className="hover:text-blue-600" key={lang.code} value={lang.code}>{lang.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
