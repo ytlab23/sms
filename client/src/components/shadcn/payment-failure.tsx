@@ -12,8 +12,8 @@ export default function PaymentFailure() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 to-red-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="  flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-gradient-to-b from-red-50 to-red-100">
         <CardHeader>
           <motion.div
             initial={{ scale: 0 }}
@@ -31,14 +31,14 @@ export default function PaymentFailure() {
           </p>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">
-          <Button className="w-full" onClick={handleRetry}>
+          {/* <Button className="w-full" onClick={handleRetry}>
             <RefreshCcw className="mr-2 h-4 w-4" />
             Retry Payment
-          </Button>
-          <Link to="/dashboard" className="w-full">
-            <Button variant="outline" className="w-full">
+          </Button> */}
+          <Link to="/" className="w-full">
+            <Button  className="w-full text-white">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Return to Dashboard
+              Return to Home
             </Button>
           </Link>
         </CardFooter>

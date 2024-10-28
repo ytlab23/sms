@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 
 export default function PaymentSuccess() {
     return (
-        <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-100 flex items-center justify-center p-4">
-            <Card className="w-full max-w-md">
+        <div className=" bg-gradient-to-b  flex items-center justify-center p-4">
+            <Card className="w-full max-w-md bg-green-200">
                 <CardHeader>
                     <motion.div
                         initial={{ scale: 0 }}
@@ -21,13 +21,13 @@ export default function PaymentSuccess() {
                 </CardHeader>
                 <CardContent>
                     <p className="text-center text-gray-600">
-                        Thank you for your purchase. Your payment has been processed successfully.
+                        Thank you for your Topup. Your payment has been processed successfully.
                     </p>
                 </CardContent>
                 <CardFooter className="flex justify-center">
-                    <Link to="/dashboard">
-                        <Button className="w-full">
-                            Return to Dashboard
+                    <Link to="/">
+                        <Button className="w-full text-white">
+                            Return to Home
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                     </Link>
