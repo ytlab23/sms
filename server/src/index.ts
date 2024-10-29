@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import Stripe from "stripe";
-import { db } from "./firebase"; // Make sure firebase.ts exports the correctly initialized Firestore db
+import { db } from "./firebase"; 
 import cors from "cors";
 import bodyParser from "body-parser";
 import axios from "axios";
@@ -18,10 +18,8 @@ const stripe = new Stripe(
 );
 
 app.use(cors());
-// Ensure you add this line to enable trust proxy
 app.set("trust proxy", true);
 
-// app.use(bodyParser.json());
 app.use(
   (
     req: express.Request,
@@ -41,20 +39,11 @@ interface CheckBalanceResult {
   currentBalance: number;
 }
 
-// Create a Checkout Session
 app.post("/api/create-checkout-session", async (req, res) => {
   const { uid, amount, email } = req.body;
 
   try {
-    // Fetch customer from Firestore
-    console.log(
-      uid,
-      "is the uid",
-      email,
-      "is the email",
-      amount,
-      "is the amount"
-    );
+    
     const userRef = db.collection("users").doc(uid);
     const userDoc = await userRef.get();
 
@@ -62,13 +51,11 @@ app.post("/api/create-checkout-session", async (req, res) => {
     if (userDoc.exists && userDoc.data()?.stripeCustomerId) {
       customerId = userDoc.data()?.stripeCustomerId;
     } else {
-      // Create new Stripe customer if one doesn't exist
       const customer = await stripe.customers.create({
         email,
         description: `Customer for user ${uid}`,
       });
 
-      // Save customer ID to Firestore
       await userRef.set(
         { stripeCustomerId: customer.id, balance: 0 },
         { merge: true }
@@ -76,7 +63,6 @@ app.post("/api/create-checkout-session", async (req, res) => {
       customerId = customer.id;
     }
 
-    // Create Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -86,20 +72,18 @@ app.post("/api/create-checkout-session", async (req, res) => {
             product_data: {
               name: "Payment",
             },
-            unit_amount: amount * 100, // Amount in cents
+            unit_amount: amount * 100, 
           },
           quantity: 1,
         },
       ],
       mode: "payment",
       customer: customerId,
-      success_url: "https://sms-verify-two.vercel.app/paymentsuccess", // Redirect after success
-      cancel_url: "https://sms-verify-two.vercel.app/paymentfailure", // Redirect after cancel
+      success_url: "https://sms-verify-two.vercel.app/paymentsuccess", 
+      cancel_url: "https://sms-verify-two.vercel.app/paymentfailure", 
     });
-    console.log(session, "is the session");
     res.json({ url: session.url });
   } catch (error) {
-    console.error("Error occurred:", error);
     res.status(500).json({ error: error });
   }
 });

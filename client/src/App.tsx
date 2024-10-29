@@ -8,16 +8,11 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
-import Calendar from './pages/Calendar';
-import Chart from './pages/Chart';
+
 import MainPage from './pages/MainPage/MainPage';
-import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
-import Profile from './pages/Profile';
+
 import Settings from './pages/Settings';
-import Tables from './pages/Tables';
-import Alerts from './pages/UiElements/Alerts';
-import Buttons from './pages/UiElements/Buttons';
+
 import DefaultLayout from './layout/DefaultLayout';
 import { FaqSection } from './components/shadcn/faqsection';
 import Faq from './pages/Faq/Faq';
@@ -26,7 +21,6 @@ import ProtectedRoute from './contexts/ProtectedRoute';
 import HowToBuy from './pages/HowToBuy/HowToBuy';
 import OrdersPage from './pages/Orders/OrdersPage';
 import PaymentForm from './pages/payment/paymentform';
-import TryTo from './pages/payment/trytobuy';
 import Sms from './components/shadcn/sms';
 import SmsPage from './pages/sms/smspage';
 import AdminPage from './pages/admin/AdminPage';
@@ -123,8 +117,12 @@ function App() {
             path="/paymentfailure"
             element={
               <>
-                <PageTitle title="Payment Failure | SMS App" />
-                <PaymentFailure />
+                <ProtectedRoute>
+                  <>
+                    <PageTitle title="Payment Failure | SMS App" />
+                    <PaymentFailure />
+                  </>
+                </ProtectedRoute>
               </>
             }
           />
@@ -132,8 +130,12 @@ function App() {
             path="/paymentsuccess"
             element={
               <>
-                <PageTitle title="Payment Success | SMS App" />
-                <PaymentSuccess />
+                <ProtectedRoute>
+                  <>
+                    <PageTitle title="Payment Success | SMS App" />
+                    <PaymentSuccess />
+                  </>
+                </ProtectedRoute>
               </>
             }
           />
@@ -155,8 +157,8 @@ function App() {
               </>
             }
           />
-          <Route path="/:slug" element={<InternalPage />} />
-          <Route
+
+          {/* <Route
             path="/internalpagesadmin"
             element={
               <>
@@ -164,8 +166,8 @@ function App() {
                 <AdminInternalPageCreator />
               </>
             }
-          />
-          <Route
+          /> */}
+          {/* <Route
             path="/freenumber"
             element={
               <>
@@ -173,7 +175,7 @@ function App() {
                 <FreeNumberPage />
               </>
             }
-          />
+          /> */}
           <Route
             path="/settings"
             element={
@@ -234,6 +236,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/:slug" element={
+            <>
+            <PageTitle title="Service | SMS App" />
+            <InternalPage />
+            </>
+            } />
         </Route>
         <Route
           element={
@@ -282,8 +290,7 @@ function App() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="p-6">
-                          <AdminPage />
-                        
+                        <AdminPage />
                       </CardContent>
                     </Card>
                   </div>
@@ -307,7 +314,7 @@ function App() {
                       </CardHeader>
                       <CardContent className="p-6">
                         {/* <ScrollArea className="h-[calc(100vh-300px)]"> */}
-                          <AdminInternalPageCreator></AdminInternalPageCreator>
+                        <AdminInternalPageCreator></AdminInternalPageCreator>
                         {/* </ScrollArea> */}
                       </CardContent>
                     </Card>
@@ -332,7 +339,7 @@ function App() {
                       </CardHeader>
                       <CardContent className="p-6">
                         {/* <ScrollArea className="h-[calc(100vh-300px)]"> */}
-                          <InternalPagesList></InternalPagesList>{' '}
+                        <InternalPagesList></InternalPagesList>{' '}
                         {/* </ScrollArea> */}
                       </CardContent>
                     </Card>
@@ -347,16 +354,15 @@ function App() {
               <AdminProtectedRoute>
                 <>
                   <PageTitle title="Admin Edit | SMS App" />{' '}
-                  
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
                         <CardTitle className="text-2xl font-bold">
-                        Create  Internal Pages
+                          Create Internal Pages
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="p-6">
-                     <AdminInternalPageCreator></AdminInternalPageCreator>
+                        <AdminInternalPageCreator></AdminInternalPageCreator>
                       </CardContent>
                     </Card>
                   </div>
@@ -380,10 +386,10 @@ function App() {
                       </CardHeader>
                       <CardContent className="p-6">
                         {/* <ScrollArea className="h-[calc(100vh-250px)]"> */}
-                          <AddCountries
-                            key={`add-countries-${refreshKey}`}
-                            onCountryChange={handleRefresh}
-                          />
+                        <AddCountries
+                          key={`add-countries-${refreshKey}`}
+                          onCountryChange={handleRefresh}
+                        />
                         {/* </ScrollArea> */}
                       </CardContent>
                     </Card>
@@ -408,9 +414,9 @@ function App() {
                       </CardHeader>
                       <CardContent className="p-6">
                         {/* <ScrollArea className="h-[calc(100vh-250px)]"> */}
-                          <CountryServicePrices
-                            key={`country-service-prices-${refreshKey}`}
-                          />
+                        <CountryServicePrices
+                          key={`country-service-prices-${refreshKey}`}
+                        />
                         {/* </ScrollArea> */}
                       </CardContent>
                     </Card>
@@ -434,7 +440,9 @@ function App() {
                       </CardHeader>
                       <CardContent className="p-6">
                         {/* <ScrollArea className="h-[calc(100vh-250px)]"> */}
-                          <ServicesMenu key={`services-menu-${refreshKey}`} />{' '}
+                        <ServicesMenu
+                          key={`services-menu-${refreshKey}`}
+                        />{' '}
                         {/* </ScrollArea> */}
                       </CardContent>
                     </Card>
@@ -445,12 +453,15 @@ function App() {
           />
         </Route>
 
-        <Route path="/404" element={
-          <div>
-            <PageTitle title="404 | SMS App" />
-            <NotFound />
-          </div>
-        } />
+        <Route
+          path="/404"
+          element={
+            <div>
+              <PageTitle title="404 | SMS App" />
+              <NotFound />
+            </div>
+          }
+        />
       </Routes>
     </AuthProvider>
   );

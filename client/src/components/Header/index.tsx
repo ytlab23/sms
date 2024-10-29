@@ -16,11 +16,11 @@ import {
   Shield,
   Server,
   BarChart4Icon
-} from 'lucide-react'; // Import an icon for Admin
+} from 'lucide-react'; 
 import { useAuth } from '../../contexts/authcontext';
 import LanguageSwitcher from '../LanguageSwitcher';
 
-// Utility function to check if the user is an admin
+
 const isAdminEmail = (email: string | null | undefined): boolean => {
   if (!email) return false;
   
@@ -34,41 +34,37 @@ const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
-  const { currentUser } = useAuth(); // Get the current user from AuthContext
+  const { currentUser } = useAuth(); 
   const location = useLocation();
   const currentPath = location.pathname;
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  // Navigation items visible to all users
+ 
   const commonNavItems = [
-    { name: 'HOME', href: '/', icon: Home },
-    { name: 'FAQ', href: '/faq', icon: HelpCircle },
-    { name: 'SERVICES', href: '/ourservices', icon: Server },
-    { name: 'STATISTICS', href: '/statistics', icon: BarChart4Icon },
-    { name: 'HOW TO BUY', href: '/howtobuy', icon: BookOpen }, // New common navigation item
+    { name: t("header.HOME"), href: '/', icon: Home },
+    { name: t("header.FAQ"), href: '/faq', icon: HelpCircle },
+    { name: t('header.SERVICES'), href: '/ourservices', icon: Server },
+    { name: t('header.STATISTICS'), href: '/statistics', icon: BarChart4Icon },
+    { name: t('header.HOW TO BUY'), href: '/howtobuy', icon: BookOpen }, 
   ];
 
-  // Navigation items for unauthenticated users
+  
   const guestNavItems = [
-    { name: 'SIGN UP', href: '/auth/signup', icon: UserPlus },
-    { name: 'LOGIN', href: '/auth/signin', icon: LogIn },
+    { name: t('header.SIGN UP'), href: '/auth/signup', icon: UserPlus },
+    { name: t('header.LOGIN'), href: '/auth/signin', icon: LogIn },
   ];
 
-  // Navigation items for authenticated users
   const authNavItems = [
-    { name: 'YOUR ORDERS', href: '/orders', icon: ShoppingBag }, // New authenticated navigation item
+    { name: t('header.YOUR ORDERS'), href: '/orders', icon: ShoppingBag }, 
   ];
 
-  // Add admin navigation item if the user is an admin
-  const adminNavItem = { name: 'ADMIN', href: '/admin382013453sms/setup', icon: Shield };
+  const adminNavItem = { name: t('header.ADMIN'), href: '/admin382013453sms/setup', icon: Shield };
 
-  // Combine navigation items based on user authentication status
   const navItems = currentUser
     ? [
         ...commonNavItems,
         ...authNavItems,
-        // ...(isAdminEmail(currentUser?.email) ? [adminNavItem] : []), // Include Admin link if the user is an admin
       ]
     : [...commonNavItems, ...guestNavItems];
   return (
@@ -116,11 +112,7 @@ const Header = (props: {
               </span>
             </span>
           </button>
-          {/* Hamburger Toggle BTN */}
-
-          {/* <Link className="block flex-shrink-0 lg:hidden" to="/">
-            <img className="h-6" src={LogoIcon} alt="Logo" />
-          </Link> */}
+        
           
           <div className="flex lg:block hidden items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/" className="flex items-center gap-2">

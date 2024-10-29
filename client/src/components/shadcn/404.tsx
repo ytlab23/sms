@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { Button } from "./ui/button"
 import { AlertCircle } from 'lucide-react'
 import Logo from '../../../public/smsapp.svg'
+import { useTranslation } from 'react-i18next';
 
 const NotFound: React.FC = () => {
+  const {t} = useTranslation();
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-secondary">
       <div className="text-center space-y-6 max-w-md mx-auto px-4">
-        {/* Placeholder for your logo */}
+        
         <div className=" mx-auto  rounded-full flex items-center justify-center mb-8">
         <Link to="/" className="flex items-center gap-2">
           <img className="h-18" src={Logo} alt="Logo" />
@@ -17,23 +19,21 @@ const NotFound: React.FC = () => {
         </div>
 
         <AlertCircle className="w-16 h-16 mx-auto text-primary" />
-        <h1 className="text-4xl font-bold text-primary">404 - Page Not Found</h1>
+        <h1 className="text-4xl font-bold text-primary">{t("404.404 - Page Not Found")}</h1>
         <p className="text-xl text-muted-foreground">
-          Oops! We couldn't find the page you're looking for.
+          {t("404.Oops! We couldn't find the page you're looking for.")}
         </p>
         <p className="text-muted-foreground">
-          The page may have been moved, deleted, or never existed.
+      {t("404.The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.")}
         </p>
         <div className="pt-6 text-white">
           <Button asChild size="lg">
             <Link to="/">
-              Return to Home
+              {t("404.Go back to Home")}
             </Link>
           </Button>
         </div>
-        {/* <p className="text-sm text-muted-foreground pt-8">
-          If you believe this is an error, please contact our support team.
-        </p> */}
+       
       </div>
     </div>
   );

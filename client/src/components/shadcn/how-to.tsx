@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import {
@@ -12,61 +13,62 @@ import {
 } from 'lucide-react';
 
 export default function Component() {
+  const {t} = useTranslation();
   const steps = [
     {
       icon: <UserPlus className="h-6 w-6" />,
-      title: 'Sign Up',
-      description: 'Click on the "Sign Up" button to create your account.',
+      title: t("how.Sign Up"),
+      description: t("how.Click on the 'Sign Up' button to create your account."),
     },
     {
       icon: <LogIn className="h-6 w-6" />,
-      title: 'Log In',
+      title:t('how.Log In'),
       description:
-        'After signing up, log in to your account using your credentials.',
+        t('how.After signing up, log in to your account using your credentials.'),
     },
     {
       icon: <Globe className="h-6 w-6" />,
-      title: 'Select Country',
+      title: t('how.Select Country'),
       description:
-        'Navigate to the phone number selection section. Choose the country where you need a temporary phone number.',
+        t('how.Navigate to the phone number selection section. Choose the country where you need a temporary phone number.'),
     },
     {
       icon: <Phone className="h-6 w-6" />,
-      title: 'Choose a Service',
+      title: t('how.Choose a Service'),
       description:
-        'Select the specific service or platform (e.g., WhatsApp, Facebook) for which you need the number.',
+        t('how.Select the specific service or platform (e.g., WhatsApp, Facebook) for which you need the number.'),
     },
     {
       icon: <CreditCard className="h-6 w-6" />,
-      title: 'Purchase a Number',
+      title: t('how.Purchase a Number'),
       description:
-        'Browse the available numbers and select one. Proceed to payment and complete the purchase.',
+        t('how.Browse the available numbers and select one. Proceed to payment and complete the purchase.'),
     },
     {
       icon: <MessageSquare className="h-6 w-6" />,
-      title: 'Receive SMS',
+      title: t('how.Receive SMS'),
       description:
-        'Use the purchased number to receive SMS verification codes. Check your account dashboard for incoming messages.',
+        t('how.Use the purchased number to receive SMS verification codes. Check your account dashboard for incoming messages.'),
     },
     {
       icon: <CheckCircle className="h-6 w-6" />,
-      title: 'Verify',
+      title: t('how.Verify'),
       description:
-        'Enter the received verification code on the platform you are signing up for.',
+        t('how.Enter the received verification code on the platform you are signing up for.'),
     },
   ];
 
   const tips = [
     {
       icon: <ShieldCheck className="h-5 w-5 text-green-500" />,
-      text: 'Our service is verified and reliable. Issues like unavailable numbers or failed verifications are extremely rare.',
+      text: t('how.Our service is verified and reliable. Issues like unavailable numbers or failed verifications are extremely rare.'),
     },
   ];
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">
-        How to Buy a Temporary Phone Number for SMS App
+        {t('how.How to Buy a Temporary Phone Number for SMS App')}
       </h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {steps.map((step, index) => (
@@ -95,7 +97,7 @@ export default function Component() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ShieldCheck className="h-6 w-6 text-green-500" />
-            Service Assurance
+            {t('how.Service Assurance')}  
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -110,7 +112,7 @@ export default function Component() {
         </CardContent>
       </Card>
       <div className="mt-8 text-center text-white">
-        <Button size="lg">Get Started Now</Button>
+        <Button size="lg">{t('how.Get Started Now')}</Button>
       </div>
     </div>
   );

@@ -3,8 +3,10 @@ import { CheckCircle, ArrowRight } from 'lucide-react'
 import { Button } from "./ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card"
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export default function PaymentSuccess() {
+    const { t } = useTranslation()
     return (
         <div className=" bg-gradient-to-b  flex items-center justify-center p-4">
             <Card className="w-full max-w-md bg-green-200">
@@ -17,17 +19,18 @@ export default function PaymentSuccess() {
                     >
                         <CheckCircle className="w-16 h-16 text-green-500" />
                     </motion.div>
-                    <CardTitle className="text-2xl font-bold text-center mt-4">Payment Successful!</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-center mt-4">{t("payment.Payment Successful!")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="text-center text-gray-600">
-                        Thank you for your Topup. Your payment has been processed successfully.
+                    {t("payment.Thank you for your Topup. Your payment has been processed successfully.")}
+                        
                     </p>
                 </CardContent>
                 <CardFooter className="flex justify-center">
                     <Link to="/">
                         <Button className="w-full text-white">
-                            Return to Home
+                        {t("payment.Return to Home")} 
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                     </Link>

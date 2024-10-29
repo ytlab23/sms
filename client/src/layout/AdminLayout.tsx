@@ -1,18 +1,10 @@
 
 
-// export default AdminLayout;
 import React, { useState, ReactNode } from 'react';
-import Header from '../components/Header/index';
-import Sidebar from '../components/Sidebar/index';
-import { Input } from '../components/shadcn/ui/input';
-import { Button } from '../components/shadcn/ui/button';
-import { ChooseService } from '../components/shadcn/chooseservice';
-import ActionSidebar from '../components/ActionSideBar';
-import Footer from '../components/shadcn/footer';
+
 import { Toaster } from '../components/shadcn/ui/toaster';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from '../components/Sidebar/admin-sidebar';
-import AdminHeader from '../components/Header/admin-header';
 
 const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

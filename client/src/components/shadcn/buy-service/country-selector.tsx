@@ -6,6 +6,7 @@ import { Search, Star, RefreshCcw } from 'lucide-react';
 import { SelectedTile } from './SelectedTile';
 import { Country } from './types';
 import Loader2 from '../../../common/loader2';
+import { useTranslation } from 'react-i18next';
 
 interface CountrySelectorProps {
   selectedCountry: Country | null;
@@ -32,9 +33,11 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
   favorites,
   toggleFavorite,
 }) => {
+  
+  const {t} = useTranslation();
   return (
     <div className="p-4 space-y-4">
-      <h2 className="text-lg font-semibold">1. Select country</h2>
+      <h2 className="text-lg font-semibold">{t('actionsidebar.1.Select country')}</h2>
       {selectedCountry ? (
         <SelectedTile
           item={selectedCountry}
@@ -58,9 +61,9 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
 
       {errorLoadingCountries && !loadingCountries && (
         <div className="bg-white dark:bg-boxdark border-red-200 rounded p-4 flex items-center justify-between">
-          <span>Error loading countries</span>
+          <span>{t('actionsidebar.Error loading countries')}</span>
           <Button onClick={fetchCountries} variant="outline" size="sm">
-            <RefreshCcw className="w-4 h-4 mr-2" /> Retry
+            <RefreshCcw className="w-4 h-4 mr-2" /> {t('actionsidebar.Retry')}
           </Button>
         </div>
       )}

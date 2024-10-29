@@ -18,27 +18,24 @@ interface AdminProtectedRouteProps {
 }
 
 const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({ children }) => {
-  const { currentUser, loading } = useAuth(); // Get the current user from AuthContext
-  const location = useLocation(); // To maintain the current route for redirection
+  const { currentUser, loading } = useAuth();
+  const location = useLocation(); 
 
-  // Check if loading
   if (loading) {
-    return <div>Loading...</div>; // Show loading while checking auth
+    return <div>Loading...</div>; 
   }
 
-  // Check if the user is authenticated
   if (!currentUser) {
-    return <Navigate to="/signin" state={{ from: location }} />; // Redirect to sign-in if user is not logged in
+    return <Navigate to="/signin" state={{ from: location }} />; 
   }
 
-  // Check if the user is an admin
   const isAdmin = isAdminEmail(currentUser.email);
 
   if (!isAdmin) {
-    return <Navigate to="/" state={{ from: location }} />; // Redirect if user is not an admin
+    return <Navigate to="/" state={{ from: location }} />; 
   }
 
-  return children; // Render admin-protected content if user is an admin
+  return children;
 };
 
 export default AdminProtectedRoute;

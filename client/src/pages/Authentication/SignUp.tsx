@@ -5,15 +5,17 @@ import LogoDark from '../../../public/smsapp.svg';
 import Logo from '../../../public/smsapp.svg';
 import { createUserWithEmailAndPassword ,signInWithPopup, GoogleAuthProvider,AuthError, sendEmailVerification, signOut } from 'firebase/auth';
 import { auth } from '../../firebase/config';
-import { db } from '../../firebase/config'; // Firestore instance
-import { doc, getDoc, setDoc } from 'firebase/firestore'; // Firestore functions
+import { db } from '../../firebase/config'; 
+import { doc, getDoc, setDoc } from 'firebase/firestore'; 
 
 import Loader from '../../common/Loader';
 import { toast } from '../../components/shadcn/ui/use-toast';
+import { useTranslation } from 'react-i18next';
 const SignUp: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const navigate = useNavigate(); 
+  const {t} = useTranslation();
 
   const [username, setUsername] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -21,7 +23,6 @@ const SignUp: React.FC = () => {
   const [message, setMessage] = React.useState('');
   const [authLoading, setAuthLoading] = React.useState(false);
   React.useEffect(() => {
-    console.log('authLoading updated:', authLoading);
   }, [authLoading]);
   
   async function handleGoogleSignup(): Promise<void> {
@@ -32,137 +33,44 @@ const SignUp: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       
-      // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
 
-      // The signed-in user info.
       const user = result.user;
-      console.log('Google Sign-In Success:', user.email);
 
       setDoc(doc(db, 'users', user.uid), {
-        username: username, // replace this with your actual username state
+        username: username,
         email: user.email,
 
       });
       getDoc(doc(db, 'users', user.uid)).then((doc) => {   
         if (doc.exists()) {
-          console.log('Document data:', doc.data());
         } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!');
+          
         }
        });
        navigate('/'); 
 
-      // Optionally, you might want to handle additional user information or save it to your database.
 
     } catch (error) {
-      // Handle Errors here.
       const authError = error as AuthError;
       const errorCode = authError.code;
       const errorMessage = authError.message;
 
-      // The email of the user's account used.
       const email = authError.customData?.email;
 
-      // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(authError);
 
-      console.log('Google Sign-In Error:', errorMessage);
       if (errorCode === 'auth/account-exists-with-different-credential') {
-        console.log('An account already exists with the same email address but different credentials.');
       } else {
-        console.log('Error Code:', errorCode);
-        console.log('Error Message:', errorMessage);
+       
       }
     } finally {
-      setAuthLoading(false); // Stop loading
+      setAuthLoading(false); 
     }
   }
-//   async function handleSignup() {
-// // mae it log error if there the confirm password is not the same as the password
-   
-//     if (!email.includes('@')) {
-//       setMessage('Invalid email');
-//     return;
-//     }
-//   if (username === '' || email === '' || password === '' || confirmPassword === '' ) {
-//       setMessage('Please fill in all fields');
-//       return;
-//   }
-//   if (password.length < 6) {
-//     setMessage('Password must be at least 6 characters');
-//     return;
-//   }
- 
 
-//   if (password !== confirmPassword) {
-//     setMessage('Passwords do not match');
-//     console.log("error from password");
-//     return;
-//   }
-//     console.log(authLoading, 'before');
-//     console.log(authLoading, 'after');
-//     setAuthLoading(true);
-
-//     console.log(authLoading);
-//     console.log('handle it');
-
-//     await createUserWithEmailAndPassword(auth, email, password)
-//       .then( (userCredential) => {
-//         // Signed up successfully
-//         console.log('Success');
-//         console.log(authLoading, 'before success');
-
-//         setAuthLoading(false);
-//         console.log(authLoading, 'after success');
-//         if (auth.currentUser) {
-//           sendEmailVerification(auth.currentUser).then(()=>{
-//             alert("verify your email")
-//           })
-//         } else {
-//           console.error('No authenticated user found.');
-//         }
-
-//         const user = userCredential.user;
-//         console.log(user.email);
-//          setDoc(doc(db, 'users', user.uid), {
-//           username: username, // replace this with your actual username state
-//           email: user.email,
-
-//         });
-//         getDoc(doc(db, 'users', user.uid)).then((doc) => {   
-//           if (doc.exists()) {
-//             console.log('Document data:', doc.data());
-//           } else {
-//             // doc.data() will be undefined in this case
-//             console.log('No such document!');
-//           }
-//          });
-//          navigate('/');
-//       })
-//       .catch((error) => {
-//         setAuthLoading(false);
-
-//         const errorCode = error.code;
-//         const errorMessage = error.message;
-//         console.log(errorCode, errorMessage);
-
-//         if (errorCode === 'auth/email-already-in-use') {
-//           console.log(
-//             'This email is already registered. Please try logging in or use a different email.',
-//           );
-//           setMessage('This email is already registered. Please try logging in or use a different email.');
-//         } else {
-//           console.log(errorMessage);
-//         }
-
-//         console.log('Error:', errorCode, errorMessage);
-//       });
-//   }
 async function handleSignup() {
-  // Validate form inputs
   if (!email.includes('@')) {
     setMessage('Invalid email');
     return;
@@ -177,7 +85,6 @@ async function handleSignup() {
   }
   if (password !== confirmPassword) {
     setMessage('Passwords do not match');
-    console.log('error from password');
     return;
   }
 
@@ -194,22 +101,16 @@ async function handleSignup() {
         email: user.email,
       });
   
-      // Log user document data for testing
       const docSnap = await getDoc(doc(db, 'users', user.uid));
       if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data());
       } else {
-        console.log('No such document!');
       }
       await sendEmailVerification(auth.currentUser);
-      console.log('A verification email has been sent to your inbox. Please verify your email before logging in.');
     } else {
-      console.error('No authenticated user found.');
       setAuthLoading(false);
       return;
     }
 
-    // Immediately sign the user out
     await signOut(auth);
     toast({
       variant: 'success',
@@ -218,9 +119,7 @@ async function handleSignup() {
     });
     navigate('/auth/signin'); // Redirect to login after signing out
 
-    console.log('User signed out after registration. Email verification required.');
-
-    // Create user document in Firestore
+   
    
 
     setAuthLoading(false);
@@ -229,7 +128,6 @@ async function handleSignup() {
     const authError = error as AuthError;
     const errorCode = authError.code;
     const errorMessage = authError.message;
-    console.error('Error:', errorCode, errorMessage);
 
     if (errorCode === 'auth/email-already-in-use') {
       setMessage('This email is already registered. Please try logging in or use a different email.');
@@ -259,7 +157,7 @@ async function handleSignup() {
         </Link>
       </div>
               <p className="2xl:px-10">
-                Join us to simplify your SMS verifications
+              {t('auth.Join us to simplify your SMS verifications')} 
               </p>
 
               <span className="mt-15 inline-block">
@@ -391,13 +289,13 @@ async function handleSignup() {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               {/* <span className="mb-1.5 block font-medium">Start for free</span> */}
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign Up to SMS Verification
+              {t('auth.Sign Up to SMS Verification')} 
               </h2>
 
               <div>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Name
+                  {t('auth.Name')}  
                   </label>
                   <div className="relative">
                     <input
@@ -406,7 +304,7 @@ async function handleSignup() {
                       setUsername(e.target.value);
                     }}
                       type="text"
-                      placeholder="Enter your full name"
+                      placeholder={t('auth.Enter your full name')}
                       className="w-full  rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -436,7 +334,7 @@ async function handleSignup() {
 
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Email
+                  {t('auth.Email')}   
                   </label>
                   <div className="relative">
                     <input
@@ -446,7 +344,7 @@ async function handleSignup() {
                       }}
                       id="email"
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder={t('auth.Enter your email')}
                       className="w-full rounded-lg border  border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -472,7 +370,7 @@ async function handleSignup() {
 
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Password
+                  {t('auth.Password')}  
                   </label>
                   <div className="relative">
                     <input
@@ -482,7 +380,7 @@ async function handleSignup() {
                         setPassword(e.target.value);
                       }}
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder={t('auth.Enter your password')}  
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -512,7 +410,7 @@ async function handleSignup() {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                  {t('auth.Re-type Password')}   
                   </label>
                   <div className="relative">
                     <input
@@ -521,7 +419,7 @@ async function handleSignup() {
                       setConfirmPassword(e.target.value);
                     }}
                       type="password"
-                      placeholder="Re-enter your password"
+                      placeholder={t('auth.Re-enter your password')}
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -555,7 +453,7 @@ async function handleSignup() {
                     value="Create account"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   >
-                    {authLoading ? "Creating..." : "Create account"}
+                    {authLoading ? t('auth.Creating...') :t('auth.Create account')}
                   </button>
                 </div>
 
@@ -595,14 +493,14 @@ async function handleSignup() {
                       </defs>
                     </svg>
                   </span>
-                  Sign up with Google
+                  {t('auth.Sign up with Google')}  
                 </button>
 
                 <div className="mt-6 text-center">
                   <p>
-                    Already have an account?{' '}
+                  {t('auth.Already have an account?')} {' '}
                     <Link to="/auth/signin" className="text-primary">
-                      Sign in
+                    {t('auth.Sign in')}   
                     </Link>
                   </p>
                 </div>

@@ -1,14 +1,16 @@
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
+import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 
 export  default function Footer() {
+  const {t} = useTranslation();
   return (
     <footer className="bg-gray-900 border bg-white dark:bg-boxdark">
       <div className="max-w-6xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <h3 className="text-2xl font-bold">SMS App</h3>
-            <p className="text-gray-300">Your trusted partner for secure and reliable phone number verification services.</p>
+            <p className="text-gray-300">{t("footer.Your trusted partner for secure and reliable phone number verification services.")}</p>
             <div className="flex space-x-4">
               <NavLink to="/" className="hover:text-blue-400 transition-colors" aria-label="Facebook">
                 <Facebook />
@@ -25,27 +27,27 @@ export  default function Footer() {
             </div>
           </div>
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4">{t("footer.Quick Links")}</h4>
             <ul className="space-y-2">
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">Home</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">About Us</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">Services</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">Pricing</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">Contact</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Home")}</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.About Us")}</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Services")}</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Pricing")}</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Contact")}</NavLink></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-lg font-semibold mb-4">Services</h4>
+            <h4 className="text-lg font-semibold mb-4">{t("footer.Services")}</h4>
             <ul className="space-y-2">
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">SMS Verification</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">Virtual Numbers</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">API Integration</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">Bulk Verification</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">Enterprise Solutions</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.SMS Verification")}</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Virtual Numbers")}</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.API Integration")}</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Bulk Verification")}</NavLink></li>
+              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Enterprise Solutions")}</NavLink></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+            <h4 className="text-lg font-semibold mb-4">{t("footer.Contact Us")}</h4>
             <ul className="space-y-2">
               <li className="flex items-center">
                 <Mail className="mr-2 h-5 w-5" />
@@ -63,10 +65,10 @@ export  default function Footer() {
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} SMSVerify. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()}{t("footer.SMSApp. All rights reserved.")}</p>
           <div className="mt-2 space-x-4">
-            <NavLink to="/" className="hover:text-blue-400 transition-colors">Privacy Policy</NavLink>
-            <NavLink to="/" className="hover:text-blue-400 transition-colors">Terms of Service</NavLink>
+            <NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Privacy Policy")}</NavLink>
+            <NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Terms of Service")}</NavLink>
           </div>
         </div>
       </div>

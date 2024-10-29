@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
+import { useTranslation } from 'react-i18next';
 
 const faqs = [
   {
@@ -26,14 +27,15 @@ const faqs = [
 ]
 
 export  function FaqSection() {
+  const {t} = useTranslation();
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
       <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
-        Frequently Asked Questions
+        {t("faq.Frequently Asked Questions")}
       </h2>
       <div className="space-y-4">
         {faqs.map((faq, index) => (
-          <FAQItem key={index} question={faq.question} answer={faq.answer} />
+          <FAQItem key={index} question={t(`faq.${faq.question}`)} answer={t(`faq.${faq.answer}`)} />
         ))}
       </div>
     </div>

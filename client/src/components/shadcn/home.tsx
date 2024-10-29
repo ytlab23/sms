@@ -1,6 +1,7 @@
 import { Phone, Shield, Globe, Zap, CreditCard, Clock, Users, ThumbsUp } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface ServiceCardProps {
   icon: React.ReactNode;
@@ -15,66 +16,67 @@ interface FeatureProps {
 }
 
 export function Features() {
+  const {t} = useTranslation();
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold text-center mb-8">Welcome to SMSApp</h1>
+      <h1 className="text-4xl font-bold text-center mb-8">{t("home.Welcome to SMSApp")}</h1>
       
-      <p className="text-xl text-center mb-12">
-        Your trusted partner for secure and reliable phone number verification services.
+      <p className="text-xl text-center mb-12">{t("home.Your trusted partner for secure and reliable phone number verification services.")}
+        
       </p>
       
       <div className="grid md:grid-cols-2 gap-8">
         <ServiceCard 
           icon={<Phone className="w-12 h-12 text-blue-500" />}
-          title="Virtual Phone Numbers"
-          description="Access temporary phone numbers from over 190 countries for your verification needs."
+          title= {t("home.Virtual Phone Numbers")}
+          description={t("home.Access temporary phone numbers from over 190 countries for your verification needs.")}
         />
         <ServiceCard 
           icon={<Shield className="w-12 h-12 text-green-500" />}
-          title="Secure Verification"
-          description="Protect your privacy with our anonymous verification process for various online platforms."
+          title={t("home.Secure Verification")}
+          description={t("home.Protect your privacy with our anonymous verification process for various online platforms.")}
         />
         <ServiceCard 
           icon={<Globe className="w-12 h-12 text-purple-500" />}
-          title="Global Coverage"
-          description="Verify accounts on popular services like WhatsApp, Telegram, Google, and more."
+          title={t("home.Global Coverage")}
+          description={t("home.Verify accounts on popular services like WhatsApp, Telegram, Google, and more.")}
         />
         <ServiceCard 
           icon={<Zap className="w-12 h-12 text-yellow-500" />}
-          title="Instant Activation"
-          description="Get your virtual number instantly and complete verifications in minutes."
+          title={t("home.Instant Activation")}
+          description={t("home.Get your virtual number instantly and complete verifications in minutes.")}
         />
       </div>
       
       <div className="mt-16">
-        <h2 className="text-3xl font-bold text-center mb-8">Why Choose Us?</h2>
+        <h2 className="text-3xl font-bold text-center mb-8">{t("home.Why Choose Us?")}</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Feature
             icon={<CreditCard className="w-10 h-10 text-blue-500" />}
-            title="Affordable Rates"
-            description="Competitive pricing with various payment options to suit your needs."
+            title={t("home.Affordable Rates")}
+            description={t("home.Competitive pricing with various payment options to suit your needs.")}
           />
           <Feature
             icon={<Clock className="w-10 h-10 text-green-500" />}
-            title="24/7 Support"
-            description="Our dedicated team is always ready to assist you, anytime, anywhere."
+            title={t("home.24/7 Support")}
+            description={t("Our dedicated team is always ready to assist you, anytime, anywhere.")}
           />
           <Feature
             icon={<Users className="w-10 h-10 text-purple-500" />}
-            title="User-Friendly"
-            description="Intuitive interface designed for seamless user experience."
+            title={t("home.User-Friendly")}
+            description={t("home.Intuitive interface designed for seamless user experience.")}
           />
           <Feature
             icon={<ThumbsUp className="w-10 h-10 text-yellow-500" />}
-            title="Guaranteed Success"
-            description="Successful verifications or your money back, guaranteed."
+            title={t("home.Guaranteed Success")}
+            description={t("home.Successful verifications or your money back, guaranteed.")}
           />
         </div>
       </div>
       
       <div className="mt-12 text-center">
         <Link to= {"/ourservices"} className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors">
-          Get Started Now
+          {t("home.Get Started Now")}
         </Link>
       </div>
     </div>

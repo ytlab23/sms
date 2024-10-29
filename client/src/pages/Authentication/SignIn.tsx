@@ -13,6 +13,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { useTranslation } from 'react-i18next';
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = React.useState<string>('');
@@ -20,6 +21,7 @@ const SignIn: React.FC = () => {
   const [message, setMessage] = React.useState<string>('');
   const [authLoading, setAuthLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   function handleGoogleSignIn() {
     setAuthLoading(true);
@@ -29,7 +31,6 @@ const SignIn: React.FC = () => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
-        console.log('Google Sign-In Success:', user.email);
 
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
@@ -40,7 +41,6 @@ const SignIn: React.FC = () => {
             email: user.email,
             createdAt: new Date(),
           });
-          console.log('New user document created');
         }
 
         navigate('/'); // Redirect to the homepage
@@ -65,69 +65,19 @@ const SignIn: React.FC = () => {
             break;
         }
 
-        console.log('Google Sign-In Error:', errorMessage);
       })
       .finally(() => {
-        setAuthLoading(false); // Hide loading indicator
+        setAuthLoading(false); 
       });
   }
-  // function handleSignIn() {
-
-  //   if (!email.includes('@')) {
-  //     setMessage('Please enter a valid email');
-  //     console.log('Please enter a valid email');
-  //     return;
-  //   }
-  //   if (password.length < 6) {
-  //     setMessage('Password must be at least 6 characters');
-  //     console.log('Password must be at least 6 characters');
-  //     return;
-  //   }
-  //   signInWithEmailAndPassword(auth, email, password)
-  //   .then((userCredential) => {
-  //     // Signed in
-  //     const user = userCredential.user;
-  //     console.log("auth success");
-  //     navigate('/');
-  //     // Additional actions on successful sign-in
-  //   })
-  //   .catch((error) => {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-
-  //     // Handle specific error codes
-  //     switch (errorCode) {
-  //       case 'auth/user-not-found':
-  //         setMessage('Account does not exist. Please sign up first.');
-  //         break;
-  //       case 'auth/wrong-password':
-  //         setMessage('Incorrect password. Please try again.');
-  //         break;
-  //       case 'auth/invalid-email':
-  //         setMessage('The email address is not valid. Please check and try again.');
-  //         break;
-  //       case 'auth/invalid-credential':
-  //         setMessage('Invalid credentials');
-  //         break;
-
-  //       default:
-  //         setMessage("invalid credentials");
-  //         break;
-  //     }
-
-  //     console.log(errorMessage);
-  //   });
-
-  // }
+ 
   function handleSignIn() {
     if (!email.includes('@')) {
       setMessage('Please enter a valid email');
-      console.log('Please enter a valid email');
       return;
     }
     if (password.length < 6) {
       setMessage('Password must be at least 6 characters');
-      console.log('Password must be at least 6 characters');
       return;
     }
 
@@ -135,40 +85,27 @@ const SignIn: React.FC = () => {
       .then((userCredential) => {
         const user = userCredential.user;
 
-        // Check if the email is verified
         if (!user.emailVerified) {
           setMessage('Please verify your email before logging in.');
-          console.log(
-            'Your account needs verification. Please check your email and verify your account.',
-          );
-          // alert('Your account needs verification. Please check your email and verify your account.');
-
-          // Send verification email if needed
+         
           sendEmailVerification(user)
             .then(() => {
-              // alert('A new verification email has been sent to your inbox.');
-              console.log(
-                'A new verification email has been sent to your inbox.',
-              );
+             
             })
             .catch((error) => {
-              console.error('Error sending verification email:', error.message);
             });
 
-          // Sign out the user since their email is not verified
           signOut(auth);
           return;
         }
 
-        // Email is verified, proceed with login
-        console.log('auth success');
+     
         navigate('/');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
 
-        // Handle specific error codes
         switch (errorCode) {
           case 'auth/user-not-found':
             setMessage('Account does not exist. Please sign up first.');
@@ -189,7 +126,6 @@ const SignIn: React.FC = () => {
             break;
         }
 
-        console.log(errorMessage);
       });
   }
 
@@ -213,7 +149,8 @@ const SignIn: React.FC = () => {
               </div>
 
               <p className="2xl:px-10">
-                Welcome back! Your secure SMS verifications await
+                {t('auth.Welcome back! Your secure SMS verifications await')}
+               
               </p>
 
               <span className="mt-15 inline-block">
@@ -345,13 +282,13 @@ const SignIn: React.FC = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               {/* <span className="mb-1.5 block font-medium">Start for free</span> */}
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Welcome back
+              {t('auth.Welcome back')}   
               </h2>
 
               <form>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Email
+                  {t('auth.Email')}  
                   </label>
                   <div className="relative">
                     <input
@@ -360,7 +297,7 @@ const SignIn: React.FC = () => {
                         setEmail(e.target.value);
                       }}
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder={t('auth.Enter your email')} 
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -386,7 +323,7 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Password
+                  {t('auth.Password')}  
                   </label>
                   <div className="relative">
                     <input
@@ -395,7 +332,7 @@ const SignIn: React.FC = () => {
                         setPassword(e.target.value);
                       }}
                       type="password"
-                      placeholder="6+ Characters, 1 Capital letter"
+                      placeholder={t('auth.6+ Characters, 1 Capital letter')}
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -430,7 +367,7 @@ const SignIn: React.FC = () => {
                       e.preventDefault();
                       handleSignIn();
                     }}
-                    value="Sign In"
+                    value={t('auth.Sign In')}  
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   />
                 </div>
@@ -475,14 +412,14 @@ const SignIn: React.FC = () => {
                       </defs>
                     </svg>
                   </span>
-                  Sign in with Google
+                  {t('auth.Sign in with Google')} 
                 </button>
 
                 <div className="mt-6 text-center">
                   <p>
-                    Don’t have any account?{' '}
+                  {t('auth.Don’t have any account?')}   {' '}
                     <Link to="/auth/signup" className="text-primary">
-                      Sign Up
+                      {t('auth.Sign Up')}
                     </Link>
                   </p>
                 </div>
