@@ -565,6 +565,7 @@ interface PageContent {
   heading: string;
   bodyText: string;
   ctaText: string;
+  service: String
   faqs: FAQ[];
 }
 
@@ -596,7 +597,8 @@ export default function AdminInternalPageCreator() {
       [lang.code]: { 
         heading: '', 
         bodyText: '', 
-        ctaText: '', 
+        ctaText: '',
+        
         faqs: [{ question: '', answer: '' }]
       }
     }), {})
@@ -629,6 +631,7 @@ export default function AdminInternalPageCreator() {
             if (data.pageContent) {
               setPageContent(data.pageContent as PageData);
             }
+            console.log(data.service,"lll")
           } else {
             toast({
               title: "Page not found",
@@ -935,9 +938,10 @@ export default function AdminInternalPageCreator() {
 
           <div>
             <Label htmlFor="service-select">Service</Label>
-            <Select value={service} onValueChange={setService}>
+            <Select value={service} onChange={setService} >
+              
               <SelectTrigger id="service-select">
-                <SelectValue placeholder="Select Service" />
+                <SelectValue  placeholder="Select Service" />
               </SelectTrigger>
               <SelectContent className="z-9999 bg-slate-100">
                 {services.map((service) => (
@@ -948,7 +952,7 @@ export default function AdminInternalPageCreator() {
           </div>
 
           <div>
-            <Label htmlFor="heading">Heading</Label>
+            <Label htmlFor="heading">Heading page</Label>
             <Input
               id="heading"
               placeholder="Heading"

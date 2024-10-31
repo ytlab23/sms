@@ -245,10 +245,66 @@ export default function InternalPage() {
               <div className="p-8">
                 <h2 className="text-3xl font-bold mb-6 text-gray-900">{t('service.About Our Service')}</h2>
                 {/* <p className="mb-8 text-lg text-gray-700 leading-relaxed">{pageData.bodyText || t('service.Description Not Available')}</p> */}
-                <div 
-        className="mb-8 text-lg text-gray-700 leading-relaxed"
+                <div className="container mx-auto px-4 py-8">
+      <div 
+        className="rich-text-content mb-8 text-lg text-gray-700 dark:text-gray-300 leading-relaxed"
         dangerouslySetInnerHTML={createMarkup(pageData.bodyText || t('service.Description Not Available'))}
       />
+      {/* ... other content */}
+
+      <style jsx>{`
+        .rich-text-content a {
+          color: #3b82f6;
+          text-decoration: underline;
+          transition: color 0.3s ease;
+        }
+        .rich-text-content a:hover {
+          color: #1d4ed8;
+        }
+        .rich-text-content a:visited {
+          color: #8b5cf6;
+        }
+        .rich-text-content h2 {
+          font-size: 1.5em;
+          font-weight: bold;
+          margin-top: 1em;
+          margin-bottom: 0.5em;
+        }
+        .rich-text-content h3 {
+          font-size: 1.25em;
+          font-weight: bold;
+          margin-top: 1em;
+          margin-bottom: 0.5em;
+        }
+        .rich-text-content p {
+          margin-bottom: 1em;
+        }
+        .rich-text-content ul, .rich-text-content ol {
+          margin-bottom: 1em;
+          padding-left: 2em;
+        }
+        .rich-text-content li {
+          margin-bottom: 0.5em;
+        }
+        .rich-text-content img {
+          max-width: 100%;
+          height: auto;
+          margin: 1em 0;
+        }
+        @media (prefers-color-scheme: dark) {
+          .rich-text-content a {
+            color: #60a5fa;
+          }
+          .rich-text-content a:hover {
+            color: #93c5fd;
+          }
+          .rich-text-content a:visited {
+            color: #a78bfa;
+          }
+        }
+      `}</style>
+    </div>
+
                 <ul className="space-y-4 mb-8">
                   {pageData.features?.length ? (
                     pageData.features.map((feature, index) => (
@@ -258,7 +314,7 @@ export default function InternalPage() {
                       </li>
                     ))
                   ) : (
-                    <li>{t('service.No Features Available')}</li>
+                    <></>
                   )}
                 </ul>
                 <div className="mt-8 ">
