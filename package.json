@@ -1,13 +1,17 @@
 {
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^43.3.0",
+    "@ckeditor/ckeditor5-react": "^9.3.1",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-toast": "^1.2.1",
+    "ckeditor4-react": "^5.2.0",
     "i18next": "^23.15.2",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^2.6.2",
-    "react-i18next": "^15.0.2"
+    "react-i18next": "^15.0.2",
+    "react-quill": "^2.0.0"
   }
 }

@@ -13,7 +13,7 @@ import axios from 'axios'
 import { useToast } from './ui/use-toast'
 import { ToastAction } from './ui/toast'
 import { useAuth } from '../../contexts/authcontext'
-
+import DOMPurify from 'dompurify';
 interface PageData {
   heading: string
   bodyText: string
@@ -41,7 +41,9 @@ export default function InternalPage() {
   const [failedToBuy, setFailedToBuy] = useState(false)
   const [price, setPrice] = useState<number | null>(null)
   const { currentUser } = useAuth();
-
+  const createMarkup = (html: string) => {
+    return { __html: DOMPurify.sanitize(html) };
+  };
   useEffect(() => {
     const fetchPageData = async () => {
       try {
@@ -242,7 +244,11 @@ export default function InternalPage() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="p-8">
                 <h2 className="text-3xl font-bold mb-6 text-gray-900">{t('service.About Our Service')}</h2>
-                <p className="mb-8 text-lg text-gray-700 leading-relaxed">{pageData.bodyText || t('service.Description Not Available')}</p>
+                {/* <p className="mb-8 text-lg text-gray-700 leading-relaxed">{pageData.bodyText || t('service.Description Not Available')}</p> */}
+                <div 
+        className="mb-8 text-lg text-gray-700 leading-relaxed"
+        dangerouslySetInnerHTML={createMarkup(pageData.bodyText || t('service.Description Not Available'))}
+      />
                 <ul className="space-y-4 mb-8">
                   {pageData.features?.length ? (
                     pageData.features.map((feature, index) => (

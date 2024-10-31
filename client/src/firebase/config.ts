@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore';
+// In your firebase/config.ts file
+import { getStorage } from "firebase/storage";
+
+// ... (existing Firebase app initialization)
+
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 const  firebaseConfig = {
@@ -20,4 +25,6 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
  const db = getFirestore(app);
-export {auth,app,db}
+ const storage = getStorage(app);
+
+export {auth,app,db,storage}

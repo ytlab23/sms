@@ -123,10 +123,10 @@ useEffect(() => {
           >
             <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
-                <CardTitle className="text-primary">{page.title}</CardTitle>
+                <CardTitle className="text-primary">{page.slug}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">{page.description}</p>
+                <p className="text-muted-foreground mb-4">{page.title}</p>
                 <div className="flex flex-wrap gap-2">
                   {page.tags.map((tag: string, index: number) => (
                     <Badge
