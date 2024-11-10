@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 
 export  default function Footer() {
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
   return (
     <footer className="bg-gray-900 border bg-white dark:bg-boxdark">
       <div className="max-w-6xl mx-auto px-4 py-16">
@@ -12,16 +12,16 @@ export  default function Footer() {
             <h3 className="text-2xl font-bold">SMS App</h3>
             <p className="text-gray-300">{t("footer.Your trusted partner for secure and reliable phone number verification services.")}</p>
             <div className="flex space-x-4">
-              <NavLink to="/" className="hover:text-blue-400 transition-colors" aria-label="Facebook">
+              <NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors" aria-label="Facebook">
                 <Facebook />
               </NavLink>
-              <NavLink to="/" className="hover:text-blue-400 transition-colors" aria-label="Twitter">
+              <NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors" aria-label="Twitter">
                 <Twitter />
               </NavLink>
-              <NavLink to="/" className="hover:text-blue-400 transition-colors" aria-label="Instagram">
+              <NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors" aria-label="Instagram">
                 <Instagram />
               </NavLink>
-              <NavLink to="/" className="hover:text-blue-400 transition-colors" aria-label="NavLinkedIn">
+              <NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors" aria-label="NavLinkedIn">
                 <Linkedin />
               </NavLink>
             </div>
@@ -29,21 +29,21 @@ export  default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">{t("footer.Quick Links")}</h4>
             <ul className="space-y-2">
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Home")}</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.About Us")}</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Services")}</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Pricing")}</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Contact")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Home")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.About Us")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Services")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Pricing")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Contact")}</NavLink></li>
             </ul>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">{t("footer.Services")}</h4>
             <ul className="space-y-2">
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.SMS Verification")}</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Virtual Numbers")}</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.API Integration")}</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Bulk Verification")}</NavLink></li>
-              <li><NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Enterprise Solutions")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.SMS Verification")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Virtual Numbers")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.API Integration")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Bulk Verification")}</NavLink></li>
+              <li><NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Enterprise Solutions")}</NavLink></li>
             </ul>
           </div>
           <div>
@@ -67,8 +67,8 @@ export  default function Footer() {
         <div className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400">
           <p>&copy; {new Date().getFullYear()}{t("footer.SMSApp. All rights reserved.")}</p>
           <div className="mt-2 space-x-4">
-            <NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Privacy Policy")}</NavLink>
-            <NavLink to="/" className="hover:text-blue-400 transition-colors">{t("footer.Terms of Service")}</NavLink>
+            <NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Privacy Policy")}</NavLink>
+            <NavLink to={`${i18n.language}/`} className="hover:text-blue-400 transition-colors">{t("footer.Terms of Service")}</NavLink>
           </div>
         </div>
       </div>

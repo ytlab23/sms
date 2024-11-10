@@ -17,7 +17,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const { pathname } = location;
 
   const { currentUser } = useAuth(); 
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
@@ -71,25 +71,37 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     return adminEmails?.includes(normalizedEmail) || false;
   };
   
+  // const commonNavItems = [
+  //   { name: t('sidebar.HOME'), href: '/', icon: Home },
+  //   { name: t('sidebar.FAQ'), href: '/faq', icon: HelpCircle },
+  //   { name: t('sidebar.SERVICES'), href: '/ourservices', icon: Server },
+  //   { name: t('sidebar.STATISTICS'), href: '/statistics', icon: BarChart4Icon },
+  //   { name: t('sidebar.HOW TO BUY'), href: '/howtobuy', icon: BookOpen },
+  // ];
   const commonNavItems = [
-    { name: t('sidebar.HOME'), href: '/', icon: Home },
-    { name: t('sidebar.FAQ'), href: '/faq', icon: HelpCircle },
-    { name: t('sidebar.SERVICES'), href: '/ourservices', icon: Server },
-    { name: t('sidebar.STATISTICS'), href: '/statistics', icon: BarChart4Icon },
-    { name: t('sidebar.HOW TO BUY'), href: '/howtobuy', icon: BookOpen },
+    { name: t("header.HOME"), href: `${i18n.language}/`, icon: Home },
+    { name: t("header.FAQ"), href: `${i18n.language}/${t("urls.faq")}`, icon: HelpCircle },
+    { name: t('header.SERVICES'), href: `${i18n.language}/${t("urls.ourservices")}` , icon: Server },
+    { name: t('header.STATISTICS'), href: `${i18n.language}/${t("urls.statistics")}`, icon: BarChart4Icon },
+    { name: t('header.HOW TO BUY'), href: `${i18n.language}/${t("urls.howtobuy")}`, icon: BookOpen }, 
   ];
   
+  // const guestNavItems = [
+  //   { name: t('sidebar.SIGN UP'), href: '/auth/signup', icon: UserPlus },
+  //   { name: t('sidebar.LOGIN'), href: '/auth/signin', icon: LogIn },
+  // ];
   const guestNavItems = [
-    { name: t('sidebar.SIGN UP'), href: '/auth/signup', icon: UserPlus },
-    { name: t('sidebar.LOGIN'), href: '/auth/signin', icon: LogIn },
+    { name: t('header.SIGN UP'), href: `${i18n.language}/${t("urls.auth/signup")}`, icon: UserPlus },
+    { name: t('header.LOGIN'), href: `${i18n.language}/${t("urls.auth/signin")}`, icon: LogIn },
   ];
   
   const authNavItems = [
-    { name: t('sidebar.ACCOUNT SETTING'), href: '/settings', icon: Settings },
-    { name: t('sidebar.YOUR ORDERS'), href: '/orders', icon: ShoppingBag },
+    { name: t('sidebar.ACCOUNT SETTING'), href: `${i18n.language}/${t("urls.settings")}`, icon: Settings },
+    { name: t('sidebar.YOUR ORDERS'), href: `${i18n.language}/${t("urls.orders")}`, icon: ShoppingBag },
   ];
   
-  const adminNavItem = { name: t('sidebar.ADMIN'), href: '/admin382013453sms/setup', icon: Shield };
+  // const adminNavItem = { name: t('sidebar.ADMIN'), href: '/admin382013453sms/setup', icon: Shield };
+  const adminNavItem = { name: t('header.ADMIN'), href: '/admin382013453sms/setup', icon: Shield };
   
   const navItems = currentUser
     ? [
@@ -109,7 +121,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
        <div className="flex items-center justify-between gap-2 ">
-        <NavLink to="/" className="flex items-center gap-2">
+        <NavLink to={`${i18n.language}/`} className="flex items-center gap-2">
           <img className="h-8" src={Logo} alt="Logo" />
           <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
         </NavLink>
@@ -162,7 +174,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-boxdark-2'
                       }`}
                   >
-                    <item.icon className="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110" />
+                    <item.icon className="w-4 text-blue-600 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110" />
                     <span className="relative ">
                       {item.name}
                       <span className="absolute inset-x-0 bottom-0 h-0.5 bg-blue-600 transform origin-left scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>

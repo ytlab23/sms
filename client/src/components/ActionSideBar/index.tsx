@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../../../public/smsapp.svg';
 
 import { ChooseService } from '../shadcn/chooseservice';
+import { useTranslation } from 'react-i18next';
 
 interface ActionSidebarProps {
   actionSidebarOpen: boolean;
@@ -18,7 +19,8 @@ const ActionSidebar = ({
 
   const trigger = useRef<any>(null);
   const actionSidebar = useRef<any>(null);
-  
+  const { t,i18n } = useTranslation();
+
 
     
   return (
@@ -32,7 +34,7 @@ const ActionSidebar = ({
     >
       {/* <!-- ASIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 ml-8">
-        <NavLink to="/" className="flex items-center gap-2">
+        <NavLink to={`${i18n.language}/`}className="flex items-center gap-2">
           <img className="h-12" src={Logo} alt="Logo" />
           <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
         </NavLink>

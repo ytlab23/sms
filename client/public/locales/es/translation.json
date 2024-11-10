@@ -1,73 +1,91 @@
-
-  {
-    "header": {
-      "Account Settings": "Config. Cuenta",
-      "Topup Balance": "Recargar Saldo",
-      "Admin": "Admin",
-      "Log Out": "Cerrar Sesión",
-      "HOME": "INICIO",
-      "FAQ": "FAQ",
-      "SERVICES": "SERVICIOS",
-      "STATISTICS": "ESTADÍSTICAS",
-      "HOW TO BUY": "CÓMO COMPRAR",
-      "SIGN UP": "REGISTRARSE",
-      "LOGIN": "INICIAR SESIÓN",
-      "YOUR ORDERS": "TUS PEDIDOS",
-      "ADMIN": "ADMIN",
-      "Credit:": "Crédito:"
-    },
-    "actionsidebar": {
-      "1.Select country": "1.Seleccionar país",
-      "Error loading countries": "Error al cargar países",
-      "Retry": "Reintentar",
-      "Price": "Precio",
-      "2.Select service": "2.Seleccionar servicio",
-      "Error loading services": "Error al cargar servicios",
-      "Go to Login": "Ir a Iniciar Sesión",
-      "Go to Payment": "Ir a Pago",
-      "Try again": "Intentar de nuevo",
-      "Buy number": "Comprar número"
-    }
-    ,
-    
-      "404": {
-        "404 - Page Not Found": "404 - Página No Encontrada",
-        "Oops! We couldn't find the page you're looking for.": "¡Oops! No pudimos encontrar la página que buscas.",
-        "The page may have been moved, deleted, or never existed.": "La página puede haber sido movida, eliminada o nunca haber existido.",
-        "Go back to Home": "Volver a Inicio"
-      },
-      "faq": {
-        "Frequently Asked Questions": "Preguntas Frecuentes",
-        "How does SMS verification work?": "¿Cómo funciona la verificación por SMS?",
-        "SMS verification works by providing you with a temporary phone number. When you need to verify an account, you use this number to receive the verification code. Once you receive the code, you enter it into the service you're trying to verify, completing the process.": "La verificación SMS funciona proporcionando un número temporal. Usas este número para recibir el código de verificación y luego lo ingresas en el servicio que deseas verificar, completando el proceso.",
-        "Is this service legal?": "¿Es este servicio legal?",
-        "Yes, our service is completely legal. We provide virtual phone numbers for legitimate verification purposes. However, it's the user's responsibility to comply with the terms of service of the platforms they're verifying for.": "Sí, nuestro servicio es completamente legal. Proveemos números virtuales para fines de verificación legítimos. Es responsabilidad del usuario cumplir con los términos de servicio de las plataformas que verifica.",
-        "How long can I use a virtual number?": "¿Cuánto tiempo puedo usar un número virtual?",
-        "The duration depends on the package you choose. Typically, you can use a number for the time it takes to receive and enter the verification code, which is usually a matter of minutes. Some packages may offer extended usage times.": "La duración depende del paquete elegido. Generalmente, puedes usar un número por el tiempo necesario para recibir e ingresar el código, usualmente unos minutos. Algunos paquetes pueden ofrecer tiempos de uso extendidos.",
-        "What if I don't receive the verification code?": "¿Qué pasa si no recibo el código de verificación?",
-        "If you don't receive the verification code within a few minutes, you can request a new code from the service you're verifying with. If issues persist, our 24/7 customer support team is available to assist you.": "Si no recibes el código de verificación en unos minutos, puedes solicitar uno nuevo en el servicio que verificas. Si persisten los problemas, nuestro equipo de soporte 24/7 está disponible para ayudarte.",
-        "Which payment methods do you accept?": "¿Qué métodos de pago aceptan?",
-        "We accept a wide range of payment methods including credit cards, PayPal, and various cryptocurrencies. Check our payment page for a full list of accepted payment methods.": "Aceptamos varios métodos de pago, incluidas tarjetas de crédito, PayPal y diversas criptomonedas. Revisa nuestra página de pagos para la lista completa."
-      },
-      "footer": {
-        "Your trusted partner for secure and reliable phone number verification services.": "Tu socio de confianza para servicios seguros y confiables de verificación de números telefónicos.",
-        "Quick Links": "Enlaces Rápidos",
-        "Home": "Inicio",
-        "About Us": "Sobre Nosotros",
-        "Services": "Servicios",
-        "Pricing": "Precios",
-        "Contact": "Contacto",
-        "SMS Verification": "Verificación SMS",
-        "Virtual Numbers": "Números Virtuales",
-        "API Integration": "Integración API",
-        "Bulk Verification": "Verificación Masiva",
-        "Enterprise Solutions": "Soluciones Empresariales",
-        "Contact Us": "Contáctanos",
-        "SMSApp. All rights reserved.": "SMSApp. Todos los derechos reservados.",
-        "Privacy Policy": "Política de Privacidad",
-        "Terms of Service": "Términos de Servicio"
-      },
-      "home": {
+{
+  "header": {
+    "Account Settings": "Config. Cuenta",
+    "Topup Balance": "Recargar Saldo",
+    "Admin": "Admin",
+    "Log Out": "Cerrar Sesión",
+    "HOME": "INICIO",
+    "FAQ": "FAQ",
+    "SERVICES": "SERVICIOS",
+    "STATISTICS": "ESTADÍSTICAS",
+    "HOW TO BUY": "CÓMO COMPRAR",
+    "SIGN UP": "REGISTRARSE",
+    "LOGIN": "INICIAR SESIÓN",
+    "YOUR ORDERS": "TUS PEDIDOS",
+    "ADMIN": "ADMIN",
+    "Credit:": "Crédito:"
+  },
+  "actionsidebar": {
+    "title": "Cambiar Primera Opción",
+    "Find website or app": "Encontrar sitio web o aplicación",
+    "Switch To Country First": "Cambiar a País Primero",
+    "Switch To Service First": "Cambiar a Servicio Primero",
+    "See More": "Ver Más",
+    "See Less": "Ver Menos",
+    "Find country": "Encontrar País",
+    "Go to login": "Ir a Iniciar Sesión",
+    "Authentication Required": "Autenticación Requerida",
+    "Please Login": "Por Favor Inicie Sesión",
+    "Selection Required": "Selección Requerida",
+    "Select Country And Service": "Seleccionar País y Servicio",
+    "Purchase Complete": "Compra Completa",
+    "Service is Ready": "¡Servicio Listo!",
+    "Insufficient Balance": "Saldo Insuficiente",
+    "Top Up Required": "Recarga Requerida",
+    "Go To Payment": "Ir a Pago",
+    "Purchase Failed": "Compra Fallida",
+    "Unknown Error": "Error Desconocido",
+    "Try Again Later": "Intenta de Nuevo Más Tarde",
+    "Success": "Éxito",
+    "1.Select country": "Seleccionar país",
+    "Error loading countries": "Error al cargar países",
+    "Retry": "Reintentar",
+    "Price": "Precio",
+    "2.Select service": "Seleccionar servicio",
+    "Error loading services": "Error al cargar servicios",
+    "Go to Login": "Ir a Iniciar Sesión",
+    "Go to Payment": "Ir a Pago",
+    "Try again": "Intentar de nuevo",
+    "Buy number": "Comprar número"
+  },
+  "404": {
+    "404 - Page Not Found": "404 - Página No Encontrada",
+    "Oops! We couldn't find the page you're looking for.": "¡Oops! No pudimos encontrar la página que buscas.",
+    "The page may have been moved, deleted, or never existed.": "La página puede haber sido movida, eliminada o nunca haber existido.",
+    "Go back to Home": "Volver a Inicio"
+  },
+  "faq": {
+    "Frequently Asked Questions": "Preguntas Frecuentes",
+    "How does SMS verification work?": "¿Cómo funciona la verificación por SMS?",
+    "SMS verification works by providing you with a temporary phone number. When you need to verify an account, you use this number to receive the verification code. Once you receive the code, you enter it into the service you're trying to verify, completing the process.": "La verificación SMS funciona proporcionando un número temporal. Usas este número para recibir el código de verificación y luego lo ingresas en el servicio que deseas verificar, completando el proceso.",
+    "Is this service legal?": "¿Es este servicio legal?",
+    "Yes, our service is completely legal. We provide virtual phone numbers for legitimate verification purposes. However, it's the user's responsibility to comply with the terms of service of the platforms they're verifying for.": "Sí, nuestro servicio es completamente legal. Proveemos números virtuales para fines de verificación legítimos. Es responsabilidad del usuario cumplir con los términos de servicio de las plataformas que verifica.",
+    "How long can I use a virtual number?": "¿Cuánto tiempo puedo usar un número virtual?",
+    "The duration depends on the package you choose. Typically, you can use a number for the time it takes to receive and enter the verification code, which is usually a matter of minutes. Some packages may offer extended usage times.": "La duración depende del paquete elegido. Generalmente, puedes usar un número por el tiempo necesario para recibir e ingresar el código, usualmente unos minutos. Algunos paquetes pueden ofrecer tiempos de uso extendidos.",
+    "What if I don't receive the verification code?": "¿Qué pasa si no recibo el código de verificación?",
+    "If you don't receive the verification code within a few minutes, you can request a new code from the service you're verifying with. If issues persist, our 24/7 customer support team is available to assist you.": "Si no recibes el código de verificación en unos minutos, puedes solicitar uno nuevo en el servicio que verificas. Si persisten los problemas, nuestro equipo de soporte 24/7 está disponible para ayudarte.",
+    "Which payment methods do you accept?": "¿Qué métodos de pago aceptan?",
+    "We accept a wide range of payment methods including credit cards, PayPal, and various cryptocurrencies. Check our payment page for a full list of accepted payment methods.": "Aceptamos varios métodos de pago, incluidas tarjetas de crédito, PayPal y diversas criptomonedas. Revisa nuestra página de pagos para la lista completa."
+  },
+  "footer": {
+    "Your trusted partner for secure and reliable phone number verification services.": "Tu socio de confianza para servicios seguros y confiables de verificación de números telefónicos.",
+    "Quick Links": "Enlaces Rápidos",
+    "Home": "Inicio",
+    "About Us": "Sobre Nosotros",
+    "Services": "Servicios",
+    "Pricing": "Precios",
+    "Contact": "Contacto",
+    "SMS Verification": "Verificación SMS",
+    "Virtual Numbers": "Números Virtuales",
+    "API Integration": "Integración API",
+    "Bulk Verification": "Verificación Masiva",
+    "Enterprise Solutions": "Soluciones Empresariales",
+    "Contact Us": "Contáctanos",
+    "SMSApp. All rights reserved.": "SMSApp. Todos los derechos reservados.",
+    "Privacy Policy": "Política de Privacidad",
+    "Terms of Service": "Términos de Servicio"
+  },
+  "home": {
     "Welcome to SMSApp": "Bienvenido a SMSApp",
     "Your trusted partner for secure and reliable phone number verification services.": "Tu socio de confianza para servicios seguros y confiables de verificación de números.",
     "Virtual Phone Numbers": "Números Virtuales",
@@ -123,6 +141,9 @@
     "Search orders...": "Buscar pedidos..."
   },
   "sms": {
+    "Total Orders": "Pedidos Totales",
+    "SMS Codes": "Códigos SMS",
+    "Actions": "Acciones",
     "SMS": "SMS",
     "Number Details": "Detalles del Número",
     "Number": "Número",
@@ -224,8 +245,43 @@
     "Confirm New Password": "Confirmar Nueva Contraseña",
     "Processing...": "Procesando...",
     "Reset Password": "Restablecer Contraseña"
+  },
+  "app": {
+    "Faq": "Preguntas Frecuentes",
+    "Pay": "Pagar",
+    "Statistics": "Estadísticas",
+    "Our Services": "Nuestros Servicios",
+    "Account Settings": "Configuración de la Cuenta",
+    "Your Orders": "Tus Pedidos",
+    "Sign In": "Iniciar Sesión",
+    "Sign Up": "Registrarse",
+    "How to Buy": "Cómo Comprar",
+    "Your SMS": "Tus SMS"
+  },
+  "urls": {
+    "home": "",
+    "faq": "preguntasfrecuentes",
+    "ourservices": "nuestrosservicios",
+    "statistics": "estadisticas",
+    "howtobuy": "comocomprar",
+    "auth/signup": "auth/registrarse",
+    "auth/signin": "auth/iniciarsesion",
+    "orders": "pedidos",
+    "pay": "pagar",
+    "settings": "configuracioncuenta",
+    "sms": "sms"
+  },
+  "reverseUrls": {
+    "": "home",
+    "preguntasfrecuentes": "faq",
+    "nuestrosservicios": "ourservices",
+    "estadisticas": "statistics",
+    "comocomprar": "howtobuy",
+    "auth/registrarse": "auth/signup",
+    "auth/iniciarsesion": "auth/signin",
+    "pedidos": "orders",
+    "pagar": "pay",
+    "configuracioncuenta": "settings",
+    "sms": "sms"
   }
-    
-    
-  }
-  
+}

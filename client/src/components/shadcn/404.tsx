@@ -6,13 +6,13 @@ import Logo from '../../../public/smsapp.svg'
 import { useTranslation } from 'react-i18next';
 
 const NotFound: React.FC = () => {
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-secondary">
       <div className="text-center space-y-6 max-w-md mx-auto px-4">
         
         <div className=" mx-auto  rounded-full flex items-center justify-center mb-8">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to={ `${i18n.language}/`} className="flex items-center gap-2">
           <img className="h-18" src={Logo} alt="Logo" />
           <h1 className="font-bold text-4xl text-blue-600">SmsApp</h1>
         </Link>
@@ -28,7 +28,7 @@ const NotFound: React.FC = () => {
         </p>
         <div className="pt-6 text-white">
           <Button asChild size="lg">
-            <Link to="/">
+            <Link to={ `/${i18n.language}/`}>
               {t("404.Go back to Home")}
             </Link>
           </Button>

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 export default function PaymentSuccess() {
-    const { t } = useTranslation()
+    const { t,i18n } = useTranslation()
     return (
         <div className=" bg-gradient-to-b  flex items-center justify-center p-4">
             <Card className="w-full max-w-md bg-green-200">
@@ -28,7 +28,7 @@ export default function PaymentSuccess() {
                     </p>
                 </CardContent>
                 <CardFooter className="flex justify-center">
-                    <Link to="/">
+                    <Link to={`/${i18n.language}/`}>
                         <Button className="w-full text-white">
                         {t("payment.Return to Home")} 
                             <ArrowRight className="ml-2 h-4 w-4" />

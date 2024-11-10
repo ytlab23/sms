@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
+import { Route, Routes, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 
 import { loadStripe } from '@stripe/stripe-js';
@@ -46,10 +46,53 @@ import {
 import { ScrollArea } from './components/shadcn/ui/scrollarea';
 import NotFound from './components/shadcn/404';
 import { Divide } from 'lucide-react';
+import useChangeLanguageAndPath from './i18n/language-setter';
+import { useTranslation } from 'react-i18next';
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 function App() {
+  const {t,i18n} = useTranslation();
+  const navigate = useNavigate();
+  const faqPath = `/:lang?/${t('urls.faq')}`;
+  const faqTitle = `${t('app.Faq')}`;
+  const payPath = `/:lang?/${t('urls.pay')}`;
+  const payTitle = `${t('app.Pay')}`;
+  const statPath = `/:lang?/${t('urls.statistics')}`;
+  const statTitle = `${t('app.Statistics')}`;
+  const ourServicesPath = `/:lang?/${t('urls.ourservices')}`;
+  const ourServicesTitle = `${t('app.Our Services')}`;
+  const settingsPath = `/:lang?/${t('urls.settings')}`;
+  const settingsTitle = `${t('app.Account Settings')}`; 
+  const ordersPath = `/:lang?/${t('urls.orders')}`;
+  const ordersTitle = `${t('app.Your Orders')}`;
+  const signInPath = `/:lang?/${t('urls.auth/signin')}`;
+  const signInTitle = `${t('app.Sign In')}`;
+  const signUpPath = `/:lang?/${t('urls.auth/signup')}`;
+  const signUpTitle = `${t('app.Sign Up')}`;
+  const HowToBuyPath = `/:lang?/${t('urls.howtobuy')}`;
+  const HowToBuyTitle = `${t('app.How to Buy')}`;
+  const smsPath = `/:lang?/${t('urls.sms')}`;
+  const smsTitle = `${t('app.Your SMS')}`;
+  
+  useEffect(() => {
+    const currentLanguage = i18n.language; // This gets the current language from i18n
+
+    if (currentLanguage) {
+      // Wait until the language is set and then update the URL
+      const url = `/${currentLanguage}${window.location.pathname.replace(/^\/[a-z]{2}/, '')}`;
+      // Ensure that the URL is updated without triggering an infinite redirect
+      if (window.location.pathname !== url) {
+        console.log("url", url)
+        navigate(url); // Update the URL to reflect the correct language
+      }
+    }
+  }, []); // This effect runs whenever i18n.language changes
+
+
+  // Example language switcher
+  const changeLanguageAndPath = useChangeLanguageAndPath();
+
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
 
@@ -74,47 +117,49 @@ function App() {
       <Routes>
         <Route element={<DefaultLayout children={undefined} />}>
           <Route
-            index
+            path="/:lang?"
             element={
               <>
-                <PageTitle title="Home | SMS App" />
+                <PageTitle title="Home | SMSApp" />
                 <MainPage />
               </>
             }
           />
           <Route
-            path="/pay"
+            path={payPath}
             element={
               <Elements stripe={stripePromise}>
                 <ProtectedRoute>
                   <div>
-                    <PageTitle title="Pay | SMS App" />
+                    <PageTitle title={`${payTitle}  | SMSApp`} />
                     <PaymentForm />
                   </div>
                 </ProtectedRoute>
               </Elements>
             }
           />
+              {/* <Route path={faqPath} element={<Faq />} /> */}
+
           <Route
-            path="/faq"
+            path={faqPath}
             element={
               <>
-                <PageTitle title="Faq | SMS App" />
+                <PageTitle title={`${faqTitle} | SMS App`} />
                 <Faq />
               </>
             }
           />
           <Route
-            path="/statistics"
+            path={statPath}
             element={
               <>
-                <PageTitle title="Statistics | SMS App" />
+                <PageTitle title={`${statTitle} | SMS App`} />
                 <StatsPage />
               </>
             }
           />
           <Route
-            path="/paymentfailure"
+            path="/:lang?/paymentfailure"
             element={
               <>
                 <ProtectedRoute>
@@ -127,7 +172,7 @@ function App() {
             }
           />
           <Route
-            path="/paymentsuccess"
+            path="/:lang?/paymentsuccess"
             element={
               <>
                 <ProtectedRoute>
@@ -140,15 +185,15 @@ function App() {
             }
           />
           <Route
-            path="/ourservices"
+            path={ourServicesPath}
             element={
               <>
-                <PageTitle title="Our Services | SMS App" />
+                <PageTitle title={`${ourServicesTitle} | SMS App`} />
                 <InternalPagesShowcase />
               </>
             }
           />
-          <Route
+          {/* <Route
             path="/internalpages"
             element={
               <>
@@ -156,7 +201,7 @@ function App() {
                 <InternalPage />
               </>
             }
-          />
+          /> */}
 
           {/* <Route
             path="/internalpagesadmin"
@@ -177,60 +222,60 @@ function App() {
             }
           /> */}
           <Route
-            path="/settings"
+            path={settingsPath}
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title="Settings | SMS App" />
+                  <PageTitle title={`${settingsTitle} | SMS App`} />
                   <Settings />
                 </>
               </ProtectedRoute>
             }
           />
           <Route
-            path="/orders"
+            path={ordersPath}
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title="Your Orders | SMS App" />
+                  <PageTitle title={`${ordersTitle} | SMS App`} />
                   <OrdersPage />
                 </>
               </ProtectedRoute>
             }
           />
           <Route
-            path="/auth/signin"
+            path={signInPath}
             element={
               <>
-                <PageTitle title="Signin | SMS App" />
+                <PageTitle title={`${signInTitle} | SMS App`} />
                 <SignIn />
               </>
             }
           />
           <Route
-            path="/auth/signup"
+            path={signUpPath}
             element={
               <>
-                <PageTitle title="Signup | SMS App" />
+                <PageTitle title={`${signUpTitle} | SMS App`} />
                 <SignUp />
               </>
             }
           />
           <Route
-            path="/howtobuy"
+            path={HowToBuyPath}
             element={
               <>
-                <PageTitle title="How to Buy | SMS App" />
+                <PageTitle title={`${HowToBuyTitle} | SMS App`} />
                 <HowToBuy />
               </>
             }
           />
           <Route
-            path="/sms"
+            path={smsPath}
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title="SMS | SMS App" />
+                  <PageTitle title={`${smsTitle} | SMS App`} />
                   <SmsPage />
                 </>
               </ProtectedRoute>
@@ -454,7 +499,7 @@ function App() {
         </Route>
 
         <Route
-          path="/404"
+          path="/:lang?/404"
           element={
             <div>
               <PageTitle title="404 | SMS App" />

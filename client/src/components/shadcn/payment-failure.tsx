@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 export default function PaymentFailure() {
   const handleRetry = () => {
   }
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
 
   return (
     <div className="  flex items-center justify-center p-4">
@@ -33,7 +33,7 @@ export default function PaymentFailure() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">
           
-          <Link to="/" className="w-full">
+          <Link to={`/${i18n.language}/`} className="w-full">
             <Button  className="w-full text-white">
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("payment.Return to Home")}  

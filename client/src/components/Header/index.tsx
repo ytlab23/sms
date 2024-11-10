@@ -38,25 +38,25 @@ const Header = (props: {
   const location = useLocation();
   const currentPath = location.pathname;
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
 
  
   const commonNavItems = [
-    { name: t("header.HOME"), href: '/', icon: Home },
-    { name: t("header.FAQ"), href: '/faq', icon: HelpCircle },
-    { name: t('header.SERVICES'), href: '/ourservices', icon: Server },
-    { name: t('header.STATISTICS'), href: '/statistics', icon: BarChart4Icon },
-    { name: t('header.HOW TO BUY'), href: '/howtobuy', icon: BookOpen }, 
+    { name: t("header.HOME"), href: `${i18n.language}/`, icon: Home },
+    { name: t("header.FAQ"), href: `${i18n.language}/${t("urls.faq")}`, icon: HelpCircle },
+    { name: t('header.SERVICES'), href: `${i18n.language}/${t("urls.ourservices")}` , icon: Server },
+    { name: t('header.STATISTICS'), href: `${i18n.language}/${t("urls.statistics")}`, icon: BarChart4Icon },
+    { name: t('header.HOW TO BUY'), href: `${i18n.language}/${t("urls.howtobuy")}`, icon: BookOpen }, 
   ];
 
   
   const guestNavItems = [
-    { name: t('header.SIGN UP'), href: '/auth/signup', icon: UserPlus },
-    { name: t('header.LOGIN'), href: '/auth/signin', icon: LogIn },
+    { name: t('header.SIGN UP'), href: `${i18n.language}/${t("urls.auth/signup")}`, icon: UserPlus },
+    { name: t('header.LOGIN'), href: `${i18n.language}/${t("urls.auth/signin")}`, icon: LogIn },
   ];
 
   const authNavItems = [
-    { name: t('header.YOUR ORDERS'), href: '/orders', icon: ShoppingBag }, 
+    { name: t('header.YOUR ORDERS'), href: `${i18n.language}/${t("urls.orders")}`, icon: ShoppingBag }, 
   ];
 
   const adminNavItem = { name: t('header.ADMIN'), href: '/admin382013453sms/setup', icon: Shield };
@@ -115,7 +115,7 @@ const Header = (props: {
         
           
           <div className="flex lg:block hidden items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to="/" className="flex items-center gap-2">
+        <NavLink to={`${i18n.language}/`} className="flex items-center gap-2">
           <img className="h-6" src={LogoIcon} alt="Logo" />
           <h1 className="font-bold text-xl text-blue-600">{t('welcome')}SmsApp</h1>
         </NavLink>
@@ -149,7 +149,7 @@ const Header = (props: {
                   : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-boxdark-2'
               }`}
               >
-                <item.icon className="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110" />
+                <item.icon className="mr-2 text-blue-600 w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110" />
                 <span className="relative">
                   {item.name}
                   <span className="absolute inset-x-0 bottom-0 h-0.5 bg-blue-600 transform origin-left scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>

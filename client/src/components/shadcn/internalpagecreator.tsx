@@ -1,5 +1,5 @@
 
-// import { useEffect, useState } from 'react';
+// import React, { useEffect, useState, useMemo } from 'react';
 // import { Button } from "./ui/button";
 // import { Input } from "./ui/input";
 // import { Textarea } from "./ui/textarea";
@@ -10,10 +10,17 @@
 // import { useToast } from "./ui/use-toast";
 // import { PlusCircle, Trash2, Globe, CheckCircle, XCircle, Loader2 } from "lucide-react";
 // import { db } from '../../firebase/config'; 
-// import { collection, doc, getDoc, setDoc, deleteDoc, getDocs, query, where } from "firebase/firestore"; 
+// import { collection, doc, getDoc, setDoc, deleteDoc, getDocs, query, where, DocumentData } from "firebase/firestore"; 
 // import { useParams, useNavigate } from 'react-router-dom';
+// import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
 
-// const languages = [
+// interface Language {
+//   code: string;
+//   name: string;
+// }
+
+// const languages: Language[] = [
 //   { code: 'en', name: 'English' },
 //   { code: 'es', name: 'Spanish' },
 //   { code: 'pt', name: 'Portuguese' },
@@ -31,31 +38,57 @@
 //   isIncluded: boolean;
 // }
 
+// interface FAQ {
+//   question: string;
+//   answer: string;
+// }
+
+// interface PageContent {
+//   heading: string;
+//   bodyText: string;
+//   ctaText: string;
+//   service: String
+//   faqs: FAQ[];
+// }
+
+// interface PageData {
+//   [key: string]: PageContent;
+// }
+
+// interface Errors {
+//   [key: string]: string[];
+// }
+
+// interface LanguageStatus {
+//   [key: string]: boolean;
+// }
+
 // export default function AdminInternalPageCreator() {
-//   const { slug: pageSlug } = useParams();
+//   const { slug: pageSlug } = useParams<{ slug: string }>();
 //   const navigate = useNavigate();
 //   const { toast } = useToast();
-//   const [originalSlug, setOriginalSlug] = useState('');
-//   const [slug, setSlug] = useState('');
-//   const [metaTitle, setMetaTitle] = useState('');
-//   const [metaDescription, setMetaDescription] = useState('');
-//   const [service, setService] = useState('');
+//   const [originalSlug, setOriginalSlug] = useState<string>('');
+//   const [slug, setSlug] = useState<string>('');
+//   const [metaTitle, setMetaTitle] = useState<string>('');
+//   const [metaDescription, setMetaDescription] = useState<string>('');
+//   const [service, setService] = useState<string>('');
 //   const [services, setServices] = useState<Service[]>([]);
-//   const [pageContent, setPageContent] = useState<any>(
+//   const [pageContent, setPageContent] = useState<PageData>(
 //     languages.reduce((acc, lang) => ({
 //       ...acc, 
 //       [lang.code]: { 
 //         heading: '', 
 //         bodyText: '', 
-//         ctaText: '', 
+//         ctaText: '',
+        
 //         faqs: [{ question: '', answer: '' }]
 //       }
 //     }), {})
 //   );
-//   const [currentLanguage, setCurrentLanguage] = useState('en');
-//   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
-//   const [languageStatus, setLanguageStatus] = useState<{ [key: string]: boolean }>({});
-//   const [isLoading, setIsLoading] = useState(false);
+//   const [currentLanguage, setCurrentLanguage] = useState<string>('en');
+//   const [errors, setErrors] = useState<Errors>({});
+//   const [languageStatus, setLanguageStatus] = useState<LanguageStatus>({});
+//   const [isLoading, setIsLoading] = useState<boolean>(false);
 
 //   const handleLanguageChange = (newLanguage: string) => {
 //     setCurrentLanguage(newLanguage);
@@ -70,7 +103,7 @@
 //           const docSnap = await getDoc(docRef);
   
 //           if (docSnap.exists()) {
-//             const data = docSnap.data();
+//             const data = docSnap.data() as DocumentData;
 //             setOriginalSlug(pageSlug);
 //             setSlug(data.slug);
 //             setMetaTitle(data.metaTitle);
@@ -78,8 +111,9 @@
 //             setService(data.service || '');
   
 //             if (data.pageContent) {
-//               setPageContent(data.pageContent);
+//               setPageContent(data.pageContent as PageData);
 //             }
+//             console.log(data.service,"lll")
 //           } else {
 //             toast({
 //               title: "Page not found",
@@ -134,8 +168,8 @@
 //   }, [pageContent, slug, metaTitle, metaDescription, service]);
 
 //   const addFaq = () => {
-//     setPageContent((prevContent: any) => {
-//       const updatedContent = { ...prevContent };
+//     setPageContent((prevContent: PageData) => {
+//       const updatedContent: PageData = { ...prevContent };
 //       languages.forEach((lang) => {
 //         updatedContent[lang.code] = {
 //           ...prevContent[lang.code],
@@ -147,12 +181,12 @@
 //   };
 
 //   const removeFaq = (index: number) => {
-//     setPageContent((prevContent: any) => {
-//       const updatedContent = { ...prevContent };
+//     setPageContent((prevContent: PageData) => {
+//       const updatedContent: PageData = { ...prevContent };
 //       languages.forEach((lang) => {
 //         updatedContent[lang.code] = {
 //           ...prevContent[lang.code],
-//           faqs: prevContent[lang.code].faqs.filter((_: any, i: number) => i !== index)
+//           faqs: prevContent[lang.code].faqs.filter((_, i: number) => i !== index)
 //         };
 //       });
 //       return updatedContent;
@@ -160,7 +194,7 @@
 //   };
 
 //   const updateFaqQuestion = (index: number, question: string) => {
-//     setPageContent((prevContent: any) => {
+//     setPageContent((prevContent: PageData) => {
 //       const faqs = [...prevContent[currentLanguage].faqs];
 //       faqs[index].question = question;
 //       return {
@@ -174,7 +208,7 @@
 //   };
 
 //   const updateFaqAnswer = (index: number, answer: string) => {
-//     setPageContent((prevContent: any) => {
+//     setPageContent((prevContent: PageData) => {
 //       const faqs = [...prevContent[currentLanguage].faqs];
 //       faqs[index].answer = answer;
 //       return {
@@ -187,8 +221,8 @@
 //     });
 //   };
 
-//   const updatePageContentField = (field: string, value: string) => {
-//     setPageContent((prevContent: any) => ({
+//   const updatePageContentField = (field: keyof PageContent, value: string) => {
+//     setPageContent((prevContent: PageData) => ({
 //       ...prevContent,
 //       [currentLanguage]: {
 //         ...prevContent[currentLanguage],
@@ -198,8 +232,8 @@
 //   };
 
 //   const validateForm = () => {
-//     const newErrors: { [key: string]: string[] } = {};
-//     const newLanguageStatus: { [key: string]: boolean } = {};
+//     const newErrors: Errors = {};
+//     const newLanguageStatus: LanguageStatus = {};
 
 //     if (!slug) newErrors.general = ["Slug is required."];
 //     if (!metaTitle) newErrors.general = [...(newErrors.general || []), "Meta Title is required."];
@@ -222,7 +256,7 @@
 //         langErrors.push(`CTA Text is required.`);
 //       }
 
-//       if (content.faqs.some((faq: { question: string; answer: string }) => !faq.question || !faq.answer)) {
+//       if (content.faqs.some((faq: FAQ) => !faq.question || !faq.answer)) {
 //         langErrors.push(`All FAQ questions and answers must be filled in.`);
 //       }
 
@@ -309,6 +343,23 @@
 //     }
 //   };
 
+//   const quillModules = useMemo(() => ({
+//     toolbar: [
+//       [{ 'header': [1, 2, 3, false] }],
+//       ['bold', 'italic', 'underline', 'strike'],
+//       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+//       ['link', 'image'],
+//       ['clean']
+//     ],
+//   }), []);
+
+//   const quillFormats = [
+//     'header',
+//     'bold', 'italic', 'underline', 'strike',
+//     'list', 'bullet',
+//     'link', 'image'
+//   ];
+
 //   return (
 //     <div className="container mx-auto p-4">
 //       <h1 className="text-3xl font-bold mb-6">
@@ -318,7 +369,7 @@
 //         <form onSubmit={handleSubmit} className="space-y-4 lg:col-span-2">
 //           <div>
 //             <Label htmlFor="language-select">Language</Label>
-//             <Select  value={currentLanguage} onValueChange={handleLanguageChange}>
+//             <Select value={currentLanguage} onValueChange={handleLanguageChange}>
 //               <SelectTrigger id="language-select">
 //                 <Globe className="h-4 w-4 mr-2" />
 //                 <SelectValue placeholder="Select Language" />
@@ -369,20 +420,21 @@
 
 //           <div>
 //             <Label htmlFor="service-select">Service</Label>
-//             <Select value={service} onValueChange={setService}>
+//             <Select value={service} onChange={setService} >
+              
 //               <SelectTrigger id="service-select">
-//                 <SelectValue placeholder="Select Service" />
+//                 <SelectValue  placeholder="Select Service" />
 //               </SelectTrigger>
-//               <SelectContent>
+//               <SelectContent className="z-9999 bg-slate-100">
 //                 {services.map((service) => (
-//                   <SelectItem key={service.name} value={service.name}>{service.name}</SelectItem>
+//                   <SelectItem className="hover:text-blue-600" key={service.name} value={service.name}>{service.name}</SelectItem>
 //                 ))}
 //               </SelectContent>
 //             </Select>
 //           </div>
 
 //           <div>
-//             <Label htmlFor="heading">Heading</Label>
+//             <Label htmlFor="heading">Heading page</Label>
 //             <Input
 //               id="heading"
 //               placeholder="Heading"
@@ -394,14 +446,14 @@
 //           </div>
 
 //           <div>
-//             <Label htmlFor="body-text">Body Text</Label>
-//             <Textarea
-//               id="body-text"
-//               placeholder="Body Text"
+//             <Label  htmlFor="body-text">Body Text</Label>
+//             <ReactQuill
+//               theme="snow"
 //               value={pageContent[currentLanguage].bodyText}
-//               onChange={(e) => updatePageContentField('bodyText', e.target.value)}
-//               className="w-full"
-//               aria-invalid={!!errors[currentLanguage]}
+//               onChange={(content) => updatePageContentField('bodyText', content)}
+//               modules={quillModules}
+//               formats={quillFormats}
+//               className="bg-white"
 //             />
 //           </div>
 
@@ -419,13 +471,13 @@
 
 //           <div className="space-y-4">
 //             <div className="flex justify-between items-center">
-//               <h2 className="text-xl  font-semibold">FAQs</h2>
+//               <h2 className="text-xl font-semibold">FAQs</h2>
 //               <Button type="button" onClick={addFaq} className="flex items-center">
 //                 <PlusCircle className="mr-2 h-4 w-4" /> Add FAQ
 //               </Button>
 //             </div>
 
-//             {pageContent[currentLanguage].faqs.map((faq: any, index: number) => (
+//             {pageContent[currentLanguage].faqs.map((faq: FAQ, index: number) => (
 //               <Card key={index} className="mb-4">
 //                 <CardHeader className="flex justify-between">
 //                   <CardTitle className="text-md">FAQ {index + 1}</CardTitle>
@@ -516,7 +568,6 @@
 //     </div>
 //   );
 // }
-
 import React, { useEffect, useState, useMemo } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -527,7 +578,7 @@ import { Label } from "./ui/label";
 import { ScrollArea } from "./ui/scrollarea";
 import { useToast } from "./ui/use-toast";
 import { PlusCircle, Trash2, Globe, CheckCircle, XCircle, Loader2 } from "lucide-react";
-import { db } from '../../firebase/config'; 
+import { db } from './../../firebase/config'; 
 import { collection, doc, getDoc, setDoc, deleteDoc, getDocs, query, where, DocumentData } from "firebase/firestore"; 
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -562,10 +613,12 @@ interface FAQ {
 }
 
 interface PageContent {
+  slug: string;
+  metaTitle: string;
+  metaDescription: string;
   heading: string;
   bodyText: string;
   ctaText: string;
-  service: String
   faqs: FAQ[];
 }
 
@@ -586,19 +639,18 @@ export default function AdminInternalPageCreator() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [originalSlug, setOriginalSlug] = useState<string>('');
-  const [slug, setSlug] = useState<string>('');
-  const [metaTitle, setMetaTitle] = useState<string>('');
-  const [metaDescription, setMetaDescription] = useState<string>('');
   const [service, setService] = useState<string>('');
   const [services, setServices] = useState<Service[]>([]);
   const [pageContent, setPageContent] = useState<PageData>(
     languages.reduce((acc, lang) => ({
       ...acc, 
       [lang.code]: { 
+        slug: '',
+        metaTitle: '',
+        metaDescription: '',
         heading: '', 
         bodyText: '', 
         ctaText: '',
-        
         faqs: [{ question: '', answer: '' }]
       }
     }), {})
@@ -623,15 +675,11 @@ export default function AdminInternalPageCreator() {
           if (docSnap.exists()) {
             const data = docSnap.data() as DocumentData;
             setOriginalSlug(pageSlug);
-            setSlug(data.slug);
-            setMetaTitle(data.metaTitle);
-            setMetaDescription(data.metaDescription);
             setService(data.service || '');
   
             if (data.pageContent) {
               setPageContent(data.pageContent as PageData);
             }
-            console.log(data.service,"lll")
           } else {
             toast({
               title: "Page not found",
@@ -683,7 +731,7 @@ export default function AdminInternalPageCreator() {
 
   useEffect(() => {
     validateForm();
-  }, [pageContent, slug, metaTitle, metaDescription, service]);
+  }, [pageContent, service]);
 
   const addFaq = () => {
     setPageContent((prevContent: PageData) => {
@@ -753,26 +801,18 @@ export default function AdminInternalPageCreator() {
     const newErrors: Errors = {};
     const newLanguageStatus: LanguageStatus = {};
 
-    if (!slug) newErrors.general = ["Slug is required."];
-    if (!metaTitle) newErrors.general = [...(newErrors.general || []), "Meta Title is required."];
-    if (!metaDescription) newErrors.general = [...(newErrors.general || []), "Meta Description is required."];
-    if (!service) newErrors.general = [...(newErrors.general || []), "Service is required."];
+    if (!service) newErrors.general = ["Service is required."];
 
     languages.forEach((lang) => {
       const content = pageContent[lang.code];
       const langErrors: string[] = [];
 
-      if (!content.heading) {
-        langErrors.push(`Heading is required.`);
-      }
-
-      if (!content.bodyText) {
-        langErrors.push(`Body Text is required.`);
-      }
-
-      if (!content.ctaText) {
-        langErrors.push(`CTA Text is required.`);
-      }
+      if (!content.slug) langErrors.push(`Slug is required.`);
+      if (!content.metaTitle) langErrors.push(`Meta Title is required.`);
+      if (!content.metaDescription) langErrors.push(`Meta Description is required.`);
+      if (!content.heading) langErrors.push(`Heading is required.`);
+      if (!content.bodyText) langErrors.push(`Body Text is required.`);
+      if (!content.ctaText) langErrors.push(`CTA Text is required.`);
 
       if (content.faqs.some((faq: FAQ) => !faq.question || !faq.answer)) {
         langErrors.push(`All FAQ questions and answers must be filled in.`);
@@ -792,9 +832,11 @@ export default function AdminInternalPageCreator() {
   };
 
   const checkSlugExists = async (slug: string): Promise<boolean> => {
-    const docRef = doc(db, "internal_pages", slug);
-    const docSnap = await getDoc(docRef);
-    return docSnap.exists();
+    const querySnapshot = await getDocs(collection(db, "internal_pages"));
+    return querySnapshot.docs.some(doc => {
+      const data = doc.data();
+      return Object.values(data.pageContent).some((content) => (content as PageContent).slug === slug);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -812,28 +854,28 @@ export default function AdminInternalPageCreator() {
     setIsLoading(true);
 
     try {
-      if (slug !== originalSlug) {
-        const slugExists = await checkSlugExists(slug);
-        if (slugExists) {
-          toast({
-            title: "Slug Already Exists",
-            description: "A page with this slug already exists. Please choose a different slug to avoid overwriting an existing page.",
-            variant: "destructive",
-          });
-          setIsLoading(false);
-          return;
+      for (const lang of languages) {
+        const content = pageContent[lang.code];
+        if (content.slug !== originalSlug) {
+          const slugExists = await checkSlugExists(content.slug);
+          if (slugExists) {
+            toast({
+              title: "Slug Already Exists",
+              description: `A page with the slug "${content.slug}" already exists for ${lang.name}. Please choose a different slug.`,
+              variant: "destructive",
+            });
+            setIsLoading(false);
+            return;
+          }
         }
       }
 
-      if (originalSlug && originalSlug !== slug) {
+      if (originalSlug) {
         await deleteDoc(doc(db, "internal_pages", originalSlug));
       }
 
-      const docRef = doc(collection(db, "internal_pages"), slug);
+      const docRef = doc(collection(db, "internal_pages"), pageContent.en.slug);
       const pageData = {
-        slug,
-        metaTitle,
-        metaDescription,
         service,
         pageContent,
       };
@@ -845,10 +887,10 @@ export default function AdminInternalPageCreator() {
         description: "Page saved successfully!",
       });
 
-      setOriginalSlug(slug);
+      setOriginalSlug(pageContent.en.slug);
 
       if (!pageSlug) {
-        navigate(`/admin/pages/edit/${slug}`);
+        navigate(`/admin/pages/edit/${pageContent.en.slug}`);
       }
     } catch (error) {
       toast({
@@ -892,9 +934,9 @@ export default function AdminInternalPageCreator() {
                 <Globe className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Select Language" />
               </SelectTrigger>
-              <SelectContent className="z-9999 bg-slate-100">
+              <SelectContent>
                 {languages.map((lang) => (
-                  <SelectItem className="hover:text-blue-600" key={lang.code} value={lang.code}>{lang.name}</SelectItem>
+                  <SelectItem key={lang.code} value={lang.code}>{lang.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -905,10 +947,10 @@ export default function AdminInternalPageCreator() {
             <Input
               id="slug"
               placeholder="e.g., buy-number-for-google"
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
+              value={pageContent[currentLanguage].slug}
+              onChange={(e) => updatePageContentField('slug', e.target.value)}
               className="w-full"
-              aria-invalid={!!errors.general}
+              aria-invalid={!!errors[currentLanguage]}
             />
           </div>
 
@@ -917,10 +959,10 @@ export default function AdminInternalPageCreator() {
             <Input
               id="meta-title"
               placeholder="Meta Title"
-              value={metaTitle}
-              onChange={(e) => setMetaTitle(e.target.value)}
+              value={pageContent[currentLanguage].metaTitle}
+              onChange={(e) => updatePageContentField('metaTitle', e.target.value)}
               className="w-full"
-              aria-invalid={!!errors.general}
+              aria-invalid={!!errors[currentLanguage]}
             />
           </div>
 
@@ -929,23 +971,22 @@ export default function AdminInternalPageCreator() {
             <Textarea
               id="meta-description"
               placeholder="Meta Description"
-              value={metaDescription}
-              onChange={(e) => setMetaDescription(e.target.value)}
+              value={pageContent[currentLanguage].metaDescription}
+              onChange={(e) => updatePageContentField('metaDescription', e.target.value)}
               className="w-full"
-              aria-invalid={!!errors.general}
+              aria-invalid={!!errors[currentLanguage]}
             />
           </div>
 
           <div>
             <Label htmlFor="service-select">Service</Label>
-            <Select value={service} onChange={setService} >
-              
+            <Select value={service} onValueChange={setService}>
               <SelectTrigger id="service-select">
-                <SelectValue  placeholder="Select Service" />
+                <SelectValue placeholder="Select Service" />
               </SelectTrigger>
-              <SelectContent className="z-9999 bg-slate-100">
+              <SelectContent>
                 {services.map((service) => (
-                  <SelectItem className="hover:text-blue-600" key={service.name} value={service.name}>{service.name}</SelectItem>
+                  <SelectItem key={service.name} value={service.name}>{service.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -964,7 +1005,7 @@ export default function AdminInternalPageCreator() {
           </div>
 
           <div>
-            <Label  htmlFor="body-text">Body Text</Label>
+            <Label htmlFor="body-text">Body Text</Label>
             <ReactQuill
               theme="snow"
               value={pageContent[currentLanguage].bodyText}

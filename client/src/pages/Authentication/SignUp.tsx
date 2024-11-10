@@ -15,7 +15,7 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const navigate = useNavigate(); 
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
 
   const [username, setUsername] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -49,7 +49,7 @@ const SignUp: React.FC = () => {
           
         }
        });
-       navigate('/'); 
+       navigate(`/${i18n.language}/`); 
 
 
     } catch (error) {
@@ -117,7 +117,7 @@ async function handleSignup() {
       title: 'Account Created Successfully',
       description: 'A verification email has been sent to your inbox. Please verify your email before logging in.',
     });
-    navigate('/auth/signin'); // Redirect to login after signing out
+    navigate(`/${i18n.language}/${t("urls.auth/signin")}`); // Redirect to login after signing out
 
    
    
@@ -151,7 +151,7 @@ async function handleSignup() {
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
               </Link> */}
                <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 ml-4 ">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to={`${i18n.language}/`} className="flex items-center gap-2">
           <img className="h-12" src={Logo} alt="Logo" />
           <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
         </Link>
@@ -499,7 +499,7 @@ async function handleSignup() {
                 <div className="mt-6 text-center">
                   <p>
                   {t('auth.Already have an account?')} {' '}
-                    <Link to="/auth/signin" className="text-primary">
+                    <Link to={`${i18n.language}/${t("urls.auth/signin")}`} className="text-primary">
                     {t('auth.Sign in')}   
                     </Link>
                   </p>

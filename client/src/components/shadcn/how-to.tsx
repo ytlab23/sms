@@ -11,9 +11,10 @@ import {
   CheckCircle,
   ShieldCheck,
 } from 'lucide-react';
+import { Link, NavLink } from 'react-router-dom';
 
 export default function Component() {
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
   const steps = [
     {
       icon: <UserPlus className="h-6 w-6" />,
@@ -111,8 +112,13 @@ export default function Component() {
           </ul>
         </CardContent>
       </Card>
-      <div className="mt-8 text-center text-white">
+      {/* <div className="mt-8 text-center text-white">
         <Button size="lg">{t('how.Get Started Now')}</Button>
+      </div> */}
+      <div className="mt-12 text-center">
+        <NavLink to={`/${i18n.language}/${t("urls.ourservices")}`} className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors">
+          {t("how.Get Started Now")}
+        </NavLink>
       </div>
     </div>
   );

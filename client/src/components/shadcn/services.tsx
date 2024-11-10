@@ -142,7 +142,9 @@ export default function InternalPage() {
         title: 'Product Purchased Successfully',
         description: 'You Can Now Use The Service',
       })
-      navigate(`/sms?id=${id}`)
+      // navigate(`/sms?id=${id}`)
+      navigate(`/${i18n.language}/${t("urls.sms")}?id=${id}`)
+
       setBuying(false)
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -153,7 +155,7 @@ export default function InternalPage() {
             description: 'Please TopUp Your Account',
             action: (
               <ToastAction
-                onClick={() => navigate('/pay')}
+                onClick={() => navigate(`${i18n.language}/${t("urls.pay")}`)}
                 altText='Go To Payment'
               >
                 Go To Payment

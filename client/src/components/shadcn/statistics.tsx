@@ -57,7 +57,7 @@ export default function SMSStats() {
 
   const { toast } = useToast()
   const navigate = useNavigate()
-  const {t} = useTranslation()
+  const {t,i18n} = useTranslation()
 
   useEffect(() => {
     const fetchStatisticsAndPricing = async () => {
@@ -207,7 +207,9 @@ export default function SMSStats() {
         description:
           'You can now use the service. Refresh page to see the changes.',
       })
-      navigate(`/sms?id=${id}`)
+      // navigate(`/sms?id=${id}`)
+      navigate(`/${i18n.language}/${t("urls.sms")}?id=${id}`)
+
       setBuying(false)
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -218,7 +220,7 @@ export default function SMSStats() {
             description: 'Please top up your account to complete the purchase.',
             action: (
               <ToastAction
-                onClick={() => navigate('/pay')}
+                onClick={() => navigate(`/${i18n.language}/${t("urls.pay")}`)}
                 altText="Go to payment"
               >
                 Go to Payment

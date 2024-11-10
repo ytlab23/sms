@@ -48,7 +48,7 @@ export default function Sms({ numberId }: { numberId: string }) {
   const { currentUser } = useAuth();
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const navigate = useNavigate();
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
 
   const capitalizeFirstLetter = (string: string) => {
     return string.replace(/\b\w/g, (char: string) => char.toUpperCase());
@@ -132,7 +132,7 @@ export default function Sms({ numberId }: { numberId: string }) {
           title: 'Refund processed',
           description: 'The refund has been processed successfully.',
         });
-        navigate('/orders');
+        navigate(`${i18n.language}/${t("urls.orders")}`);
       }
     } catch (error: any) {
       toast({
@@ -162,7 +162,8 @@ export default function Sms({ numberId }: { numberId: string }) {
           title: 'Service canceled',
           description: 'The service has been canceled successfully.',
         });
-        navigate('/orders');
+        // navigate('/orders');
+        navigate(`${i18n.language}/${t("urls.orders")}`);
       }
     } catch (error: any) {
       toast({

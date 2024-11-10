@@ -21,7 +21,7 @@ const SignIn: React.FC = () => {
   const [message, setMessage] = React.useState<string>('');
   const [authLoading, setAuthLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
 
   function handleGoogleSignIn() {
     setAuthLoading(true);
@@ -43,7 +43,7 @@ const SignIn: React.FC = () => {
           });
         }
 
-        navigate('/'); // Redirect to the homepage
+        navigate(`/${i18n.language}/`); // Redirect to the homepage
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -100,7 +100,7 @@ const SignIn: React.FC = () => {
         }
 
      
-        navigate('/');
+        navigate(`${i18n.language}/`);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -142,7 +142,7 @@ const SignIn: React.FC = () => {
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
               </Link> */}
               <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 ml-4">
-                <Link to="/" className="flex items-center gap-2">
+                <Link to={`${i18n.language}/`}className="flex items-center gap-2">
                   <img className="h-12" src={Logo} alt="Logo" />
                   <h1 className="font-bold text-3xl text-blue-600">SmsApp</h1>
                 </Link>
@@ -418,7 +418,7 @@ const SignIn: React.FC = () => {
                 <div className="mt-6 text-center">
                   <p>
                   {t('auth.Don’t have any account?')}   {' '}
-                    <Link to="/auth/signup" className="text-primary">
+                    <Link to={ `/${i18n.language}/${t("urls.auth/signup")}`} className="text-primary">
                       {t('auth.Sign Up')}
                     </Link>
                   </p>

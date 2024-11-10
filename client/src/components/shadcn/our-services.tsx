@@ -47,11 +47,13 @@ useEffect(() => {
 
         const title = content.heading || 'Untitled';
         const description = content.bodyText || 'No description available.';
-        const tags = Array.isArray(content.tags) ? content.tags : []; 
+        const tags = Array.isArray(content.tags) ? content.tags : [];
+        const slug = content.slug;
        
         return {
           id: doc.id,
-          slug: doc.id,
+          // slug: doc.id,
+          slug: slug,
           title: title,
           description: description,
           tags: tags,
@@ -140,7 +142,7 @@ useEffect(() => {
                 </div>
               </CardContent>
               <CardFooter className="mt-auto">
-                <Link to={`/${page.slug}`} className="w-full">
+                <Link to={`/${i18n.language}/${page.slug}`} className="w-full">
                   <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                   {t("service.Learn More")}   
                     <ArrowRight className="ml-2 h-4 w-4" />

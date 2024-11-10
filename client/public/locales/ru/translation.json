@@ -16,11 +16,32 @@
       "Credit:": "Кредит:"
     },
     "actionsidebar": {
-      "1.Select country": "1. Выберите страну",
+      "title": "Переключить первый выбор",
+      "Find website or app": "Найти веб-сайт или приложение",
+      "Switch To Country First": "Сначала выбрать страну",
+      "Switch To Service First": "Сначала выбрать услугу",
+      "See More": "Показать больше",
+      "See Less": "Показать меньше",
+      "Find country": "Найти страну",
+      "Go to login": "Перейти к входу",
+      "Authentication Required": "Требуется аутентификация",
+      "Please Login": "Пожалуйста, войдите",
+      "Selection Required": "Требуется выбор",
+      "Select Country And Service": "Выберите страну и услугу",
+      "Purchase Complete": "Покупка завершена",
+      "Service is Ready": "Услуга готова!",
+      "Insufficient Balance": "Недостаточно средств",
+      "Top Up Required": "Требуется пополнение",
+      "Go To Payment": "Перейти к оплате",
+      "Purchase Failed": "Покупка не удалась",
+      "Unknown Error": "Неизвестная ошибка",
+      "Try Again Later": "Попробуйте позже",
+      "Success": "Успех",
+      "1.Select country": "Выберите страну",
       "Error loading countries": "Ошибка загрузки стран",
       "Retry": "Попробовать снова",
       "Price": "Цена",
-      "2.Select service": "2. Выберите услугу",
+      "2.Select service": "Выберите услугу",
       "Error loading services": "Ошибка загрузки услуг",
       "Go to Login": "Перейти к Входу",
       "Go to Payment": "Перейти к Оплате",
@@ -110,6 +131,9 @@
   },
   
   "order": {
+    "Total Orders": "Всего заказов",
+    "SMS Codes": "Коды SMS",
+    "Actions": "Действия",
     "Your Orders": "Ваши заказы",
     "Refreshing...": "Обновление...",
     "Refresh": "Обновить",
@@ -224,6 +248,45 @@
     "Confirm New Password": "Подтвердите новый пароль",
     "Processing...": "Обработка...",
     "Reset Password": "Сбросить пароль"
+  },
+  "app": {
+    "Faq": "Часто задаваемые вопросы",
+    "Pay": "Оплатить",
+    "Statistics": "Статистика",
+    "Our Services": "Наши Услуги",
+    "Account Settings": "Настройки Аккаунта",
+    "Your Orders": "Ваши Заказы",
+    "Sign In": "Войти",
+    "Sign Up": "Регистрация",
+    "How to Buy": "Как Купить",
+    "Your SMS": "Ваши SMS"
+  },
+  "urls": {
+    "home": "",
+    "faq": "chastozadavaemyevoprosy",
+    "ourservices": "nashiuslugi",
+    "statistics": "statistika",
+    "howtobuy": "kakupit",
+    "auth/signup": "auth/registratsiya",
+    "auth/signin": "auth/voiti",
+    "orders": "zakazy",
+    "pay": "oplatit",
+    "settings": "nastroykiakkaunta",
+    "sms": "sms"
+  },
+  "reverseUrls": {
+    "": "home",
+    "chastozadavaemyevoprosy": "faq",
+    "nashiuslugi": "ourservices",
+    "statistika": "statistics",
+    "kakupit": "howtobuy",
+    "auth/registratsiya": "auth/signup",
+    "auth/voiti": "auth/signin",
+    "zakazy": "orders",
+    "oplatit": "pay",
+    "nastroykiakkaunta": "settings",
+    "sms": "sms"
   }
+
   }
   

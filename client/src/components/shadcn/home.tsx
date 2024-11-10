@@ -16,7 +16,7 @@ interface FeatureProps {
 }
 
 export function Features() {
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center mb-8">{t("home.Welcome to SMSApp")}</h1>
@@ -75,7 +75,7 @@ export function Features() {
       </div>
       
       <div className="mt-12 text-center">
-        <Link to= {"/ourservices"} className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors">
+        <Link to={`/${i18n.language}/${t("urls.ourservices")}`} className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors">
           {t("home.Get Started Now")}
         </Link>
       </div>

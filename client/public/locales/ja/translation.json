@@ -16,11 +16,32 @@
       "Credit:": "クレジット:"
     },
     "actionsidebar": {
-      "1.Select country": "1.国を選択",
+      "title": "最初の選択を交換",
+      "Find website or app": "ウェブサイトまたはアプリを見つける",
+      "Switch To Country First": "最初に国を切り替える",
+      "Switch To Service First": "最初にサービスを切り替える",
+      "See More": "もっと見る",
+      "See Less": "少なく見る",
+      "Find country": "国を見つける",
+      "Go to login": "ログインへ行く",
+      "Authentication Required": "認証が必要",
+      "Please Login": "ログインしてください",
+      "Selection Required": "選択が必要",
+      "Select Country And Service": "国とサービスを選択",
+      "Purchase Complete": "購入完了",
+      "Service is Ready": "サービスが準備完了！",
+      "Insufficient Balance": "残高不足",
+      "Top Up Required": "チャージが必要",
+      "Go To Payment": "支払いへ行く",
+      "Purchase Failed": "購入に失敗しました",
+      "Unknown Error": "不明なエラー",
+      "Try Again Later": "後でもう一度試してください",
+      "Success": "成功",
+      "1.Select country": "国を選択",
       "Error loading countries": "国の読み込みエラー",
       "Retry": "再試行",
       "Price": "価格",
-      "2.Select service": "2.サービスを選択",
+      "2.Select service": "サービスを選択",
       "Error loading services": "サービスの読み込みエラー",
       "Go to Login": "ログインへ行く",
       "Go to Payment": "支払いへ行く",
@@ -110,6 +131,9 @@
   },
   
   "order": {
+    "Total Orders": "総注文数",
+    "SMS Codes": "SMSコード",
+    "Actions": "アクション",
     "Your Orders": "あなたの注文",
     "Refreshing...": "リフレッシュ中...",
     "Refresh": "リフレッシュ",
@@ -224,6 +248,45 @@
     "Confirm New Password": "新しいパスワードを確認",
     "Processing...": "処理中...",
     "Reset Password": "パスワードをリセット"
+  },
+  "app": {
+    "Faq": "よくある質問",
+    "Pay": "支払い",
+    "Statistics": "統計",
+    "Our Services": "当社のサービス",
+    "Account Settings": "アカウント設定",
+    "Your Orders": "注文履歴",
+    "Sign In": "サインイン",
+    "Sign Up": "サインアップ",
+    "How to Buy": "購入方法",
+    "Your SMS": "あなたのSMS"
+  },
+  "urls": {
+    "home": "",
+    "faq": "yokuarushitsumon",
+    "ourservices": "togoshisa-bisu",
+    "statistics": "toukei",
+    "howtobuy": "kouyumethod",
+    "auth/signup": "auth/sainappu",
+    "auth/signin": "auth/sainin",
+    "orders": "chumon",
+    "pay": "shiharai",
+    "settings": "akauntosettei",
+    "sms": "sms"
+  },
+  "reverseUrls": {
+    "": "home",
+    "yokuarushitsumon": "faq",
+    "togoshisa-bisu": "ourservices",
+    "toukei": "statistics",
+    "kouyumethod": "howtobuy",
+    "auth/sainappu": "auth/signup",
+    "auth/sainin": "auth/signin",
+    "chumon": "orders",
+    "shiharai": "pay",
+    "akauntosettei": "settings",
+    "sms": "sms"
   }
+
   }
   

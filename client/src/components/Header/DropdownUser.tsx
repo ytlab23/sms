@@ -23,7 +23,7 @@ const DropdownUser = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const { logout, currentUser } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -88,7 +88,7 @@ const DropdownUser = () => {
           <ul className="flex flex-col border-b border-gray-200 dark:border-gray-700">
             <li>
               <Link
-                to="/settings"
+                to={ `${i18n.language}/${t("urls.settings")}`}
                 className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 transition-all duration-300 ease-in-out hover:bg-blue-50  dark:hover:bg-boxdark-2 group"
                 onClick={() => setDropdownOpen(false)}
                 onMouseEnter={() => setHoveredItem('settings')}
@@ -111,7 +111,7 @@ const DropdownUser = () => {
                 />
               </Link>
               <Link
-                to="/pay"
+                to={ `${i18n.language}/${t("urls.pay")}`}
                 className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 transition-all duration-300 ease-in-out hover:bg-blue-50  dark:hover:bg-boxdark-2 group"
                 onClick={() => setDropdownOpen(false)}
                 onMouseEnter={() => setHoveredItem('pay')}
@@ -165,7 +165,7 @@ const DropdownUser = () => {
             onClick={() => {
               logout();
               setDropdownOpen(false);
-              navigate('/auth/signin');
+              navigate(`${i18n.language}/${t("urls.auth/signin")}`);
             }}
             onMouseEnter={() => setHoveredItem('logout')}
             onMouseLeave={() => setHoveredItem(null)}

@@ -15,7 +15,7 @@ export default function FreeNumberBanner() {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const { currentUser } = useAuth()
-  const {t} = useTranslation()
+  const {t,i18n} = useTranslation()
 
   const checkEligibility = async (uid: String) => {
     try {
@@ -46,7 +46,8 @@ export default function FreeNumberBanner() {
       setLoading(false)
       const id = response.data?.number?.id ?? null;
 
-      navigate(`/sms?id=${id}`);
+      // navigate(`/sms?id=${id}`);
+      navigate(`/${i18n.language}/${t("urls.sms")}?id=${id}`)
     } catch (error) {
       setError('Failed to claim free number')
       setLoading(false)
