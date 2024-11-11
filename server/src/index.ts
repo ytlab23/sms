@@ -498,6 +498,35 @@ app.get("/api/get-user-products", async (req: Request, res: Response) => {
 
 // Get SMS for a specific product or number
 
+// app.get("/api/get-sms", async (req: Request, res: Response) => {
+//   const { uid, numberId } = req.query;
+
+//   if (!uid || !numberId) {
+//     return res.status(400).json({ error: "Missing uid or numberId" });
+//   }
+
+//   try {
+//     console.log("Fetching SMS for user:", { uid, numberId });
+
+//     // Fetch SMS from 5sim API
+//     console.log(process.env.SIM_API_KEY, "api key");
+//     const response = await axios.get(
+//       `https://5sim.net/v1/user/check/${numberId}`,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTc0NjU2MzgsImlhdCI6MTcyNTkyOTYzOCwicmF5IjoiNjZjOWYyNGQxY2UxYzI5NGY4Njg4ODA5NGI4NDQ2NzgiLCJzdWIiOjc0NDM2N30.Xzr5Z7UXkcwggML_mLyxEO2vSfVXITMa7PomP1pAAvw6ldzTwx4dbPhE3mJs5_Dwpumj2MJYppyCQiTvB5nF72mQE0Vp_lIIiAG0NIHrwK3inAIUtbRVo2V56J-aSh4lpzmz9g_ADXGe3nQwiqIHUrs8F4Ql9NsRIpCrUxWNeJJWu0jNVk0n3K6bQt3G5c8ZCDr_MFa10fitUfdLVnD8y603PPxcOhYae87mJz28kNEBf3m9ZX4tOWWcYVLdrBXijwFM18yoI96mlbYaSD0YFRl_TeyPh8PtR9ljPk1R9AydEwf0a-e8rYFcKyKzSBs5rUuoaCwCsIJ68sKRciTd5Q`,
+//         },
+//       }
+//     );
+
+//     console.log("SMS fetched successfully:", response.data);
+//     res.json(response.data);
+//   } catch (error) {
+//     console.error("Error fetching SMS:", error);
+//     res.status(500).json({ error: "Failed to fetch SMS" });
+//   }
+// });
 app.get("/api/get-sms", async (req: Request, res: Response) => {
   const { uid, numberId } = req.query;
 
@@ -509,7 +538,6 @@ app.get("/api/get-sms", async (req: Request, res: Response) => {
     console.log("Fetching SMS for user:", { uid, numberId });
 
     // Fetch SMS from 5sim API
-    console.log(process.env.SIM_API_KEY, "api key");
     const response = await axios.get(
       `https://5sim.net/v1/user/check/${numberId}`,
       {
@@ -520,14 +548,28 @@ app.get("/api/get-sms", async (req: Request, res: Response) => {
       }
     );
 
-    console.log("SMS fetched successfully:", response.data);
-    res.json(response.data);
+    // Query Firestore for the 'refunded' field
+    const userDoc = await db.collection("users").doc(uid as string)
+      .collection("products").doc(numberId as string).get();
+
+    let refunded = false;
+    if (userDoc.exists) {
+      refunded = userDoc.data()?.refunded || false;
+    }
+
+    // Add 'refunded' field to the response data
+    const responseData = {
+      ...response.data,
+      refunded,
+    };
+
+    console.log("SMS fetched successfully:", responseData);
+    res.json(responseData);
   } catch (error) {
     console.error("Error fetching SMS:", error);
     res.status(500).json({ error: "Failed to fetch SMS" });
   }
 });
-
 app.post("/api/cancel", async (req: Request, res: Response) => {
   const { uid, numberId } = req.body;
 

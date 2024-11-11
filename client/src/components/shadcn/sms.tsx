@@ -65,6 +65,7 @@ export default function Sms({ numberId }: { numberId: string }) {
       );
 
       const smsData = response.data;
+      
       setNumberDetails({
         id: smsData.id,
         number: smsData.phone,
@@ -85,7 +86,7 @@ export default function Sms({ numberId }: { numberId: string }) {
             : undefined,
         refunded: smsData.refunded || false,
       });
-
+      console.log(smsData.refunded,"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",smsData)
       const smsMessages = smsData.sms.map((sms: any) => ({
         id: sms.created_at,
         message: sms.text,
@@ -279,7 +280,7 @@ export default function Sms({ numberId }: { numberId: string }) {
                       {t("sms.Cancel Service")}   
                     </Button>
                   )}
-                {showRefundButton && (
+                {showRefundButton && !numberDetails?.refunded && (
                   <Button
                     variant="outline"
                     className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
