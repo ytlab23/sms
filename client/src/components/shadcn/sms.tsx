@@ -86,7 +86,6 @@ export default function Sms({ numberId }: { numberId: string }) {
             : undefined,
         refunded: smsData.refunded || false,
       });
-      console.log(smsData.refunded,"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",smsData)
       const smsMessages = smsData.sms.map((sms: any) => ({
         id: sms.created_at,
         message: sms.text,
