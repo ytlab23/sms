@@ -132,7 +132,7 @@ export default function Sms({ numberId }: { numberId: string }) {
           title: 'Refund processed',
           description: 'The refund has been processed successfully.',
         });
-        navigate(`${i18n.language}/${t("urls.orders")}`);
+        navigate(`/${i18n.language}/${t("urls.orders")}`);
       }
     } catch (error: any) {
       toast({
@@ -163,7 +163,7 @@ export default function Sms({ numberId }: { numberId: string }) {
           description: 'The service has been canceled successfully.',
         });
         // navigate('/orders');
-        navigate(`${i18n.language}/${t("urls.orders")}`);
+        navigate(`/${i18n.language}/${t("urls.orders")}`);
       }
     } catch (error: any) {
       toast({
