@@ -279,7 +279,7 @@ export default function Sms({ numberId }: { numberId: string }) {
                       {t("sms.Cancel Service")}   
                     </Button>
                   )}
-                {/* {showRefundButton && (
+                {showRefundButton && (
                   <Button
                     variant="outline"
                     className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
@@ -292,7 +292,7 @@ export default function Sms({ numberId }: { numberId: string }) {
                   >
                     Request Refund
                   </Button>
-                )} */}
+                )}
               </div>
             </div>
             <ScrollArea className="h-[300px] w-full rounded-md border p-4 bg-white dark:bg-boxdark-2">
