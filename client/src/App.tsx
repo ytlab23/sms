@@ -281,7 +281,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/:slug" element={
+          <Route path="/:lang?/:slug" element={
             <>
             <PageTitle title="Service | SMS App" />
             <InternalPage />

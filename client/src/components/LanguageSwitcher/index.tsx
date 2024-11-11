@@ -221,16 +221,7 @@ export default function LanguageSwitcher() {
       // console.log("newPath", newPath, "--------------------", t("urls." + newPath));
       navigate(`/${lng}/${newPath}`);
     });
-    // const newPath = t(`urls.${englishPath}`);
-
-    // // Change the language in i18n
-    // console.log('i ama changin from', i18n.language, 'to', lng,englishPath,newPath,i18n.language);
-    // console.log("newPath",newPath,"--------------------",t("urls."+newPath));
- 
-    // // Navigate to the new URL with the target language prefix and translated path
-    // navigate(`/${lng}/${newPath}`);
-
-    // Close the dropdown
+  
     setIsOpen(false);
 };
 
