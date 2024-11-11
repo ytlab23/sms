@@ -53,6 +53,9 @@ const PaymentForm = () => {
 
   return (
     <div className="h-full min-h-full flex flex-col items-center justify-center p-4 space-y-4 mb-60">
+      {/* <h2>Pay Using Stripe</h2> */}
+      <h2 className="text-4xl font-bold text-blue-600">Pay Using Stripe</h2>
+
       <div className="flex items-center space-x-2">
         <img src={stripelogo} alt="Stripe Logo" className="h-24 w-auto" />
         <input
