@@ -922,7 +922,7 @@ export default function AdminInternalPageCreator() {
               <SelectTrigger id="service-select">
                 <SelectValue placeholder="Select Service" />
               </SelectTrigger>
-              <SelectContent className="bg-white ">
+              <SelectContent className="bg-slate-100">
                 {services.map((service) => (
                   <SelectItem className ="hover:text-blue-600" key={service.name} value={service.name}>{service.name}</SelectItem>
                 ))}
@@ -936,9 +936,9 @@ export default function AdminInternalPageCreator() {
                 <Globe className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Select Language" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-slate-100">
                 {languages.map((lang) => (
-                  <SelectItem key={lang.code} value={lang.code}>{lang.name}</SelectItem>
+                  <SelectItem className ="hover:text-blue-600" key={lang.code} value={lang.code}>{lang.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
