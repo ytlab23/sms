@@ -135,7 +135,7 @@ const DropdownUser = () => {
               </Link>
               {isAdminEmail(currentUser?.email) && (
                 <Link
-                  to="/admin382013453sms/setup"
+                  to={`${i18n.language}/${t("urls.admin382013453sms/setup")}`}
                   className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 transition-all duration-300 ease-in-out hover:bg-blue-50  dark:hover:bg-boxdark-2 group"
                   onClick={() => setDropdownOpen(false)}
                   onMouseEnter={() => setHoveredItem('admin')}

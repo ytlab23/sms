@@ -275,7 +275,8 @@
     "orders": "orders",
     "pay": "pay",
     "settings": "settings",
-    "sms": "sms"
+    "sms": "sms",
+    "admin382013453sms/setup": "admin382013453sms/setup"
   },
   "reverseUrls": {
     "": "home",
@@ -288,6 +289,7 @@
     "orders": "orders",
     "pay": "pay",
     "settings": "settings",
-    "sms": "sms"
+    "sms": "sms",
+    "admin382013453sms/setup": "admin382013453sms/setup"
   }
 }

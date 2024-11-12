@@ -74,6 +74,8 @@ function App() {
   const HowToBuyTitle = `${t('app.How to Buy')}`;
   const smsPath = `/:lang?/${t('urls.sms')}`;
   const smsTitle = `${t('app.Your SMS')}`;
+
+  const adminSetupPath = `/:lang?/${t('urls.admin382013453sms/setup')}`;
   // useEffect(() => {
   //   const currentLanguage = i18n.language;
   //   const pathLanguage = location.pathname.split('/')[1];
@@ -374,7 +376,7 @@ function App() {
             }
           /> */}
           <Route
-            path="/admin382013453sms/setup"
+            path={adminSetupPath}
             element={
               <AdminProtectedRoute>
                 <>

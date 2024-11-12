@@ -59,7 +59,7 @@ const Header = (props: {
     { name: t('header.YOUR ORDERS'), href: `${i18n.language}/${t("urls.orders")}`, icon: ShoppingBag }, 
   ];
 
-  const adminNavItem = { name: t('header.ADMIN'), href: '/admin382013453sms/setup', icon: Shield };
+  const adminNavItem = { name: t('header.ADMIN'), href: `${i18n.language}/${t("urls.admin382013453sms/setup")}`, icon: Shield };
 
   const navItems = currentUser
     ? [
