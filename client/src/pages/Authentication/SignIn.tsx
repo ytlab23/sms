@@ -100,7 +100,7 @@ const SignIn: React.FC = () => {
         }
 
      
-        navigate(`${i18n.language}/`);
+        navigate(`/${i18n.language}/`);
       })
       .catch((error) => {
         const errorCode = error.code;

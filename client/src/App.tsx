@@ -74,20 +74,72 @@ function App() {
   const HowToBuyTitle = `${t('app.How to Buy')}`;
   const smsPath = `/:lang?/${t('urls.sms')}`;
   const smsTitle = `${t('app.Your SMS')}`;
-  
-  useEffect(() => {
-    const currentLanguage = i18n.language; // This gets the current language from i18n
+  // useEffect(() => {
+  //   const currentLanguage = i18n.language;
+  //   const pathLanguage = location.pathname.split('/')[1];
 
-    if (currentLanguage) {
-      // Wait until the language is set and then update the URL
-      const url = `/${currentLanguage}${window.location.pathname.replace(/^\/[a-z]{2}/, '')}`;
-      // Ensure that the URL is updated without triggering an infinite redirect
-      if (window.location.pathname !== url) {
-        console.log("url", url)
-        navigate(url); // Update the URL to reflect the correct language
+  //   // Check if the path language is different from the current language
+    const languages = [
+      { code: 'en', name: 'English', flag: '🇬🇧' },
+      { code: 'es', name: 'Español', flag: '🇪🇸' },
+      { code: 'pt', name: 'Português', flag: '🇵🇹' },
+      { code: 'fr', name: 'Français', flag: '🇫🇷' },
+      { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+      { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+      { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+      { code: 'zh', name: '中文', flag: '🇨🇳' },
+      { code: 'ja', name: '日本語', flag: '🇯🇵' },
+      { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    ];
+  //   if (pathLanguage && pathLanguage !== currentLanguage && languages.some((lang: { code: string }) => lang.code === pathLanguage)) {
+  //     // If it is, update the i18n language
+  //     // Use the provided languages array
+     
+  //     i18n.changeLanguage(pathLanguage);
+  //   } else if (!pathLanguage || !languages.some(lang => lang.code === pathLanguage)) {
+  //     // If there's no language in the path or it's invalid, redirect to the current language
+  //     const newPath = `/${currentLanguage}${location.pathname}`;
+  //     navigate(newPath, { replace: true });
+  //   }
+  // }, [location, i18n, navigate]);
+
+  useEffect(() => {
+    const pathParts = location.pathname.split('/');
+    const pathLanguage = pathParts[1];
+    const currentSlug = pathParts.slice(2).join('/');
+
+    if (pathLanguage && languages.some(lang => lang.code === pathLanguage)) {
+      if (pathLanguage !== i18n.language) {
+        i18n.changeLanguage(pathLanguage).then(() => {
+          // Translate the slug if necessary
+          const englishPath = t(`reverseUrls.${currentSlug}`);
+          const translatedPath = t(`urls.${englishPath}`);
+          if (translatedPath !== currentSlug) {
+            navigate(`/${pathLanguage}/${translatedPath}`, { replace: true });
+          }
+        });
       }
+    } else {
+      // If no valid language in URL, redirect to current language
+      const englishPath = t(`reverseUrls.${currentSlug}`);
+      const translatedPath = t(`urls.${englishPath}`);
+      navigate(`/${i18n.language}/${translatedPath || ''}`, { replace: true });
     }
-  }, []); // This effect runs whenever i18n.language changes
+  }, [location, i18n, navigate, t]);
+ 
+  // useEffect(() => {
+  //   const currentLanguage = i18n.language; // This gets the current language from i18n
+
+  //   if (currentLanguage) {
+  //     // Wait until the language is set and then update the URL
+  //     const url = `/${currentLanguage}${window.location.pathname.replace(/^\/[a-z]{2}/, '')}`;
+  //     // Ensure that the URL is updated without triggering an infinite redirect
+  //     if (window.location.pathname !== url) {
+  //       console.log("url", url)
+  //       navigate(url); // Update the URL to reflect the correct language
+  //     }
+  //   }
+  // }, []); // This effect runs whenever i18n.language changes
 
 
   // Example language switcher
@@ -120,7 +172,7 @@ function App() {
             path="/:lang?"
             element={
               <>
-                <PageTitle title="Home | SMSApp" />
+                <PageTitle title="Home | SMSApp" lang={i18n.language} />
                 <MainPage />
               </>
             }
@@ -131,7 +183,7 @@ function App() {
               <Elements stripe={stripePromise}>
                 <ProtectedRoute>
                   <div>
-                    <PageTitle title={`${payTitle}  | SMSApp`} />
+                    <PageTitle title={`${payTitle}  | SMSApp`} lang={i18n.language}/>
                     <PaymentForm />
                   </div>
                 </ProtectedRoute>
@@ -144,7 +196,7 @@ function App() {
             path={faqPath}
             element={
               <>
-                <PageTitle title={`${faqTitle} | SMS App`} />
+                <PageTitle title={`${faqTitle} | SMS App`} lang={i18n.language} />
                 <Faq />
               </>
             }
@@ -153,7 +205,7 @@ function App() {
             path={statPath}
             element={
               <>
-                <PageTitle title={`${statTitle} | SMS App`} />
+                <PageTitle title={`${statTitle} | SMS App`} lang={i18n.language}/>
                 <StatsPage />
               </>
             }
@@ -164,7 +216,7 @@ function App() {
               <>
                 <ProtectedRoute>
                   <>
-                    <PageTitle title="Payment Failure | SMS App" />
+                    <PageTitle title="Payment Failure | SMS App" lang={i18n.language} />
                     <PaymentFailure />
                   </>
                 </ProtectedRoute>
@@ -177,7 +229,7 @@ function App() {
               <>
                 <ProtectedRoute>
                   <>
-                    <PageTitle title="Payment Success | SMS App" />
+                    <PageTitle title="Payment Success | SMS App" lang={i18n.language} />
                     <PaymentSuccess />
                   </>
                 </ProtectedRoute>
@@ -188,7 +240,7 @@ function App() {
             path={ourServicesPath}
             element={
               <>
-                <PageTitle title={`${ourServicesTitle} | SMS App`} />
+                <PageTitle title={`${ourServicesTitle} | SMS App`} lang={i18n.language}/>
                 <InternalPagesShowcase />
               </>
             }
@@ -226,7 +278,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title={`${settingsTitle} | SMS App`} />
+                  <PageTitle title={`${settingsTitle} | SMS App`} lang={i18n.language} />
                   <Settings />
                 </>
               </ProtectedRoute>
@@ -237,7 +289,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title={`${ordersTitle} | SMS App`} />
+                  <PageTitle title={`${ordersTitle} | SMS App`} lang={i18n.language} />
                   <OrdersPage />
                 </>
               </ProtectedRoute>
@@ -247,7 +299,7 @@ function App() {
             path={signInPath}
             element={
               <>
-                <PageTitle title={`${signInTitle} | SMS App`} />
+                <PageTitle title={`${signInTitle} | SMS App`} lang={i18n.language} />
                 <SignIn />
               </>
             }
@@ -256,7 +308,7 @@ function App() {
             path={signUpPath}
             element={
               <>
-                <PageTitle title={`${signUpTitle} | SMS App`} />
+                <PageTitle title={`${signUpTitle} | SMS App`} lang={i18n.language} />
                 <SignUp />
               </>
             }
@@ -265,7 +317,7 @@ function App() {
             path={HowToBuyPath}
             element={
               <>
-                <PageTitle title={`${HowToBuyTitle} | SMS App`} />
+                <PageTitle title={`${HowToBuyTitle} | SMS App`} lang={i18n.language} />
                 <HowToBuy />
               </>
             }
@@ -275,7 +327,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title={`${smsTitle} | SMS App`} />
+                  <PageTitle title={`${smsTitle} | SMS App`} lang={i18n.language}/>
                   <SmsPage />
                 </>
               </ProtectedRoute>
@@ -283,7 +335,7 @@ function App() {
           />
           <Route path="/:lang?/:slug" element={
             <>
-            <PageTitle title="Service | SMS App" />
+            <PageTitle title="Service | SMS App" lang={i18n.language} />
             <InternalPage />
             </>
             } />
@@ -326,7 +378,7 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Admin | SMS App" />
+                  <PageTitle title="Admin | SMS App" lang={i18n.language} />
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -348,7 +400,7 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Admin Edit | SMS App" />
+                  <PageTitle title="Admin Edit | SMS App" lang={i18n.language} />
                   {/* <InternalPagesList></InternalPagesList> */}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
@@ -373,7 +425,7 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Admin Edit | SMS App" />
+                  <PageTitle title="Admin Edit | SMS App" lang={i18n.language}/>
 
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
@@ -398,7 +450,7 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Admin Edit | SMS App" />{' '}
+                  <PageTitle title="Admin Edit | SMS App" lang={i18n.language}/>{' '}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -421,7 +473,7 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Edit Country | SMS App" />{' '}
+                  <PageTitle title="Edit Country | SMS App" lang={i18n.language} />{' '}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -449,7 +501,7 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Country Service Pricing | SMS App" />
+                  <PageTitle title="Country Service Pricing | SMS App" lang={i18n.language} />
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -475,7 +527,7 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Edit Services | SMS App" />{' '}
+                  <PageTitle title="Edit Services | SMS App"  lang={i18n.language}/>{' '}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -502,7 +554,7 @@ function App() {
           path="/:lang?/404"
           element={
             <div>
-              <PageTitle title="404 | SMS App" />
+              <PageTitle title="404 | SMS App" lang={i18n.language}/>
               <NotFound />
             </div>
           }
