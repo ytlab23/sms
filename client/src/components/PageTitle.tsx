@@ -1,78 +1,138 @@
+// // // // import { useEffect } from 'react'
+// // // // import { useLocation } from 'react-router-dom'
+
+// // // // interface PageTitleProps {
+// // // //   title: string;
+// // // // }
+
+// // // // const PageTitle: React.FC<PageTitleProps> = ({ title }) => {
+// // // //   const location = useLocation();
+
+// // // //   useEffect(() => {
+// // // //     document.title = title;
+// // // //   }, [location, title]);
+
+// // // //   return null; // This component doesn't render anything
+// // // // };
+
+// // // // export default PageTitle;
 // // // import { useEffect } from 'react'
 // // // import { useLocation } from 'react-router-dom'
 
 // // // interface PageTitleProps {
 // // //   title: string;
+// // //   lang: string;
 // // // }
 
-// // // const PageTitle: React.FC<PageTitleProps> = ({ title }) => {
+// // // const PageTitle: React.FC<PageTitleProps> = ({ title, lang }) => {
 // // //   const location = useLocation();
 
 // // //   useEffect(() => {
+// // //     // Set the document title
 // // //     document.title = title;
-// // //   }, [location, title]);
+
+// // //     // Set the lang attribute on the html element
+// // //     document.documentElement.lang = lang;
+
+// // //     // Optionally, you can also add a meta tag for language
+// // //     let metaLang = document.querySelector('meta[name="language"]');
+// // //     if (!metaLang) {
+// // //       metaLang = document.createElement('meta');
+// // //       metaLang.setAttribute('name', 'language');
+// // //       document.head.appendChild(metaLang);
+// // //     }
+// // //     metaLang.setAttribute('content', lang);
+
+// // //     // Cleanup function to reset the lang attribute when component unmounts
+// // //     return () => {
+// // //       document.documentElement.lang = 'en'; // or your default language
+// // //     };
+// // //   }, [location, title, lang]);
 
 // // //   return null; // This component doesn't render anything
 // // // };
 
 // // // export default PageTitle;
-// // import { useEffect } from 'react'
+// // import React, { useEffect } from 'react'
 // // import { useLocation } from 'react-router-dom'
+// // import { useTranslation } from 'react-i18next'
 
-// // interface PageTitleProps {
-// //   title: string;
-// //   lang: string;
-// // }
+// // const languages = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'zh', 'ja', 'ar']; // Add all your supported languages here
 
-// // const PageTitle: React.FC<PageTitleProps> = ({ title, lang }) => {
+// // const LanguageMetaTags: React.FC = () => {
 // //   const location = useLocation();
+// //   const { i18n } = useTranslation();
 
 // //   useEffect(() => {
-// //     // Set the document title
-// //     document.title = title;
+// //     // Remove any existing hreflang tags
+// //     document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
 
-// //     // Set the lang attribute on the html element
-// //     document.documentElement.lang = lang;
+// //     // Add hreflang tags for all supported languages
+// //     languages.forEach(lang => {
+// //       const link = document.createElement('link');
+// //       link.rel = 'alternate';
+// //       link.hreflang = lang;
+// //       link.href = `${window.location.origin}/${lang}${location.pathname.replace(/^\/[a-z]{2}/, '')}`;
+// //       document.head.appendChild(link);
+// //     });
 
-// //     // Optionally, you can also add a meta tag for language
-// //     let metaLang = document.querySelector('meta[name="language"]');
-// //     if (!metaLang) {
-// //       metaLang = document.createElement('meta');
-// //       metaLang.setAttribute('name', 'language');
-// //       document.head.appendChild(metaLang);
-// //     }
-// //     metaLang.setAttribute('content', lang);
+// //     // Add x-default hreflang
+// //     const xDefaultLink = document.createElement('link');
+// //     xDefaultLink.rel = 'alternate';
+// //     xDefaultLink.hreflang = 'x-default';
+// //     xDefaultLink.href = `${window.location.origin}/en/`; // Assuming English is your default language
+// //     document.head.appendChild(xDefaultLink);
 
-// //     // Cleanup function to reset the lang attribute when component unmounts
+// //     // Cleanup function
 // //     return () => {
-// //       document.documentElement.lang = 'en'; // or your default language
+// //       document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
 // //     };
-// //   }, [location, title, lang]);
+// //   }, [location, i18n.language]);
 
 // //   return null; // This component doesn't render anything
 // // };
 
-// // export default PageTitle;
+// // export default LanguageMetaTags;
 // import React, { useEffect } from 'react'
 // import { useLocation } from 'react-router-dom'
 // import { useTranslation } from 'react-i18next'
 
-// const languages = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'zh', 'ja', 'ar']; // Add all your supported languages here
+// interface PageTitleProps {
+//   title: string;
+//   lang: string;
+// }
 
-// const LanguageMetaTags: React.FC = () => {
+// const languages = ['en', 'es', 'pt', 'fr', 'de', 'it', 'ru', 'zh', 'ja', 'ar']; // Add all your supported languages here
+
+// const PageTitle: React.FC<PageTitleProps> = ({ title, lang }) => {
 //   const location = useLocation();
 //   const { i18n } = useTranslation();
 
 //   useEffect(() => {
+//     // Set the document title
+//     document.title = title;
+
+//     // Set the lang attribute on the html element
+//     document.documentElement.lang = lang;
+
+//     // Add or update meta tag for language
+//     let metaLang = document.querySelector('meta[name="language"]');
+//     if (!metaLang) {
+//       metaLang = document.createElement('meta');
+//       metaLang.setAttribute('name', 'language');
+//       document.head.appendChild(metaLang);
+//     }
+//     metaLang.setAttribute('content', lang);
+
 //     // Remove any existing hreflang tags
 //     document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
 
 //     // Add hreflang tags for all supported languages
-//     languages.forEach(lang => {
+//     languages.forEach(language => {
 //       const link = document.createElement('link');
 //       link.rel = 'alternate';
-//       link.hreflang = lang;
-//       link.href = `${window.location.origin}/${lang}${location.pathname.replace(/^\/[a-z]{2}/, '')}`;
+//       link.hreflang = language;
+//       link.href = `${window.location.origin}/${language}${location.pathname.replace(/^\/[a-z]{2}/, '')}`;
 //       document.head.appendChild(link);
 //     });
 
@@ -85,17 +145,18 @@
 
 //     // Cleanup function
 //     return () => {
+//       document.documentElement.lang = 'en'; // or your default language
 //       document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
 //     };
-//   }, [location, i18n.language]);
+//   }, [location, title, lang, i18n.language]);
 
 //   return null; // This component doesn't render anything
 // };
 
-// export default LanguageMetaTags;
-import React, { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+// export default PageTitle;
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface PageTitleProps {
   title: string;
@@ -132,7 +193,8 @@ const PageTitle: React.FC<PageTitleProps> = ({ title, lang }) => {
       const link = document.createElement('link');
       link.rel = 'alternate';
       link.hreflang = language;
-      link.href = `${window.location.origin}/${language}${location.pathname.replace(/^\/[a-z]{2}/, '')}`;
+      const adjustedPathname = location.pathname.replace(/^\/[a-z]{2}/, ''); // Remove language prefix if it exists
+      link.href = `${window.location.origin}/${language}${adjustedPathname}`;
       document.head.appendChild(link);
     });
 
@@ -140,7 +202,7 @@ const PageTitle: React.FC<PageTitleProps> = ({ title, lang }) => {
     const xDefaultLink = document.createElement('link');
     xDefaultLink.rel = 'alternate';
     xDefaultLink.hreflang = 'x-default';
-    xDefaultLink.href = `${window.location.origin}/en/`; // Assuming English is your default language
+    xDefaultLink.href = `${window.location.origin}/en${location.pathname.replace(/^\/[a-z]{2}/, '')}`; // Assuming English is the default
     document.head.appendChild(xDefaultLink);
 
     // Cleanup function
@@ -148,7 +210,7 @@ const PageTitle: React.FC<PageTitleProps> = ({ title, lang }) => {
       document.documentElement.lang = 'en'; // or your default language
       document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
     };
-  }, [location, title, lang, i18n.language]);
+  }, [location, title, lang]);
 
   return null; // This component doesn't render anything
 };

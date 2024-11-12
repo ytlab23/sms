@@ -1167,7 +1167,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, ShoppingCart, Check, Globe } from 'lucide-react'
+import { ChevronDown, ShoppingCart, Check, Globe,Server, HelpCircle } from 'lucide-react'
 import { Button } from './ui/button'
 import { Card, CardContent } from './ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
@@ -1207,7 +1207,7 @@ export default function InternalPage() {
   const [failedToBuy, setFailedToBuy] = useState(false)
   const [price, setPrice] = useState<number | null>(null)
   const { currentUser } = useAuth()
-
+  const [imageError, setImageError] = useState(false)
   const createMarkup = (html: string) => {
     return { __html: DOMPurify.sanitize(html) }
   }
@@ -1541,7 +1541,22 @@ export default function InternalPage() {
                 </div>
               </div>
               <div className="p-8 bg-gradient-to-br from-blue-100 to-indigo-100 dark:bg-boxdark flex flex-col justify-center items-center">
-                <Globe className="w-16 h-16 text-blue-600 mb-4" />
+                {/* <Server className="w-16 h-16 text-blue-600 mb-4" /> */}
+                {!imageError ? (
+                        <img
+                          src={`https://logo.clearbit.com/${pageData.service.toLowerCase()}.com`}
+                          alt={`Icon of ${pageData.service}`}
+                          className="w-16 h-16 object-contain mb-3"
+                          onError={(e) => {
+                            setImageError(true);
+                            const target = e.target as HTMLImageElement
+                            target.onerror = null
+                            target.src = ''
+                          }}
+                        />
+                      ) : (
+                        <HelpCircle className="w-16 h-16 text-blue-600" />
+                      )}
                 <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-black">{t('service.Available Service')}</h3>
                 <div className="text-3xl font-bold text-blue-700 mb-4">{pageData.service}</div>
               </div>
