@@ -104,30 +104,41 @@ function App() {
   //     navigate(newPath, { replace: true });
   //   }
   // }, [location, i18n, navigate]);
-
   useEffect(() => {
-    const pathParts = location.pathname.split('/');
-    const pathLanguage = pathParts[1];
-    const currentSlug = pathParts.slice(2).join('/');
+    // Set the HTML language attribute
+    document.documentElement.lang = i18n.language;
+  }, []); // Update whenever the language changes
+  
+  // useEffect(() => {
+  //   const pathParts = location.pathname.split('/');
+  //   const pathLanguage = pathParts[1];
+  //   const currentSlug = pathParts.slice(2).join('/');
 
-    if (pathLanguage && languages.some(lang => lang.code === pathLanguage)) {
-      if (pathLanguage !== i18n.language) {
-        i18n.changeLanguage(pathLanguage).then(() => {
-          // Translate the slug if necessary
-          const englishPath = t(`reverseUrls.${currentSlug}`);
-          const translatedPath = t(`urls.${englishPath}`);
-          if (translatedPath !== currentSlug) {
-            navigate(`/${pathLanguage}/${translatedPath}`, { replace: true });
-          }
-        });
-      }
-    } else {
-      // If no valid language in URL, redirect to current language
-      const englishPath = t(`reverseUrls.${currentSlug}`);
-      const translatedPath = t(`urls.${englishPath}`);
-      navigate(`/${i18n.language}/${translatedPath || ''}`, { replace: true });
-    }
-  }, [location, i18n, navigate, t]);
+  //   if (pathLanguage && languages.some(lang => lang.code === pathLanguage)) {
+  //     if (pathLanguage !== i18n.language) {
+  //       i18n.changeLanguage(pathLanguage).then(() => {
+  //         // Translate the slug if necessary
+  //         const englishPath = t(`reverseUrls.${currentSlug}`);
+  //         const translatedPath = t(`urls.${englishPath}`);
+  //         if (translatedPath !== currentSlug) {
+  //           // clg("translatedPath", translatedPath)
+  //           navigate(`/${pathLanguage}/${translatedPath}`, { replace: true });
+  //         }
+  //       });
+  //     }
+  //   } else {
+  //     // If no valid language in URL, redirect to current language
+  //     const englishPath = t(`reverseUrls.${currentSlug}`);
+  //     const translatedPath = t(`urls.${englishPath}`);
+  //     if (translatedPath === "urls.reverseUrls.") {
+  //       navigate(`/${i18n.language}/`, { replace: true });
+  //     }else{
+  //       navigate(`/${i18n.language}/${translatedPath || ''}`, { replace: true });
+
+  //     }
+
+  //   }
+  // }, [location, i18n, navigate, t]);
  
   // useEffect(() => {
   //   const currentLanguage = i18n.language; // This gets the current language from i18n
