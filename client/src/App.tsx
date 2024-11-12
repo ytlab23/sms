@@ -75,7 +75,7 @@ function App() {
   const smsPath = `/:lang?/${t('urls.sms')}`;
   const smsTitle = `${t('app.Your SMS')}`;
 
-  const adminSetupPath = `/:lang?/${t('urls.admin382013453sms/setup')}`;
+  const adminSetupPath = `/${t('urls.admin382013453sms/setup')}`;
   // useEffect(() => {
   //   const currentLanguage = i18n.language;
   //   const pathLanguage = location.pathname.split('/')[1];
