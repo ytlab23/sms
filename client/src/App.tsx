@@ -104,11 +104,10 @@ function App() {
   //     navigate(newPath, { replace: true });
   //   }
   // }, [location, i18n, navigate]);
-  useEffect(() => {
-    // Set the HTML language attribute
-    document.documentElement.lang = i18n.language;
-  }, []); // Update whenever the language changes
   
+  useEffect(() => {
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
   // useEffect(() => {
   //   const pathParts = location.pathname.split('/');
   //   const pathLanguage = pathParts[1];
