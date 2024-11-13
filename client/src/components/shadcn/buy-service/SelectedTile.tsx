@@ -104,7 +104,9 @@ export default function Component({ item, onCancel, type, iso }: SelectedTilePro
           </div>
         )}
         <div className="flex flex-col">
-          <span className="font-medium">{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</span>
+        {type === 'service' && (  <span className="font-medium">{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</span>)}
+        {type === 'country' && (  <span className="font-medium">{t(`country.${iso}`)}</span>)}
+
           <div className="flex space-x-2 text-sm">
             {type === 'service' && item.price && (
               <span className="text-blue-500 dark:text-blue-400">

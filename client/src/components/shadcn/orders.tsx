@@ -1038,7 +1038,7 @@ export default function Component() {
                 onClick={() => navigate(`/${i18n.language}/${t("urls.pay")}`)}
                 variant="outline"
               >
-                Go To Payment
+              {t("order.Go To Payment")}  
               </Button>
             ),
           })
@@ -1056,7 +1056,7 @@ export default function Component() {
           description: 'Unknown Error Occurred',
           action: (
             <Button onClick={() => buyProduct(order)} variant="outline">
-              Try Again
+            {t("order.Try Again")}  
             </Button>
           ),
         })
@@ -1068,13 +1068,13 @@ export default function Component() {
 
   const getStatusBadge = (order: Order) => {
     if (order.sms.length > 0) {
-      return <Badge className="bg-green-500 hover:bg-green-600">Success</Badge>
+      return <Badge className="bg-green-500 hover:bg-green-600">{t("order.Success")}</Badge>
     } else if (order.refunded) {
-      return <Badge className="bg-yellow-500 hover:bg-yellow-600">Refunded</Badge>
+      return <Badge className="bg-yellow-500 hover:bg-yellow-600">{t("order.Refunded")}</Badge>
     } else if (new Date(order.expiresAt) < new Date()) {
-      return <Badge className="bg-red-500 hover:bg-red-600">Expired</Badge>
+      return <Badge className="bg-red-500 hover:bg-red-600">{t("order.Expired")}</Badge>
     } else {
-      return <Badge className="bg-green-500 hover:bg-green-600">Active</Badge>
+      return <Badge className="bg-green-500 hover:bg-green-600">{t("order.Active")}</Badge>
     }
   }
 
@@ -1121,7 +1121,7 @@ export default function Component() {
                 <TableHead>{t("order.SMS Codes")}</TableHead>
                 <TableHead>{t("order.Expires At")}</TableHead>
                 <TableHead>{t("order.Status")}</TableHead>
-                <TableHead>{t("order.Re-Buy")}</TableHead>
+                <TableHead>{t("order.Buy Again")}</TableHead>
                 <TableHead>{t("order.Actions")}</TableHead>
               </TableRow>
             </TableHeader>
@@ -1159,15 +1159,15 @@ export default function Component() {
                     {getStatusBadge(order)}
                   </TableCell>
                   <TableCell>
-                    <div className="flex flex-col items-center gap-2">
-                      <span>{t("order.Price")+ " "}{order.price ? `$${order.price.toFixed(2)}` : 'N/A'}</span>
+                    <div className="flex flex-col items-center gap-2 text-blue-400">
+                      <span>{t("order.Price")+ ": "}{order.price ? `$${order.price.toFixed(2)}` : 'N/A'}</span>
                       <Button
                         // variant="outline"
                         size="sm"
                         className="p-1 text-whiten "
                         onClick={() => buyProduct(order)}
                         disabled={buyingOrderId !== null}
-                      >{t("order.Buy again") + '  '}
+                      >{t("order.Buy Again") + ': '}
                         {buyingOrderId === order.id ? (
                           <RefreshCw className="h-4 w-4 animate-spin" />
                         ) : (
@@ -1194,10 +1194,9 @@ export default function Component() {
                         </DialogTrigger>
                         <DialogContent className="bg-white">
                           <DialogHeader>
-                            <DialogTitle>Are you sure you want to delete this order?</DialogTitle>
-                            <DialogDescription>
-                              This action cannot be undone. This will permanently delete the order
-                              for the phone number <span className='text-blue-500'>{orderToDelete?.phoneNumber}</span>.
+                            <DialogTitle>{t("order.Are you sure you want to delete this order?")}</DialogTitle>
+                            <DialogDescription>{t("order.This action cannot be undone. This will permanently delete the order for the phone number")}
+                               <span className='text-blue-500'>{orderToDelete?.phoneNumber}</span>.
                             </DialogDescription>
                           </DialogHeader>
                           <DialogFooter>

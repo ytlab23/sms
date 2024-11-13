@@ -315,7 +315,8 @@ export default function LanguageSwitcher() {
     // Step 2: Translate the English path to the target language
     i18n.changeLanguage(lng).then(() => {
       const newPath = t(`urls.${englishPath}`);
-      navigate(`/${lng}/${newPath}`, { replace: true });
+      navigate(`/${lng}/`, { replace: true });
+      // navigate(`/${lng}/${newPath}`, { replace: true });
     });
   
     setIsOpen(false);

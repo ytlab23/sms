@@ -211,7 +211,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
                       width={20}
                       height={20}
                     />
-                    <span className="flex-grow">{country.name}</span>
+                    <span className="flex-grow">{t(`country.${country.iso}`)}</span>
                     {successRate !== null && (
                       <span className="text-sm text-green-500 dark:text-green-400">{t("actionsidebar.Success")}: 
                         {successRate.toFixed(2)}%
