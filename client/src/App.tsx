@@ -93,68 +93,12 @@ function App() {
       { code: 'ja', name: '日本語', flag: '🇯🇵' },
       { code: 'ar', name: 'العربية', flag: '🇸🇦' },
     ];
-  //   if (pathLanguage && pathLanguage !== currentLanguage && languages.some((lang: { code: string }) => lang.code === pathLanguage)) {
-  //     // If it is, update the i18n language
-  //     // Use the provided languages array
-     
-  //     i18n.changeLanguage(pathLanguage);
-  //   } else if (!pathLanguage || !languages.some(lang => lang.code === pathLanguage)) {
-  //     // If there's no language in the path or it's invalid, redirect to the current language
-  //     const newPath = `/${currentLanguage}${location.pathname}`;
-  //     navigate(newPath, { replace: true });
-  //   }
-  // }, [location, i18n, navigate]);
+  
   
   useEffect(() => {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
-  // useEffect(() => {
-  //   const pathParts = location.pathname.split('/');
-  //   const pathLanguage = pathParts[1];
-  //   const currentSlug = pathParts.slice(2).join('/');
-
-  //   if (pathLanguage && languages.some(lang => lang.code === pathLanguage)) {
-  //     if (pathLanguage !== i18n.language) {
-  //       i18n.changeLanguage(pathLanguage).then(() => {
-  //         // Translate the slug if necessary
-  //         const englishPath = t(`reverseUrls.${currentSlug}`);
-  //         const translatedPath = t(`urls.${englishPath}`);
-  //         if (translatedPath !== currentSlug) {
-  //           // clg("translatedPath", translatedPath)
-  //           navigate(`/${pathLanguage}/${translatedPath}`, { replace: true });
-  //         }
-  //       });
-  //     }
-  //   } else {
-  //     // If no valid language in URL, redirect to current language
-  //     const englishPath = t(`reverseUrls.${currentSlug}`);
-  //     const translatedPath = t(`urls.${englishPath}`);
-  //     if (translatedPath === "urls.reverseUrls.") {
-  //       navigate(`/${i18n.language}/`, { replace: true });
-  //     }else{
-  //       navigate(`/${i18n.language}/${translatedPath || ''}`, { replace: true });
-
-  //     }
-
-  //   }
-  // }, [location, i18n, navigate, t]);
  
-  // useEffect(() => {
-  //   const currentLanguage = i18n.language; // This gets the current language from i18n
-
-  //   if (currentLanguage) {
-  //     // Wait until the language is set and then update the URL
-  //     const url = `/${currentLanguage}${window.location.pathname.replace(/^\/[a-z]{2}/, '')}`;
-  //     // Ensure that the URL is updated without triggering an infinite redirect
-  //     if (window.location.pathname !== url) {
-  //       console.log("url", url)
-  //       navigate(url); // Update the URL to reflect the correct language
-  //     }
-  //   }
-  // }, []); // This effect runs whenever i18n.language changes
-
-
-  // Example language switcher
   const changeLanguageAndPath = useChangeLanguageAndPath();
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -257,34 +201,7 @@ function App() {
               </>
             }
           />
-          {/* <Route
-            path="/internalpages"
-            element={
-              <>
-                <PageTitle title="InternalPage | SMS App" />
-                <InternalPage />
-              </>
-            }
-          /> */}
-
-          {/* <Route
-            path="/internalpagesadmin"
-            element={
-              <>
-                <PageTitle title="InternalPage Admin | SMS App" />
-                <AdminInternalPageCreator />
-              </>
-            }
-          /> */}
-          {/* <Route
-            path="/freenumber"
-            element={
-              <>
-                <PageTitle title="Free Number | SMS App" />
-                <FreeNumberPage />
-              </>
-            }
-          /> */}
+        
           <Route
             path={settingsPath}
             element={
@@ -363,28 +280,7 @@ function App() {
             />
           }
         >
-          {/* <Route
-            path="/admin382013453sms"
-            element={
-              <AdminProtectedRoute>
-                <>
-                  <PageTitle title="Admin | SMS App" />
-                  <div className="mx-7">
-                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
-                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
-                        <CardTitle className="text-2xl font-bold">
-                          Create  Internal Pages
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-6">
-                          <AdminInternalPageCreator></AdminInternalPageCreator>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </>
-              </AdminProtectedRoute>
-            }
-          /> */}
+         
           <Route
             path={adminSetupPath}
             element={

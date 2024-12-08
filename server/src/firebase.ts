@@ -1,6 +1,5 @@
 
 
-// firebase.ts
 import admin from 'firebase-admin';
 
 const serviceAccount = require("./serviceAccountKey.json");

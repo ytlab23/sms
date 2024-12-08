@@ -36,11 +36,11 @@ const Header = (props: {
 }) => {
   const { currentUser } = useAuth(); 
   const location = useLocation();
-  const currentPath = location.pathname;
+  const currentPath = `${location.pathname}`;
   const navigate = useNavigate();
   const { t,i18n } = useTranslation();
 
- 
+  console.log(currentPath)
   const commonNavItems = [
     { name: t("header.HOME"), href: `${i18n.language}/`, icon: Home },
     { name: t("header.FAQ"), href: `${i18n.language}/${t("urls.faq")}`, icon: HelpCircle },
