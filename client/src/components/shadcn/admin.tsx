@@ -36,7 +36,7 @@ export default function AdminSetup() {
     const countriesRef = collection(db, 'countries')
     const snapshot = await getDocs(countriesRef)
     if (snapshot.empty) {
-      const response = await fetch('https://smsverify-server.vercel.app/api/countries')
+      const response = await fetch('https://smsapp-backend.vercel.app/api/countries')
       const data = await response.json()
       const countries = Object.entries(data).map(([key, value]: [string, any]) => ({
         name: value.text_en,
@@ -55,7 +55,7 @@ export default function AdminSetup() {
     const servicesRef = collection(db, 'services')
     const snapshot = await getDocs(servicesRef)
     if (snapshot.empty) {
-      const response = await fetch('https://smsverify-server.vercel.app/api/get-services?country=any')
+      const response = await fetch('https://smsapp-backend.vercel.app/api/get-services?country=any')
       const data = await response.json()
       const services = Object.entries(data).map(([key, value]: [string, any]) => ({
         name: key,

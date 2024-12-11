@@ -184,7 +184,7 @@ export function ChooseService() {
 
     setBuying(true)
     try {
-      const response = await axios.post('https://smsverify-server.vercel.app/api/buy-product', {
+      const response = await axios.post('https://smsapp-backend.vercel.app/api/buy-product', {
         uid: currentUser.uid,
         country: selectedCountry.name.toLowerCase(),
         product: selectedService.name.toLowerCase(),

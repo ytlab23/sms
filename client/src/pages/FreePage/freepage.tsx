@@ -21,7 +21,7 @@ export default function FreeNumberBanner() {
     try {
       const ipResponse = await axios.get('https://api.ipify.org?format=json')
       const userIp = ipResponse.data.ip
-      const response = await axios.get(`https://smsverify-server.vercel.app/api/check-free-number?uid=${uid}&ip=${userIp}`)
+      const response = await axios.get(`https://smsapp-backend.vercel.app/api/check-free-number?uid=${uid}&ip=${userIp}`)
       const { eligible, message } = response.data
       setEligible(eligible)
       setMessage(message)
@@ -37,7 +37,7 @@ export default function FreeNumberBanner() {
       setLoading(true)
       const ipResponse = await axios.get('https://api.ipify.org?format=json')
       const userIp = ipResponse.data.ip
-      const response = await axios.post('https://smsverify-server.vercel.app/api/claim-free-number', {
+      const response = await axios.post('https://smsapp-backend.vercel.app/api/claim-free-number', {
         uid: currentUser?.uid,
         
         userIp: userIp,

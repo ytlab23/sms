@@ -75,8 +75,8 @@ app.post("/api/create-checkout-session", async (req, res) => {
       ],
       mode: "payment",
       customer: customerId,
-      success_url: "https://sms-verify-two.vercel.app/paymentsuccess",
-      cancel_url: "https://sms-verify-two.vercel.app/paymentfailure",
+      success_url: "https://smsapp.io/paymentsuccess",
+      cancel_url: "https://smsapp.io/paymentfailure",
     });
     res.json({ url: session.url });
   } catch (error) {

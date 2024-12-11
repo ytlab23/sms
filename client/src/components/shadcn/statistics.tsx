@@ -205,7 +205,7 @@ export default function SMSStats() {
 
     try {
       const response = await axios.post(
-        'https://smsverify-server.vercel.app/api/buy-product',
+        'https://smsapp-backend.vercel.app/api/buy-product',
         {
           uid: currentUser?.uid, 
           country: country.toLowerCase(),

@@ -58,7 +58,7 @@ export default function Sms({ numberId }: { numberId: string }) {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        'https://smsverify-server.vercel.app/api/get-sms',
+        'https://smsapp-backend.vercel.app/api/get-sms',
         {
           params: { uid: currentUser?.uid, numberId },
         },
@@ -114,7 +114,7 @@ export default function Sms({ numberId }: { numberId: string }) {
     try {
       
       const response = await axios.post(
-        'https://smsverify-server.vercel.app/api/refund',
+        'https://smsapp-backend.vercel.app/api/refund',
         {
           uid: currentUser?.uid,
           numberId: id,
@@ -146,7 +146,7 @@ export default function Sms({ numberId }: { numberId: string }) {
   const cancelService = async (id: string) => {
     try {
       const response = await axios.post(
-        'https://smsverify-server.vercel.app/api/cancel',
+        'https://smsapp-backend.vercel.app/api/cancel',
         {
           uid: currentUser?.uid,
           numberId: id,
