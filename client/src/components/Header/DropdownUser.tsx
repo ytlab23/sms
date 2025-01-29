@@ -88,7 +88,7 @@ const DropdownUser = () => {
           <ul className="flex flex-col border-b border-gray-200 dark:border-gray-700">
             <li>
               <Link
-                to={ `${i18n.language}/${t("urls.settings")}`}
+                to={ `${i18n.language}/settings`}
                 className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 transition-all duration-300 ease-in-out hover:bg-blue-50  dark:hover:bg-boxdark-2 group"
                 onClick={() => setDropdownOpen(false)}
                 onMouseEnter={() => setHoveredItem('settings')}
@@ -111,7 +111,7 @@ const DropdownUser = () => {
                 />
               </Link>
               <Link
-                to={ `${i18n.language}/${t("urls.pay")}`}
+                to={ `${i18n.language}/pay`}
                 className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 transition-all duration-300 ease-in-out hover:bg-blue-50  dark:hover:bg-boxdark-2 group"
                 onClick={() => setDropdownOpen(false)}
                 onMouseEnter={() => setHoveredItem('pay')}
@@ -135,7 +135,7 @@ const DropdownUser = () => {
               </Link>
               {isAdminEmail(currentUser?.email) && (
                 <Link
-                  to={`${t("urls.admin382013453sms/setup")}`}
+                  to={`admin382013453sms/setup`}
                   className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 transition-all duration-300 ease-in-out hover:bg-blue-50  dark:hover:bg-boxdark-2 group"
                   onClick={() => setDropdownOpen(false)}
                   onMouseEnter={() => setHoveredItem('admin')}
@@ -165,7 +165,7 @@ const DropdownUser = () => {
             onClick={() => {
               logout();
               setDropdownOpen(false);
-              navigate(`${i18n.language}/${t("urls.auth/signin")}`);
+              navigate(`${i18n.language}/auth/signin`);
             }}
             onMouseEnter={() => setHoveredItem('logout')}
             onMouseLeave={() => setHoveredItem(null)}

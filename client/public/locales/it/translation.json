@@ -1,5 +1,9 @@
 {
   "header": {
+    "OUR_SERVICES": "I nostri servizi",
+    "BUY_TEMP_NUMBER": "Acquista Numero Temporaneo",
+    "SUBSCRIPTION_PLANS": "Piani di Abbonamento",
+    "RENT_NUMBER": "Noleggia Numero",
     "Account Settings": "Impostazioni dell'Account",
     "Topup Balance": "Ricarica Saldo",
     "Admin": "Admin",
@@ -128,7 +132,8 @@
     "Service Assurance": "Assicurazione del Servizio",
     "Get Started Now": "Inizia subito"
   },
-  "order": {"Status": "Stato",
+  "order": {
+    "Status": "Stato",
     "Buy Again": "Acquista di nuovo",
     "Price": "Prezzo",
     "Are you sure you want to delete this order?": "Sei sicuro di voler eliminare questo ordine?",
@@ -258,6 +263,9 @@
   },
   "app": {
     "Faq": "Domande Frequenti",
+    "Subscription": "Piani di Abbonamento",
+    "Buy Temporary SMS": "Acquista SMS Temporanei",
+    "Rent Number": "Noleggia Numero",
     "Pay": "Paga",
     "Statistics": "Statistiche",
     "Our Services": "I Nostri Servizi",
@@ -459,6 +467,77 @@
     "ve": "Venezuela",
     "vn": "Vietnam",
     "zm": "Zambia"
-}
+  },
+  "landing": {
+    "title": "Acquista Numeri di Telefono Temporanei per la Verifica SMS",
+    "subtitle": "Numeri Temporanei Sicuri e Affidabili per le Tue Esigenze di Verifica.",
+    "getStarted": "Inizia",
+    "chooseService": "Scegli il Tuo Servizio",
+    "howItWorks": "Come Funziona",
+    "secure": "Sicuro",
+    "global": "Globale",
+    "instant": "Istantaneo",
+    "feature1": "Proteggi la tua privacy con i nostri numeri temporanei sicuri.",
+    "feature2": "Accedi a numeri da più paesi in tutto il mondo.",
+    "feature3": "Ricevi SMS istantaneamente senza ritardi.",
+    "features": "Caratteristiche",
+    "featureA": {
+      "title": "Interfaccia User-Friendly",
+      "description": "Naviga sulla nostra piattaforma con facilità grazie al nostro design intuitivo."
+    },
+    "featureB": {
+      "title": "Assistenza 24/7",
+      "description": "Il nostro team di supporto è disponibile 24 ore su 24, 7 giorni su 7 per assisterti."
+    },
+    "featureC": {
+      "title": "Prezzi Accessibili",
+      "description": "Ottieni i migliori servizi a prezzi competitivi."
+    },
+    "featureD": {
+      "title": "Alta Disponibilità",
+      "description": "I numeri sono disponibili ogni volta che ne hai bisogno."
+    },
+    "joinUs": "Unisciti a Migliaia di Utenti Soddisfatti",
+    "callToAction": "Inizia oggi a utilizzare il nostro servizio di numeri temporanei e sperimenta la differenza.",
+    "getStartedNow": "Inizia Ora",
+    "allRightsReserved": "Tutti i diritti riservati."
+  },
+  "subscriptionPlans": {
+    "chooseCountry": "Scegli il Tuo Paese",
+    "title": "Scegli il Tuo Piano Perfetto",
+    "subtitle": "Sblocca la potenza dei numeri temporanei con le nostre opzioni di abbonamento flessibili",
+    "selectCountry": "Seleziona il tuo paese",
+    "weekly": "settimana",
+    "monthly": "mese",
+    "quarterly": "trimestre",
+    "yearly": "anno",
+    "custom": "{{days}} giorni",
+    "getStarted": "Inizia",
+    "choosePlan": "Scegli Piano",
+    "popular": "Più Popolare"
+  },
 
+  "rentNumber": {
+    "title": "Noleggia un Numero Temporaneo",
+    "subtitle": "Accesso sicuro, globale e istantaneo ai numeri di telefono temporanei",
+    "selectCountryAndDuration": "Seleziona Paese e Durata",
+    "rentDuration": "Durata Noleggio (Giorni)",
+    "enterDays": "Inserisci numero di giorni",
+    "totalPrice": "Prezzo Totale",
+    "rentNow": "Noleggia Ora",
+    "Success": "Noleggio Riuscito",
+    "NumberRented": "Il tuo numero temporaneo è stato noleggiato con successo",
+    "RentalFailed": "Noleggio Fallito",
+    "howItWorks": "Come Funziona",
+    "secure": "Sicuro",
+    "secureDescription": "La tua privacy è la nostra massima priorità. Tutte le transazioni e le comunicazioni sono criptate.",
+    "global": "Copertura Globale",
+    "globalDescription": "Accedi a numeri da paesi di tutto il mondo per le tue esigenze internazionali.",
+    "instant": "Accesso Istantaneo",
+    "instantDescription": "Ottieni il tuo numero temporaneo immediatamente dopo il pagamento. Nessuna attesa, nessun problema."
+  },
+  "error": {
+    "Selection Required": "Selezione Richiesta",
+    "Select Country and Duration": "Per favore seleziona un paese e inserisci la durata del noleggio."
+  }
 }

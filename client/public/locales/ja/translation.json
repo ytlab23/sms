@@ -1,5 +1,9 @@
 {
     "header": {
+      "OUR_SERVICES": "私たちのサービス",
+      "BUY_TEMP_NUMBER": "一時的な番号を購入",
+      "SUBSCRIPTION_PLANS": "サブスクリプションプラン",
+      "RENT_NUMBER": "番号をレンタル",
       "Account Settings": "アカウント設定",
       "Topup Balance": "残高の追加",
       "Admin": "管理者",
@@ -262,6 +266,9 @@
   },
   "app": {
     "Faq": "よくある質問",
+    "Subscription": "サブスクリプションプラン",
+    "Buy Temporary SMS": "一時的なSMSを購入",
+    "Rent Number": "番号をレンタル",
     "Pay": "支払い",
     "Statistics": "統計",
     "Our Services": "当社のサービス",
@@ -463,6 +470,77 @@
     "ve": "ベネズエラ",
     "vn": "ベトナム",
     "zm": "ザンビア"
+},
+"landing": {
+  "title": "SMS認証用の一時的な電話番号を購入",
+  "subtitle": "あなたの認証ニーズに応じた安全で信頼できる一時的な番号。",
+  "getStarted": "始める",
+  "chooseService": "サービスを選択",
+  "howItWorks": "仕組み",
+  "secure": "安全",
+  "global": "グローバル",
+  "instant": "即時",
+  "feature1": "安全な一時的な番号でプライバシーを保護します。",
+  "feature2": "世界中の複数の国から番号にアクセスできます。",
+  "feature3": "遅延なくSMSを即座に受信します。",
+  "features": "特徴",
+  "featureA": {
+    "title": "ユーザーフレンドリーなインターフェース",
+    "description": "直感的なデザインで簡単にプラットフォームを操作できます。"
+  },
+  "featureB": {
+    "title": "24/7サポート",
+    "description": "サポートチームは24時間体制でサポートします。"
+  },
+  "featureC": {
+    "title": "手頃な価格",
+    "description": "競争力のある価格で最高のサービスを提供します。"
+  },
+  "featureD": {
+    "title": "高可用性",
+    "description": "必要なときにいつでも番号を利用できます。"
+  },
+  "joinUs": "何千人もの満足したユーザーに参加",
+  "callToAction": "今日から一時的な番号サービスを利用して、その違いを体験してください。",
+  "getStartedNow": "今すぐ始める",
+  "allRightsReserved": "全著作権所有。"
+},
+"subscriptionPlans": {
+  "chooseCountry": "国を選択",
+  "title": "完璧なプランを選択",
+  "subtitle": "柔軟なサブスクリプションオプションで一時的な番号の力を解放",
+  "selectCountry": "国を選択",
+  "weekly": "週",
+  "monthly": "月",
+  "quarterly": "四半期",
+  "yearly": "年",
+  "custom": "{{days}} 日",
+  "getStarted": "始める",
+  "choosePlan": "プランを選択",
+  "popular": "最も人気"
+},
+"rentNumber": {
+  "title": "一時的な番号をレンタル",
+  "subtitle": "安全でグローバル、即時アクセス可能な一時的な電話番号",
+  "selectCountryAndDuration": "国と期間を選択",
+  "rentDuration": "レンタル期間（日）",
+  "enterDays": "日数を入力",
+  "totalPrice": "合計価格",
+  "rentNow": "今すぐレンタル",
+  "Success": "レンタル成功",
+  "NumberRented": "あなたの一時的な番号が正常にレンタルされました",
+  "RentalFailed": "レンタルに失敗しました",
+  "howItWorks": "仕組み",
+  "secure": "安全",
+  "secureDescription": "プライバシーが最優先です。すべての取引と通信は暗号化されています。",
+  "global": "グローバルカバレッジ",
+  "globalDescription": "国際的なニーズに応じて、世界中の国々から番号にアクセスできます。",
+  "instant": "即時アクセス",
+  "instantDescription": "支払い後すぐに一時的な番号を取得できます。待ち時間なし、手間なし。"
+},
+"error": {
+  "Selection Required": "選択が必要です",
+  "Select Country and Duration": "国を選択し、レンタル期間を入力してください。"
 }
 
 

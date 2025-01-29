@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Edit, PlusCircle, DollarSign } from 'lucide-react';
+import { Home, Edit, PlusCircle, DollarSign, Globe2, Globe } from 'lucide-react';
 import Logo from '../../../public/smsapp.svg';
 
 interface SidebarProps {
@@ -61,8 +61,10 @@ const AdminSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   ];
   const pricingNavItems = [
     { name: 'Add Country', href: '/admin382013453sms/edit-country', icon: PlusCircle },
-    { name: 'Country-Service Pricing', href: '/admin382013453sms/country-service-pricing', icon: Edit },
+    { name: 'Edit Plans', href: '/admin382013453sms/edit-plans', icon: Edit },
+    { name: 'Country-Service Pricing', href: '/admin382013453sms/country-service-pricing', icon: Globe },
     { name: 'Edit Services', href: '/admin382013453sms/edit-services', icon: DollarSign },
+    { name: 'Rent Pricing', href: '/admin382013453sms/set-rent-pricing', icon: Globe2 },
   ];
 
   return (
@@ -111,7 +113,7 @@ const AdminSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* <!-- Menu Group --> */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              Pages MENU
+              PAGES MENU
             </h3>
             <ul className="mt-4 mb-5.5 border-b lg:flex flex-col gap-2 pl-6">
               {pagesNavItems.map((item) => (

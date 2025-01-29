@@ -45,37 +45,51 @@ import {
 } from './components/shadcn/ui/card';
 import { ScrollArea } from './components/shadcn/ui/scrollarea';
 import NotFound from './components/shadcn/404';
-import { Divide } from 'lucide-react';
+import { Divide, Subscript } from 'lucide-react';
 import useChangeLanguageAndPath from './i18n/language-setter';
 import { useTranslation } from 'react-i18next';
+import Subscription from './pages/subscription/subscriptionPage';
+import AdminSubscriptionPlans from './components/shadcn/admin/set-subscription';
+import TempNumberLandingPage from './components/shadcn/TempNumberLandingPage';
+import RentNumberPricing from './components/shadcn/admin/set-renting-price';
+import RentNumber from './components/shadcn/buy-service/rentNumber';
 // Load your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 function App() {
   const {t,i18n} = useTranslation();
   const navigate = useNavigate();
-  const faqPath = `/:lang?/${t('urls.faq')}`;
+  const faqPath = `/:lang?/faq`;
   const faqTitle = `${t('app.Faq')}`;
-  const payPath = `/:lang?/${t('urls.pay')}`;
+  const payPath = `/:lang?/pay`;
   const payTitle = `${t('app.Pay')}`;
-  const statPath = `/:lang?/${t('urls.statistics')}`;
+  const statPath = `/:lang?/statistics`;
   const statTitle = `${t('app.Statistics')}`;
-  const ourServicesPath = `/:lang?/${t('urls.ourservices')}`;
+  const ourServicesPath = `/:lang?/ourservices`;
   const ourServicesTitle = `${t('app.Our Services')}`;
-  const settingsPath = `/:lang?/${t('urls.settings')}`;
+  const settingsPath = `/:lang?/settings`;
   const settingsTitle = `${t('app.Account Settings')}`; 
-  const ordersPath = `/:lang?/${t('urls.orders')}`;
+  const ordersPath = `/:lang?/orders`;
   const ordersTitle = `${t('app.Your Orders')}`;
-  const signInPath = `/:lang?/${t('urls.auth/signin')}`;
+  const signInPath = `/:lang?/auth/signin`;
   const signInTitle = `${t('app.Sign In')}`;
-  const signUpPath = `/:lang?/${t('urls.auth/signup')}`;
+  const signUpPath = `/:lang?/auth/signup`;
   const signUpTitle = `${t('app.Sign Up')}`;
-  const HowToBuyPath = `/:lang?/${t('urls.howtobuy')}`;
+  const HowToBuyPath = `/:lang?/howtobuy`;
   const HowToBuyTitle = `${t('app.How to Buy')}`;
-  const smsPath = `/:lang?/${t('urls.sms')}`;
+  const smsPath = `/:lang?/sms`;
   const smsTitle = `${t('app.Your SMS')}`;
 
-  const adminSetupPath = `/${t('urls.admin382013453sms/setup')}`;
+  const temporySms ="/:lang?/temporary-sms";
+  const temporySmsTitle = `${t('app.Buy Temporary SMS')}`;
+
+  const subscriptionPath = `/:lang?/subscription-plans`;
+  const subscriptionTitle = `${t('app.Subscription')}`;
+  const rentingPath = `/:lang?/rent-number`;
+  const rentingTitle = `${t('app.Rent Number')}`;
+
+
+  const adminSetupPath = `/admin382013453sms/setup`;
   // useEffect(() => {
   //   const currentLanguage = i18n.language;
   //   const pathLanguage = location.pathname.split('/')[1];
@@ -154,6 +168,33 @@ function App() {
               <>
                 <PageTitle title={`${faqTitle} | SMS App`} lang={i18n.language} />
                 <Faq />
+              </>
+            }
+          />
+          <Route
+            path={temporySms}
+            element={
+              <>
+                <PageTitle title={`${temporySmsTitle} | SMS App`} lang={i18n.language} />
+                <TempNumberLandingPage></TempNumberLandingPage>
+              </>
+            }
+          />
+          <Route
+            path={subscriptionPath}
+            element={
+              <>
+                <PageTitle title={`${subscriptionTitle} | SMS App`} lang={i18n.language} />
+                <Subscription />
+              </>
+            }
+          />
+          <Route
+            path={rentingPath}
+            element={
+              <>
+                <PageTitle title={`${rentingTitle} | SMS App`} lang={i18n.language} />
+                <RentNumber></RentNumber>
               </>
             }
           />
@@ -449,6 +490,60 @@ function App() {
                           key={`services-menu-${refreshKey}`}
                         />{' '}
                         {/* </ScrollArea> */}
+                      </CardContent>
+                    </Card>
+                  </div>
+                </>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin382013453sms/edit-plans"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Edit Plans | SMS App"  lang={i18n.language}/>{' '}
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Manage Plans
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        {/* <ScrollArea className="h-[calc(100vh-250px)]"> */}
+                        {/* <ServicesMenu
+                          key={`services-menu-${refreshKey}`}
+                        />{' '} */}
+                <AdminSubscriptionPlans></AdminSubscriptionPlans>
+                {/* </ScrollArea> */}
+                      </CardContent>
+                    </Card>
+                  </div>
+                </>
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin382013453sms/set-rent-pricing"
+            element={
+              <AdminProtectedRoute>
+                <>
+                  <PageTitle title="Edit Plans | SMS App"  lang={i18n.language}/>{' '}
+                  <div className="mx-7">
+                    <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
+                      <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
+                        <CardTitle className="text-2xl font-bold">
+                          Manage Plans
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        {/* <ScrollArea className="h-[calc(100vh-250px)]"> */}
+                        {/* <ServicesMenu
+                          key={`services-menu-${refreshKey}`}
+                        />{' '} */}
+                        <RentNumberPricing></RentNumberPricing>
+                {/* </ScrollArea> */}
                       </CardContent>
                     </Card>
                   </div>

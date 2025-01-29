@@ -1,5 +1,9 @@
 {
   "header": {
+    "OUR_SERVICES": "我们的服务",
+    "BUY_TEMP_NUMBER": "购买临时号码",
+    "SUBSCRIPTION_PLANS": "订阅计划",
+    "RENT_NUMBER": "租用号码",
     "Account Settings": "账户设置",
     "Topup Balance": "充值余额",
     "Admin": "管理员",
@@ -259,6 +263,9 @@
   },
 "app": {
     "Faq": "常见问题",
+    "Subscription": "订阅计划",
+    "Buy Temporary SMS": "购买临时短信",
+    "Rent Number": "租用号码",
     "Pay": "支付",
     "Statistics": "统计",
     "Our Services": "我们的服务",
@@ -460,6 +467,77 @@
     "ve": "委内瑞拉",
     "vn": "越南",
     "zm": "赞比亚"
+},
+"landing": {
+  "title": "为短信验证购买临时电话号码",
+  "subtitle": "为您的验证需求提供安全可靠的临时号码。",
+  "getStarted": "开始使用",
+  "chooseService": "选择您的服务",
+  "howItWorks": "工作原理",
+  "secure": "安全",
+  "global": "全球",
+  "instant": "即时",
+  "feature1": "使用我们的安全临时号码保护您的隐私。",
+  "feature2": "全球多个国家的号码。",
+  "feature3": "即时接收短信，无需等待。",
+  "features": "功能",
+  "featureA": {
+    "title": "用户友好界面",
+    "description": "使用我们直观的设计轻松导航我们的平台。"
+  },
+  "featureB": {
+    "title": "24/7 支持",
+    "description": "我们的支持团队全天候为您提供帮助。"
+  },
+  "featureC": {
+    "title": "实惠的价格",
+    "description": "以竞争力的价格获得最佳服务。"
+  },
+  "featureD": {
+    "title": "高可用性",
+    "description": "需要时号码随时可用。"
+  },
+  "joinUs": "加入成千上万满意的用户",
+  "callToAction": "立即开始使用我们的临时号码服务，体验不同。",
+  "getStartedNow": "立即开始",
+  "allRightsReserved": "保留所有权利。"
+},
+"subscriptionPlans": {
+  "chooseCountry": "选择您的国家",
+  "title": "选择您的完美计划",
+  "subtitle": "通过我们灵活的订阅选项释放临时号码的力量",
+  "selectCountry": "选择您的国家",
+  "weekly": "周",
+  "monthly": "月",
+  "quarterly": "季度",
+  "yearly": "年",
+  "custom": "{{days}} 天",
+  "getStarted": "开始使用",
+  "choosePlan": "选择计划",
+  "popular": "最受欢迎"
+},
+"rentNumber": {
+  "title": "租用临时号码",
+  "subtitle": "安全、全球和即时访问临时电话号码",
+  "selectCountryAndDuration": "选择国家和租期",
+  "rentDuration": "租期（天）",
+  "enterDays": "输入天数",
+  "totalPrice": "总价格",
+  "rentNow": "立即租用",
+  "Success": "租赁成功",
+  "NumberRented": "您的临时号码已成功租用",
+  "RentalFailed": "租赁失败",
+  "howItWorks": "工作原理",
+  "secure": "安全",
+  "secureDescription": "您的隐私是我们的首要任务。所有交易和通信均已加密。",
+  "global": "全球覆盖",
+  "globalDescription": "访问世界各地的国家的号码以满足您的国际需求。",
+  "instant": "即时访问",
+  "instantDescription": "付款后立即获得临时号码。无需等待，无需麻烦。"
+},
+"error": {
+  "Selection Required": "需要选择",
+  "Select Country and Duration": "请选择国家并输入租期。"
 }
 
 }

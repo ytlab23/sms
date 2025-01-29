@@ -2,6 +2,10 @@
   "welcome": "Welcome",
   "signIn": "Sign In",
   "header": {
+    "OUR_SERVICES": "Our Services",
+    "BUY_TEMP_NUMBER": "Buy Temp Number",
+    "SUBSCRIPTION_PLANS": "Subscription Plans",
+    "RENT_NUMBER": "Rent Number",
     "Account Settings": "Account Settings",
     "Topup Balance": "Topup Balance",
     "Admin": "Admin",
@@ -265,6 +269,9 @@
   },
   "app": {
     "Faq": "Faq",
+    "Subscription": "Subscription Plans",
+    "Buy Temporary SMS": "Buy Temporary SMS",
+    "Rent Number": "Rent Number",
     "Pay": "Pay",
     "Statistics": "Statistics",
     "Our Services": "Our Services",
@@ -470,6 +477,79 @@
     "ve": "Venezuela",
     "vn": "Vietnam",
     "zm": "Zambia"
-}
+},
+
+  "landing": {
+    "title": "Buy Temporary Phone Numbers for SMS Verification",
+    "subtitle": "Secure and Reliable Temporary Numbers for Your Verification Needs.",
+    "getStarted": "Get Started",
+    "chooseService": "Choose Your Service",
+    "howItWorks": "How It Works",
+    "secure": "Secure",
+    "global": "Global",
+    "instant": "Instant",
+    "feature1": "Protect your privacy with our secure temporary numbers.",
+    "feature2": "Access numbers from multiple countries worldwide.",
+    "feature3": "Receive SMS instantly without any delays.",
+    "features": "Features",
+    "featureA": {
+      "title": "User-Friendly Interface",
+      "description": "Navigate our platform with ease using our intuitive design."
+    },
+    "featureB": {
+      "title": "24/7 Support",
+      "description": "Our support team is available around the clock to assist you."
+    },
+    "featureC": {
+      "title": "Affordable Pricing",
+      "description": "Get the best services at competitive prices."
+    },
+    "featureD": {
+      "title": "High Availability",
+      "description": "Numbers are available whenever you need them."
+    },
+    "joinUs": "Join Thousands of Satisfied Users",
+    "callToAction": "Start using our temporary number service today and experience the difference.",
+    "getStartedNow": "Get Started Now",
+    "allRightsReserved": "All rights reserved."
+  },
+  "subscriptionPlans": {
+    "chooseCountry": "Choose Your Country",
+    "title": "Choose Your Perfect Plan",
+    "subtitle": "Unlock the power of temporary numbers with our flexible subscription options",
+    "selectCountry": "Select your country",
+    "weekly": "week",
+    "monthly": "month",
+    "quarterly": "quarter",
+    "yearly": "year",
+    "custom": "{{days}} days",
+    "getStarted": "Get Started",
+    "choosePlan": "Choose Plan",
+    "popular": "Most Popular"
+  },
+
+"rentNumber": {
+    "title": "Rent a Temporary Number",
+    "subtitle": "Secure, global, and instant access to temporary phone numbers",
+    "selectCountryAndDuration": "Select Country and Duration",
+    "rentDuration": "Rent Duration (Days)",
+    "enterDays": "Enter number of days",
+    "totalPrice": "Total Price",
+    "rentNow": "Rent Now",
+    "Success": "Rental Successful",
+    "NumberRented": "Your temporary number has been rented successfully",
+    "RentalFailed": "Rental Failed",
+    "howItWorks": "How It Works",
+    "secure": "Secure",
+    "secureDescription": "Your privacy is our top priority. All transactions and communications are encrypted.",
+    "global": "Global Coverage",
+    "globalDescription": "Access numbers from countries all around the world for your international needs.",
+    "instant": "Instant Access",
+    "instantDescription": "Get your temporary number immediately after payment. No waiting, no hassle."
+  },
+  "error": {
+    "Selection Required": "Selection Required",
+    "Select Country and Duration": "Please select a country and enter the rental duration."
+  }
 
 }

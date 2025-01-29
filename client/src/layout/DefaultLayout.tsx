@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import Header from '../components/Header/index';
 import Sidebar from '../components/Sidebar/index';
 import { Input } from '../components/shadcn/ui/input';
@@ -12,18 +12,24 @@ import FreeNumberBanner from '../pages/FreePage/freepage';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [actionSidebarOpen, setActionSidebarOpen] = useState(false);
+  useEffect(() => {
+    const path = location.pathname
+    const shouldShowAction = !path.includes("/temporary-sms") 
+    setActionSidebarOpen(shouldShowAction)
+  }, [location.pathname])
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
-        <div className="block lg:hidden">
+        <div className="block  lg:hidden">
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
         {/* <!-- ===== Sidebar End ===== --> */}
+        <div className={`block ${actionSidebarOpen ? 'block' : 'hidden'}`}>
         <ActionSidebar actionSidebarOpen={false} setActionSidebarOpen={function (arg: boolean): void {
           throw new Error('Function not implemented.');
-        } }></ActionSidebar>
+        } }></ActionSidebar></div>
 
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">

@@ -1,5 +1,9 @@
 {
   "header": {
+    "OUR_SERVICES": "Unsere Dienstleistungen",
+    "BUY_TEMP_NUMBER": "Temporäre Nummer kaufen",
+    "SUBSCRIPTION_PLANS": "Abonnementpläne",
+    "RENT_NUMBER": "Nummer mieten",
     "Account Settings": "Kontoeinstellungen",
     "Topup Balance": "Guthaben aufladen",
     "Admin": "Admin",
@@ -260,6 +264,9 @@
 
   "app": {
     "Faq": "Häufige Fragen",
+    "Subscription": "Abonnementpläne",
+    "Buy Temporary SMS": "Temporäre SMS kaufen",
+    "Rent Number": "Nummer mieten",
     "Pay": "Bezahlen",
     "Statistics": "Statistiken",
     "Our Services": "Unsere Dienstleistungen",
@@ -461,6 +468,78 @@
     "ve": "Venezuela",
     "vn": "Vietnam",
     "zm": "Sambia"
-}
+},
+
+  "landing": {
+    "title": "Kaufen Sie temporäre Telefonnummern für SMS-Verifizierung",
+    "subtitle": "Sichere und zuverlässige temporäre Nummern für Ihre Verifizierungsbedürfnisse.",
+    "getStarted": "Loslegen",
+    "chooseService": "Wählen Sie Ihren Service",
+    "howItWorks": "Wie es funktioniert",
+    "secure": "Sicher",
+    "global": "Global",
+    "instant": "Sofort",
+    "feature1": "Schützen Sie Ihre Privatsphäre mit unseren sicheren temporären Nummern.",
+    "feature2": "Zugriff auf Nummern aus mehreren Ländern weltweit.",
+    "feature3": "Empfangen Sie SMS sofort ohne Verzögerungen.",
+    "features": "Funktionen",
+    "featureA": {
+      "title": "Benutzerfreundliche Oberfläche",
+      "description": "Navigieren Sie mühelos auf unserer Plattform mit unserem intuitiven Design."
+    },
+    "featureB": {
+      "title": "24/7 Support",
+      "description": "Unser Support-Team ist rund um die Uhr verfügbar, um Ihnen zu helfen."
+    },
+    "featureC": {
+      "title": "Erschwingliche Preise",
+      "description": "Erhalten Sie die besten Dienste zu wettbewerbsfähigen Preisen."
+    },
+    "featureD": {
+      "title": "Hohe Verfügbarkeit",
+      "description": "Nummern sind verfügbar, wann immer Sie sie benötigen."
+    },
+    "joinUs": "Treten Sie Tausenden zufriedener Nutzer bei",
+    "callToAction": "Starten Sie noch heute unseren temporären Nummernservice und erleben Sie den Unterschied.",
+    "getStartedNow": "Jetzt loslegen",
+    "allRightsReserved": "Alle Rechte vorbehalten."
+  },
+  "subscriptionPlans": {
+    "chooseCountry": "Wählen Sie Ihr Land",
+    "title": "Wählen Sie Ihren perfekten Plan",
+    "subtitle": "Nutzen Sie die Kraft temporärer Nummern mit unseren flexiblen Abonnementoptionen",
+    "selectCountry": "Wählen Sie Ihr Land",
+    "weekly": "Woche",
+    "monthly": "Monat",
+    "quarterly": "Quartal",
+    "yearly": "Jahr",
+    "custom": "{{days}} Tage",
+    "getStarted": "Loslegen",
+    "choosePlan": "Plan wählen",
+    "popular": "Am beliebtesten"
+  },
+  "rentNumber": {
+    "title": "Mieten Sie eine temporäre Nummer",
+    "subtitle": "Sicherer, globaler und sofortiger Zugriff auf temporäre Telefonnummern",
+    "selectCountryAndDuration": "Land und Dauer auswählen",
+    "rentDuration": "Mietdauer (Tage)",
+    "enterDays": "Anzahl der Tage eingeben",
+    "totalPrice": "Gesamtpreis",
+    "rentNow": "Jetzt mieten",
+    "Success": "Miete erfolgreich",
+    "NumberRented": "Ihre temporäre Nummer wurde erfolgreich gemietet",
+    "RentalFailed": "Miete fehlgeschlagen",
+    "howItWorks": "Wie es funktioniert",
+    "secure": "Sicher",
+    "secureDescription": "Ihre Privatsphäre hat für uns oberste Priorität. Alle Transaktionen und Kommunikation sind verschlüsselt.",
+    "global": "Globale Abdeckung",
+    "globalDescription": "Zugriff auf Nummern aus Ländern auf der ganzen Welt für Ihre internationalen Bedürfnisse.",
+    "instant": "Sofortiger Zugriff",
+    "instantDescription": "Erhalten Sie Ihre temporäre Nummer sofort nach der Zahlung. Kein Warten, kein Aufwand."
+  },
+  "error": {
+    "Selection Required": "Auswahl erforderlich",
+    "Select Country and Duration": "Bitte wählen Sie ein Land und geben Sie die Mietdauer ein."
+  }
 
 }

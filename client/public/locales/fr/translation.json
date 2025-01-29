@@ -1,5 +1,9 @@
 {
     "header": {
+      "OUR_SERVICES": "Nos Services",
+      "BUY_TEMP_NUMBER": "Acheter un Numéro Temporaire",
+      "SUBSCRIPTION_PLANS": "Forfaits d'abonnement",
+      "RENT_NUMBER": "Louer un Numéro",
       "Account Settings": "Paramètres du compte",
       "Topup Balance": "Recharger le solde",
       "Admin": "Admin",
@@ -261,6 +265,9 @@
   },
 "app": {
     "Faq": "FAQ",
+    "Subscription": "Forfaits d'abonnement",
+    "Buy Temporary SMS": "Acheter SMS Temporaire",
+    "Rent Number": "Louer un Numéro",
     "Pay": "Payer",
     "Statistics": "Statistiques",
     "Our Services": "Nos Services",
@@ -462,7 +469,80 @@
     "ve": "Venezuela",
     "vn": "Vietnam",
     "zm": "Zambie"
-}
+},
+
+  "landing": {
+    "title": "Acheter des Numéros de Téléphone Temporaires pour la Vérification SMS",
+    "subtitle": "Numéros temporaires sécurisés et fiables pour vos besoins de vérification.",
+    "getStarted": "Commencer",
+    "chooseService": "Choisissez Votre Service",
+    "howItWorks": "Comment Cela Fonctionne",
+    "secure": "Sécurisé",
+    "global": "Mondial",
+    "instant": "Instantané",
+    "feature1": "Protégez votre vie privée avec nos numéros temporaires sécurisés.",
+    "feature2": "Accédez à des numéros de plusieurs pays dans le monde entier.",
+    "feature3": "Recevez des SMS instantanément sans aucun délai.",
+    "features": "Fonctionnalités",
+    "featureA": {
+      "title": "Interface Conviviale",
+      "description": "Naviguez sur notre plateforme avec facilité grâce à notre design intuitif."
+    },
+    "featureB": {
+      "title": "Support 24/7",
+      "description": "Notre équipe de support est disponible 24 heures sur 24 pour vous assister."
+    },
+    "featureC": {
+      "title": "Tarification Abordable",
+      "description": "Obtenez les meilleurs services à des prix compétitifs."
+    },
+    "featureD": {
+      "title": "Haute Disponibilité",
+      "description": "Les numéros sont disponibles quand vous en avez besoin."
+    },
+    "joinUs": "Rejoignez des Milliers d'Utilisateurs Satisfaits",
+    "callToAction": "Commencez à utiliser notre service de numéros temporaires aujourd'hui et faites la différence.",
+    "getStartedNow": "Commencez Maintenant",
+    "allRightsReserved": "Tous droits réservés."
+  },
+  "subscriptionPlans": {
+    "chooseCountry": "Choisissez Votre Pays",
+    "title": "Choisissez Votre Forfait Parfait",
+    "subtitle": "Déverrouillez la puissance des numéros temporaires avec nos options d'abonnement flexibles",
+    "selectCountry": "Sélectionnez votre pays",
+    "weekly": "semaine",
+    "monthly": "mois",
+    "quarterly": "trimestre",
+    "yearly": "année",
+    "custom": "{{days}} jours",
+    "getStarted": "Commencer",
+    "choosePlan": "Choisir un Forfait",
+    "popular": "Le Plus Populaire"
+  },
+  "rentNumber": {
+    "title": "Louer un Numéro Temporaire",
+    "subtitle": "Accès sécurisé, mondial et instantané à des numéros de téléphone temporaires",
+    "selectCountryAndDuration": "Sélectionnez le Pays et la Durée",
+    "rentDuration": "Durée de la Location (Jours)",
+    "enterDays": "Entrez le nombre de jours",
+    "totalPrice": "Prix Total",
+    "rentNow": "Louer Maintenant",
+    "Success": "Location Réussie",
+    "NumberRented": "Votre numéro temporaire a été loué avec succès",
+    "RentalFailed": "Location Échouée",
+    "howItWorks": "Comment Cela Fonctionne",
+    "secure": "Sécurisé",
+    "secureDescription": "Votre vie privée est notre priorité absolue. Toutes les transactions et communications sont cryptées.",
+    "global": "Couverture Mondiale",
+    "globalDescription": "Accédez à des numéros de pays du monde entier pour vos besoins internationaux.",
+    "instant": "Accès Instantané",
+    "instantDescription": "Obtenez votre numéro temporaire immédiatement après le paiement. Pas d'attente, pas de tracas."
+  },
+  "error": {
+    "Selection Required": "Sélection Requise",
+    "Select Country and Duration": "Veuillez sélectionner un pays et entrer la durée de la location."
+  }
+
 
   }
   
