@@ -502,11 +502,16 @@
     "getStartedNow": "Inizia Ora",
     "allRightsReserved": "Tutti i diritti riservati."
   },
+  "loading": "Caricamento...",
+  "tabs": {
+    "subscriptionPlans": "Piani di Abbonamento",
+    "temporaryNumbers": "Numeri Temporanei"
+  },
   "subscriptionPlans": {
-    "chooseCountry": "Scegli il Tuo Paese",
     "title": "Scegli il Tuo Piano Perfetto",
-    "subtitle": "Sblocca la potenza dei numeri temporanei con le nostre opzioni di abbonamento flessibili",
-    "selectCountry": "Seleziona il tuo paese",
+    "subtitle": "Opzioni flessibili per soddisfare le tue esigenze",
+    "chooseCountry": "Seleziona il Tuo Paese",
+    "selectCountry": "Scegli un paese",
     "weekly": "settimana",
     "monthly": "mese",
     "quarterly": "trimestre",
@@ -515,6 +520,13 @@
     "getStarted": "Inizia",
     "choosePlan": "Scegli Piano",
     "popular": "Più Popolare"
+  },
+  "temporaryNumbers": {
+    "selectCountryAndService": "Seleziona un Paese e un Servizio",
+    "pricingAndSuccess": "Prezzi e Tasso di Successo",
+    "price": "Prezzo",
+    "successRate": "Tasso di Successo",
+    "notAvailable": "N/D"
   },
 
   "rentNumber": {

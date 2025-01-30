@@ -504,20 +504,32 @@
     "getStartedNow": "Jetzt loslegen",
     "allRightsReserved": "Alle Rechte vorbehalten."
   },
-  "subscriptionPlans": {
-    "chooseCountry": "Wählen Sie Ihr Land",
-    "title": "Wählen Sie Ihren perfekten Plan",
-    "subtitle": "Nutzen Sie die Kraft temporärer Nummern mit unseren flexiblen Abonnementoptionen",
-    "selectCountry": "Wählen Sie Ihr Land",
-    "weekly": "Woche",
-    "monthly": "Monat",
-    "quarterly": "Quartal",
-    "yearly": "Jahr",
-    "custom": "{{days}} Tage",
-    "getStarted": "Loslegen",
-    "choosePlan": "Plan wählen",
-    "popular": "Am beliebtesten"
-  },
+"loading": "Laden...",
+"tabs": {
+  "subscriptionPlans": "Abonnementpläne",
+  "temporaryNumbers": "Temporäre Nummern"
+},
+"subscriptionPlans": {
+  "title": "Wählen Sie Ihren perfekten Plan",
+  "subtitle": "Flexible Optionen, die Ihren Bedürfnissen entsprechen",
+  "chooseCountry": "Wählen Sie Ihr Land",
+  "selectCountry": "Wählen Sie ein Land",
+  "weekly": "Woche",
+  "monthly": "Monat",
+  "quarterly": "Vierteljahr",
+  "yearly": "Jahr",
+  "custom": "{{days}} Tage",
+  "getStarted": "Loslegen",
+  "choosePlan": "Plan wählen",
+  "popular": "Am Beliebtesten"
+},
+"temporaryNumbers": {
+  "selectCountryAndService": "Wählen Sie ein Land und einen Dienst",
+  "pricingAndSuccess": "Preisgestaltung und Erfolgsrate",
+  "price": "Preis",
+  "successRate": "Erfolgsrate",
+  "notAvailable": "Nicht verfügbar"
+},
   "rentNumber": {
     "title": "Mieten Sie eine temporäre Nummer",
     "subtitle": "Sicherer, globaler und sofortiger Zugriff auf temporäre Telefonnummern",

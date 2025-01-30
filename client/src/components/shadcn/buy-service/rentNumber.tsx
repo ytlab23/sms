@@ -1,7 +1,7 @@
 
 
 // import type React from "react"
-// import { useState, useEffect } from "react"
+// import { useState, useEffect, useMemo } from "react"
 // import { motion } from "framer-motion"
 // import { useTranslation } from "react-i18next"
 // import { db } from "../../../firebase/config"
@@ -174,6 +174,14 @@
 //     }))
 //   }
 
+//   const filteredCountries = useMemo(() => {
+//     return countries.filter(
+//       (country) =>
+//         country.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
+//         t(`country.${country.iso}`).toLowerCase().includes(countrySearch.toLowerCase()),
+//     )
+//   }, [countries, countrySearch, t])
+
 //   if (loading) {
 //     return (
 //       <div className="flex items-center justify-center h-screen">
@@ -183,7 +191,7 @@
 //   }
 
 //   return (
-//     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+//     <div className="min-h-screen bg-whiten dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
 //       <div className="container mx-auto px-4 py-8">
 //         <motion.h1
 //           className="text-4xl md:text-5xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
@@ -219,8 +227,8 @@
 //                   <CountrySelector
 //                     order="1"
 //                     selectedCountry={selectedCountry}
-//                     setSelectedCountry={(country: Country | null) => setSelectedCountry(country)}
-//                     countries={countries}
+//                     setSelectedCountry={setSelectedCountry}
+//                     countries={filteredCountries}
 //                     countrySearch={countrySearch}
 //                     setCountrySearch={setCountrySearch}
 //                     loadingCountries={loading}
@@ -246,13 +254,12 @@
 //                         setDays(value === "" ? 1 : Math.max(1, Number.parseInt(value, 10)))
 //                       }}
 //                       className="text-lg p-4"
-//                       disabled={!selectedCountry}
-//                       placeholder={selectedCountry ? t("rentNumber.enterDays") : t("rentNumber.selectCountryFirst")}
+//                       placeholder={t("rentNumber.enterDays")}
 //                     />
 //                   </div>
 //                   <div className="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
 //                     <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 flex items-center justify-center">
-//                       <DollarSign className="mr-2" />
+//                       {/* <DollarSign className="mr-2" /> */}
 //                       {t("rentNumber.totalPrice")}: ${calculateTotalPrice().toFixed(2)}
 //                     </p>
 //                   </div>
@@ -274,7 +281,7 @@
 //           </Card>
 //         </motion.div>
 
-//         <motion.div
+//         {/* <motion.div
 //           className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
 //           initial={{ opacity: 0, y: 20 }}
 //           animate={{ opacity: 1, y: 0 }}
@@ -285,7 +292,7 @@
 //             {t("rentNumber.aboutRenting")}
 //           </h3>
 //           <p className="text-gray-600 dark:text-gray-300">{t("rentNumber.rentingInfo")}</p>
-//         </motion.div>
+//         </motion.div> */}
 //       </div>
 
 //       <section className="mt-20">
@@ -333,18 +340,16 @@
 //   )
 // }
 
-import type React from "react"
 import { useState, useEffect, useMemo } from "react"
 import { motion } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { db } from "../../../firebase/config"
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { Button } from "./../ui/button"
-import { Input } from "./../ui/input"
-import { Label } from "./../ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "./../ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./../ui/select"
 import { useToast } from "./../ui/use-toast"
-import { Loader2, ShoppingCart, Shield, Globe, Zap, DollarSign, Info } from "lucide-react"
+import { Loader2, ShoppingCart, Shield, Globe, Zap } from "lucide-react"
 import { CountrySelector } from "../buy-service/country-selector"
 import { useAuth } from "../../../contexts/authcontext"
 import { useNavigate } from "react-router-dom"
@@ -353,8 +358,17 @@ import axios from "axios"
 import type { Country } from "../buy-service/types"
 
 interface RentPricing {
-  [countryName: string]: number
+  [countryName: string]: {
+    [duration: string]: number
+  }
 }
+
+const durations = [
+  { value: "7", label: "7 Days" },
+  { value: "30", label: "30 Days" },
+  { value: "90", label: "90 Days" },
+  { value: "365", label: "365 Days" },
+]
 
 export default function RentNumber() {
   const { t, i18n } = useTranslation()
@@ -365,7 +379,7 @@ export default function RentNumber() {
   const [countries, setCountries] = useState<Country[]>([])
   const [rentPricing, setRentPricing] = useState<RentPricing>({})
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null)
-  const [days, setDays] = useState(1)
+  const [selectedDuration, setSelectedDuration] = useState("7")
   const [loading, setLoading] = useState(true)
   const [countrySearch, setCountrySearch] = useState("")
   const [renting, setRenting] = useState(false)
@@ -399,7 +413,7 @@ export default function RentNumber() {
       const rentPricingSnapshot = await getDocs(collection(db, "rent_pricing"))
       const rentPricingData: RentPricing = {}
       rentPricingSnapshot.docs.forEach((doc) => {
-        rentPricingData[doc.id] = doc.data().pricePerDay
+        rentPricingData[doc.id] = doc.data().prices
       })
       setRentPricing(rentPricingData)
       console.log(rentPricingData)
@@ -417,10 +431,10 @@ export default function RentNumber() {
   }
 
   const calculateTotalPrice = () => {
-    if (!selectedCountry || days <= 0) return 0
-    const pricePerDay = rentPricing[selectedCountry.name] || 0
-    console.log("Selected country:", selectedCountry.name, "Price per day:", pricePerDay)
-    return pricePerDay * days
+    if (!selectedCountry || !selectedDuration) return 0
+    const price = rentPricing[selectedCountry.name]?.[selectedDuration] || 0
+    console.log("Selected country:", selectedCountry.name, "Price for", selectedDuration, "days:", price)
+    return price
   }
 
   const handleRent = async () => {
@@ -438,11 +452,11 @@ export default function RentNumber() {
       return
     }
 
-    if (!selectedCountry || !days) {
+    if (!selectedCountry || !selectedDuration) {
       toast({
         variant: "destructive",
         title: t("error.Selection Required"),
-        description: t("error.Select Country and Days"),
+        description: t("error.Select Country and Duration"),
       })
       return
     }
@@ -452,7 +466,7 @@ export default function RentNumber() {
       const response = await axios.post("https://smsapp-backend.vercel.app/api/rent-number", {
         uid: currentUser.uid,
         country: selectedCountry.iso.toLowerCase(),
-        days: days,
+        days: Number.parseInt(selectedDuration),
       })
 
       const id = response.data?.rental?.id ?? null
@@ -463,7 +477,7 @@ export default function RentNumber() {
         description: t("rentNumber.NumberRented"),
       })
       setSelectedCountry(null)
-      setDays(1)
+      setSelectedDuration("7")
       navigate(`/${i18n.language}/${t("urls.rentals")}?id=${id}`)
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -574,32 +588,32 @@ export default function RentNumber() {
                 </div>
                 <div className="flex flex-col justify-center h-full space-y-4">
                   <div>
-                    <Label htmlFor="days" className="text-lg font-semibold mb-2 block">
-                      {t("rentNumber.rentDuration")}
-                    </Label>
-                    <Input
-                      id="days"
-                      type="number"
-                      min="1"
-                      value={days}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const value = e.target.value
-                        setDays(value === "" ? 1 : Math.max(1, Number.parseInt(value, 10)))
-                      }}
-                      className="text-lg p-4"
-                      placeholder={t("rentNumber.enterDays")}
-                    />
+                    <Select value={selectedDuration} onValueChange={setSelectedDuration}>
+                      <SelectTrigger className="w-full text-lg p-4">
+                        <SelectValue placeholder={t("rentNumber.selectDuration")} />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white dark:bg-gray-800">
+                        {durations.map((duration) => (
+                          <SelectItem
+                            key={duration.value}
+                            value={duration.value}
+                            className="hover:bg-blue-100 dark:hover:bg-blue-900"
+                          >
+                            {duration.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
                     <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 flex items-center justify-center">
-                      {/* <DollarSign className="mr-2" /> */}
                       {t("rentNumber.totalPrice")}: ${calculateTotalPrice().toFixed(2)}
                     </p>
                   </div>
                   <Button
                     onClick={handleRent}
                     className="w-full text-lg py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
-                    disabled={!selectedCountry || !days || renting}
+                    disabled={!selectedCountry || !selectedDuration || renting}
                   >
                     {renting ? (
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -614,61 +628,48 @@ export default function RentNumber() {
           </Card>
         </motion.div>
 
-        {/* <motion.div
-          className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-        >
-          <h3 className="text-xl font-semibold mb-4 flex items-center">
-            <Info className="mr-2" />
-            {t("rentNumber.aboutRenting")}
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300">{t("rentNumber.rentingInfo")}</p>
-        </motion.div> */}
+        <section className="mt-20">
+          <motion.h2
+            className="text-3xl font-bold mb-12 text-center text-gray-800 dark:text-white"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {t("rentNumber.howItWorks")}
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              {
+                icon: <Shield className="h-16 w-16 text-blue-600 dark:text-blue-400" />,
+                title: t("rentNumber.secure"),
+                description: t("rentNumber.secureDescription"),
+              },
+              {
+                icon: <Globe className="h-16 w-16 text-green-600 dark:text-green-400" />,
+                title: t("rentNumber.global"),
+                description: t("rentNumber.globalDescription"),
+              },
+              {
+                icon: <Zap className="h-16 w-16 text-yellow-600 dark:text-yellow-400" />,
+                title: t("rentNumber.instant"),
+                description: t("rentNumber.instantDescription"),
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg text-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.2 * index }}
+              >
+                <div className="inline-block p-4 rounded-full bg-blue-100 dark:bg-blue-900 mb-6">{item.icon}</div>
+                <h3 className="text-2xl font-semibold mb-4 dark:text-white">{item.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
       </div>
-
-      <section className="mt-20">
-        <motion.h2
-          className="text-3xl font-bold mb-12 text-center text-gray-800 dark:text-white"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          {t("rentNumber.howItWorks")}
-        </motion.h2>
-        <div className="grid md:grid-cols-3 gap-12">
-          {[
-            {
-              icon: <Shield className="h-16 w-16 text-blue-600 dark:text-blue-400" />,
-              title: t("rentNumber.secure"),
-              description: t("rentNumber.secureDescription"),
-            },
-            {
-              icon: <Globe className="h-16 w-16 text-green-600 dark:text-green-400" />,
-              title: t("rentNumber.global"),
-              description: t("rentNumber.globalDescription"),
-            },
-            {
-              icon: <Zap className="h-16 w-16 text-yellow-600 dark:text-yellow-400" />,
-              title: t("rentNumber.instant"),
-              description: t("rentNumber.instantDescription"),
-            },
-          ].map((item, index) => (
-            <motion.div
-              key={index}
-              className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg text-center transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 * index }}
-            >
-              <div className="inline-block p-4 rounded-full bg-blue-100 dark:bg-blue-900 mb-6">{item.icon}</div>
-              <h3 className="text-2xl font-semibold mb-4 dark:text-white">{item.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
     </div>
   )
 }

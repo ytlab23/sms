@@ -502,19 +502,31 @@
     "getStartedNow": "ابدأ الآن",
     "allRightsReserved": "جميع الحقوق محفوظة."
   },
+"loading": "جارٍ التحميل...",
+  "tabs": {
+    "subscriptionPlans": "خطط الاشتراك",
+    "temporaryNumbers": "أرقام مؤقتة"
+  },
   "subscriptionPlans": {
-    "chooseCountry": "اختر دولتك",
     "title": "اختر خطتك المثالية",
-    "subtitle": "افتح قوة الأرقام المؤقتة مع خيارات الاشتراك المرنة لدينا",
-    "selectCountry": "اختر دولتك",
+    "subtitle": "خيارات مرنة لتناسب احتياجاتك",
+    "chooseCountry": "اختر بلدك",
+    "selectCountry": "اختر دولة",
     "weekly": "أسبوع",
     "monthly": "شهر",
-    "quarterly": "ربع سنوي",
+    "quarterly": "ربع",
     "yearly": "سنة",
-    "custom": "{{days}} يوم",
+    "custom": "{{days}} أيام",
     "getStarted": "ابدأ الآن",
     "choosePlan": "اختر الخطة",
     "popular": "الأكثر شعبية"
+  },
+  "temporaryNumbers": {
+    "selectCountryAndService": "اختر دولة وخدمة",
+    "pricingAndSuccess": "التسعير ومعدل النجاح",
+    "price": "السعر",
+    "successRate": "معدل النجاح",
+    "notAvailable": "غير متاح"
   },
   "rentNumber": {
     "title": "استئجار رقم مؤقت",

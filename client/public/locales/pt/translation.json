@@ -505,11 +505,16 @@
   "getStartedNow": "Comece Agora",
   "allRightsReserved": "Todos os direitos reservados."
 },
+"loading": "Carregando...",
+"tabs": {
+  "subscriptionPlans": "Planos de Assinatura",
+  "temporaryNumbers": "Números Temporários"
+},
 "subscriptionPlans": {
-  "chooseCountry": "Escolha Seu País",
   "title": "Escolha Seu Plano Perfeito",
-  "subtitle": "Desbloqueie o poder de números temporários com nossas opções de assinatura flexíveis",
-  "selectCountry": "Selecione seu país",
+  "subtitle": "Opções flexíveis para atender às suas necessidades",
+  "chooseCountry": "Selecione Seu País",
+  "selectCountry": "Escolha um país",
   "weekly": "semana",
   "monthly": "mês",
   "quarterly": "trimestre",
@@ -518,6 +523,13 @@
   "getStarted": "Começar",
   "choosePlan": "Escolher Plano",
   "popular": "Mais Popular"
+},
+"temporaryNumbers": {
+  "selectCountryAndService": "Selecione um País e Serviço",
+  "pricingAndSuccess": "Preços e Taxa de Sucesso",
+  "price": "Preço",
+  "successRate": "Taxa de Sucesso",
+  "notAvailable": "N/A"
 },
 
 "rentNumber": {

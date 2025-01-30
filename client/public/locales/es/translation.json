@@ -502,11 +502,16 @@
   "getStartedNow": "Comienza Ahora",
   "allRightsReserved": "Todos los derechos reservados."
 },
+"loading": "Cargando...",
+"tabs": {
+  "subscriptionPlans": "Planes de Suscripción",
+  "temporaryNumbers": "Números Temporales"
+},
 "subscriptionPlans": {
-  "chooseCountry": "Elige Tu País",
   "title": "Elige Tu Plan Perfecto",
-  "subtitle": "Desbloquea el poder de los números temporales con nuestras opciones de suscripción flexibles",
-  "selectCountry": "Selecciona tu país",
+  "subtitle": "Opciones Flexibles para Adaptarse a Tus Necesidades",
+  "chooseCountry": "Selecciona Tu País",
+  "selectCountry": "Elige un país",
   "weekly": "semana",
   "monthly": "mes",
   "quarterly": "trimestre",
@@ -514,7 +519,14 @@
   "custom": "{{days}} días",
   "getStarted": "Comenzar",
   "choosePlan": "Elige Plan",
-  "popular": "Más Popular"
+  "popular": "El Más Popular"
+},
+"temporaryNumbers": {
+  "selectCountryAndService": "Selecciona un País y Servicio",
+  "pricingAndSuccess": "Precio y Tasa de Éxito",
+  "price": "Precio",
+  "successRate": "Tasa de Éxito",
+  "notAvailable": "N/A"
 },
 
 "rentNumber": {

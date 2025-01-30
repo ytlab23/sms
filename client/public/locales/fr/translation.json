@@ -505,19 +505,31 @@
     "getStartedNow": "Commencez Maintenant",
     "allRightsReserved": "Tous droits réservés."
   },
+  "loading": "Chargement...",
+  "tabs": {
+    "subscriptionPlans": "Forfaits d'abonnement",
+    "temporaryNumbers": "Numéros Temporaires"
+  },
   "subscriptionPlans": {
-    "chooseCountry": "Choisissez Votre Pays",
-    "title": "Choisissez Votre Forfait Parfait",
-    "subtitle": "Déverrouillez la puissance des numéros temporaires avec nos options d'abonnement flexibles",
-    "selectCountry": "Sélectionnez votre pays",
+    "title": "Choisissez votre plan parfait",
+    "subtitle": "Options flexibles pour répondre à vos besoins",
+    "chooseCountry": "Sélectionnez votre pays",
+    "selectCountry": "Choisissez un pays",
     "weekly": "semaine",
     "monthly": "mois",
     "quarterly": "trimestre",
     "yearly": "année",
     "custom": "{{days}} jours",
     "getStarted": "Commencer",
-    "choosePlan": "Choisir un Forfait",
+    "choosePlan": "Choisir un plan",
     "popular": "Le Plus Populaire"
+  },
+  "temporaryNumbers": {
+    "selectCountryAndService": "Sélectionnez un pays et un service",
+    "pricingAndSuccess": "Tarification et taux de réussite",
+    "price": "Prix",
+    "successRate": "Taux de réussite",
+    "notAvailable": "N/D"
   },
   "rentNumber": {
     "title": "Louer un Numéro Temporaire",

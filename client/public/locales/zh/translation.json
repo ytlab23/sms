@@ -502,20 +502,34 @@
   "getStartedNow": "立即开始",
   "allRightsReserved": "保留所有权利。"
 },
-"subscriptionPlans": {
-  "chooseCountry": "选择您的国家",
-  "title": "选择您的完美计划",
-  "subtitle": "通过我们灵活的订阅选项释放临时号码的力量",
-  "selectCountry": "选择您的国家",
-  "weekly": "周",
-  "monthly": "月",
-  "quarterly": "季度",
-  "yearly": "年",
-  "custom": "{{days}} 天",
-  "getStarted": "开始使用",
-  "choosePlan": "选择计划",
-  "popular": "最受欢迎"
-},
+
+  "loading": "加载中...",
+  "tabs": {
+    "subscriptionPlans": "订阅计划",
+    "temporaryNumbers": "临时号码"
+  },
+  "subscriptionPlans": {
+    "title": "选择您的完美计划",
+    "subtitle": "灵活的选项以满足您的需求",
+    "chooseCountry": "选择您的国家",
+    "selectCountry": "选择一个国家",
+    "weekly": "周",
+    "monthly": "月",
+    "quarterly": "季度",
+    "yearly": "年",
+    "custom": "{{days}} 天",
+    "getStarted": "开始使用",
+    "choosePlan": "选择计划",
+    "popular": "最受欢迎"
+  },
+  "temporaryNumbers": {
+    "selectCountryAndService": "选择国家和服务",
+    "pricingAndSuccess": "价格和成功率",
+    "price": "价格",
+    "successRate": "成功率",
+    "notAvailable": "不可用"
+  }
+,
 "rentNumber": {
   "title": "租用临时号码",
   "subtitle": "安全、全球和即时访问临时电话号码",

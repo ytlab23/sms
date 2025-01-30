@@ -505,11 +505,16 @@
   "getStartedNow": "Начать сейчас",
   "allRightsReserved": "Все права защищены."
 },
+"loading": "Загрузка...",
+"tabs": {
+  "subscriptionPlans": "Планы подписки",
+  "temporaryNumbers": "Временные номера"
+},
 "subscriptionPlans": {
+  "title": "Выберите свой идеальный план",
+  "subtitle": "Гибкие варианты для удовлетворения ваших потребностей",
   "chooseCountry": "Выберите вашу страну",
-  "title": "Выберите идеальный план",
-  "subtitle": "Разблокируйте мощь временных номеров с нашими гибкими подписками",
-  "selectCountry": "Выберите вашу страну",
+  "selectCountry": "Выберите страну",
   "weekly": "неделя",
   "monthly": "месяц",
   "quarterly": "квартал",
@@ -518,6 +523,13 @@
   "getStarted": "Начать",
   "choosePlan": "Выбрать план",
   "popular": "Самый популярный"
+},
+"temporaryNumbers": {
+  "selectCountryAndService": "Выберите страну и услугу",
+  "pricingAndSuccess": "Ценообразование и уровень успеха",
+  "price": "Цена",
+  "successRate": "Уровень успеха",
+  "notAvailable": "Н/Д"
 },
 
 "rentNumber": {

@@ -513,20 +513,7 @@
     "getStartedNow": "Get Started Now",
     "allRightsReserved": "All rights reserved."
   },
-  "subscriptionPlans": {
-    "chooseCountry": "Choose Your Country",
-    "title": "Choose Your Perfect Plan",
-    "subtitle": "Unlock the power of temporary numbers with our flexible subscription options",
-    "selectCountry": "Select your country",
-    "weekly": "week",
-    "monthly": "month",
-    "quarterly": "quarter",
-    "yearly": "year",
-    "custom": "{{days}} days",
-    "getStarted": "Get Started",
-    "choosePlan": "Choose Plan",
-    "popular": "Most Popular"
-  },
+ 
 
 "rentNumber": {
     "title": "Rent a Temporary Number",
@@ -550,6 +537,31 @@
   "error": {
     "Selection Required": "Selection Required",
     "Select Country and Duration": "Please select a country and enter the rental duration."
-  }
-
+  },
+"loading": "Loading...",
+    "tabs": {
+      "subscriptionPlans": "Subscription Plans",
+      "temporaryNumbers": "Temporary Numbers"
+    },
+    "subscriptionPlans": {
+      "title": "Choose Your Perfect Plan",
+      "subtitle": "Flexible options to suit your needs",
+      "chooseCountry": "Select Your Country",
+      "selectCountry": "Choose a country",
+      "weekly": "week",
+      "monthly": "month",
+      "quarterly": "quarter",
+      "yearly": "year",
+      "custom": "{{days}} days",
+      "getStarted": "Get Started",
+      "choosePlan": "Choose Plan",
+      "popular": "Most Popular"
+    },
+    "temporaryNumbers": {
+      "selectCountryAndService": "Select a Country and Service",
+      "pricingAndSuccess": "Pricing and Success Rate",
+      "price": "Price",
+      "successRate": "Success Rate",
+      "notAvailable": "N/A"
+    }
 }

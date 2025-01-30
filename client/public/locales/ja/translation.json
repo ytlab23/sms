@@ -505,10 +505,15 @@
   "getStartedNow": "今すぐ始める",
   "allRightsReserved": "全著作権所有。"
 },
+"loading": "読み込み中...",
+"tabs": {
+  "subscriptionPlans": "サブスクリプションプラン",
+  "temporaryNumbers": "一時的な番号"
+},
 "subscriptionPlans": {
+  "title": "あなたに最適なプランを選択",
+  "subtitle": "あなたのニーズに合った柔軟なオプション",
   "chooseCountry": "国を選択",
-  "title": "完璧なプランを選択",
-  "subtitle": "柔軟なサブスクリプションオプションで一時的な番号の力を解放",
   "selectCountry": "国を選択",
   "weekly": "週",
   "monthly": "月",
@@ -517,7 +522,14 @@
   "custom": "{{days}} 日",
   "getStarted": "始める",
   "choosePlan": "プランを選択",
-  "popular": "最も人気"
+  "popular": "最も人気のある"
+},
+"temporaryNumbers": {
+  "selectCountryAndService": "国とサービスを選択",
+  "pricingAndSuccess": "価格と成功率",
+  "price": "価格",
+  "successRate": "成功率",
+  "notAvailable": "利用不可"
 },
 "rentNumber": {
   "title": "一時的な番号をレンタル",
