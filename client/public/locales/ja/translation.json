@@ -1,5 +1,40 @@
 {
+  "contact": {
+      "Contact Us": "お問い合わせ",
+      "Have questions or need assistance? Reach out to our team.": "ご質問やサポートが必要ですか？私たちのチームに連絡してください。",
+      "Send us a Message": "メッセージを送る",
+      "Your Name": "あなたの名前",
+      "Enter your name": "あなたの名前を入力してください",
+      "Your Email": "あなたのメール",
+      "Enter your email": "あなたのメールを入力してください",
+      "Subject": "件名",
+      "Enter subject": "件名を入力してください",
+      "Message": "メッセージ",
+      "Type your message here": "ここにメッセージを入力してください",
+      "Send Message": "メッセージを送る",
+      "Sending...": "送信中...",
+      "Success": "成功",
+      "Your message has been sent successfully!": "あなたのメッセージは正常に送信されました！",
+      "Error": "エラー",
+      "Failed to send message. Please try again.": "メッセージの送信に失敗しました。もう一度お試しください。",
+      "Email": "メール",
+      "Phone": "電話",
+      "Address": "住所"
+  },
+  "contactInfo": {
+      "emailAddress": "support@smsapp.io",
+      "phoneNumber": "+1 (555) 123-4567",
+      "physicalAddress": "123 Verification St, Digital City, 10001"
+  },
+  "validation": {
+      "nameRequired": "名前は少なくとも2文字でなければなりません",
+      "emailInvalid": "有効なメールアドレスを入力してください",
+      "subjectRequired": "件名は少なくとも5文字でなければなりません",
+      "messageRequired": "メッセージは少なくとも10文字でなければなりません"
+  }
+,
     "header": {
+      "CONTACT": "お問い合わせ",
       "OUR_SERVICES": "私たちのサービス",
       "BUY_TEMP_NUMBER": "一時的な番号を購入",
       "SUBSCRIPTION_PLANS": "サブスクリプションプラン",
@@ -265,6 +300,7 @@
     "Reset Password": "パスワードをリセット"
   },
   "app": {
+    "Contact Us": "お問い合わせ",
     "Faq": "よくある質問",
     "Subscription": "サブスクリプションプラン",
     "Buy Temporary SMS": "一時的なSMSを購入",

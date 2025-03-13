@@ -1,5 +1,39 @@
 {
+  "contact": {
+    "Contact Us": "联系我们",
+    "Have questions or need assistance? Reach out to our team.": "有任何问题或需要帮助？请联系我们的团队。",
+    "Send us a Message": "发送消息",
+    "Your Name": "您的姓名",
+    "Enter your name": "输入您的姓名",
+    "Your Email": "您的电子邮件",
+    "Enter your email": "输入您的电子邮件",
+    "Subject": "主题",
+    "Enter subject": "输入主题",
+    "Message": "消息",
+    "Type your message here": "输入您的消息",
+    "Send Message": "发送消息",
+    "Sending...": "发送中...",
+    "Success": "成功",
+    "Your message has been sent successfully!": "您的消息已发送成功！",
+    "Error": "错误",
+    "Failed to send message. Please try again.": "发送消息失败。请再试一次。",
+    "Email": "电子邮件",
+    "Phone": "电话",
+    "Address": "地址"
+  },
+  "contactInfo": {
+    "emailAddress": "support@smsapp.io",
+    "phoneNumber": "+1 (555) 123-4567",
+    "physicalAddress": "123 Verification St, Digital City, 10001"
+  },
+  "validation": {
+    "nameRequired": "姓名必须至少有2个字符",
+    "emailInvalid": "请输入有效的电子邮件地址",
+    "subjectRequired": "主题必须至少有5个字符",
+    "messageRequired": "消息必须至少有10个字符"
+  },
   "header": {
+    "CONTACT": "联系我们",
     "OUR_SERVICES": "我们的服务",
     "BUY_TEMP_NUMBER": "购买临时号码",
     "SUBSCRIPTION_PLANS": "订阅计划",
@@ -262,6 +296,7 @@
     "Reset Password": "重置密码"
   },
 "app": {
+    "Contact Us": "联系我们",
     "Faq": "常见问题",
     "Subscription": "订阅计划",
     "Buy Temporary SMS": "购买临时短信",

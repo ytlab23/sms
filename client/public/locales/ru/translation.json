@@ -1,5 +1,39 @@
 {
+  "contact": {
+    "Contact Us": "Свяжитесь с нами",
+    "Have questions or need assistance? Reach out to our team.": "Есть вопросы или нужна помощь? Свяжитесь с нами.",
+    "Send us a Message": "Отправить нам сообщение",
+    "Your Name": "Ваше имя",
+    "Enter your name": "Введите ваше имя",
+    "Your Email": "Ваш Email",
+    "Enter your email": "Введите ваш Email",
+    "Subject": "Тема",
+    "Enter subject": "Введите тему",
+    "Message": "Сообщение",
+    "Type your message here": "Введите ваше сообщение здесь",
+    "Send Message": "Отправить сообщение",
+    "Sending...": "Отправка...",
+    "Success": "Успех",
+      "Your message has been sent successfully!": "Ваше сообщение отправлено успешно!",
+    "Error": "Ошибка",
+    "Failed to send message. Please try again.": "Не удалось отправить сообщение. Пожалуйста, попробуйте снова.",
+    "Email": "Email",
+    "Phone": "Телефон",
+    "Address": "Адрес"
+  },
+  "contactInfo": {
+    "emailAddress": "support@smsapp.io",
+    "phoneNumber": "+1 (555) 123-4567",
+    "physicalAddress": "123 Verification St, Digital City, 10001"
+  },
+  "validation": {
+    "nameRequired": "Имя должно быть не менее 2 символов",
+    "emailInvalid": "Пожалуйста, введите действительный адрес электронной почты",
+    "subjectRequired": "Тема должна быть не менее 5 символов",
+    "messageRequired": "Сообщение должно быть не менее 10 символов"
+  },
     "header": {
+      "CONTACT": "СВЯЗАТЬСЯ",
       "OUR_SERVICES": "Наши услуги",
       "BUY_TEMP_NUMBER": "Купить временный номер",
       "SUBSCRIPTION_PLANS": "Планы подписки",
@@ -264,6 +298,7 @@
     "Reset Password": "Сбросить пароль"
   },
   "app": {
+    "Contact Us": "Свяжитесь с нами",
     "Faq": "Часто задаваемые вопросы",
     "Subscription": "Планы подписки",
     "Buy Temporary SMS": "Купить временные SMS",

@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation, Navigate, useNavigate } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  useLocation,
+  Navigate,
+  useNavigate,
+} from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 
 import { loadStripe } from '@stripe/stripe-js';
@@ -8,6 +14,7 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
+import Contact from './pages/Contact/Contact';
 
 import MainPage from './pages/MainPage/MainPage';
 
@@ -57,7 +64,7 @@ import RentNumber from './components/shadcn/buy-service/rentNumber';
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 function App() {
-  const {t,i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const faqPath = `/:lang?/faq`;
   const faqTitle = `${t('app.Faq')}`;
@@ -68,7 +75,7 @@ function App() {
   const ourServicesPath = `/:lang?/ourservices`;
   const ourServicesTitle = `${t('app.Our Services')}`;
   const settingsPath = `/:lang?/settings`;
-  const settingsTitle = `${t('app.Account Settings')}`; 
+  const settingsTitle = `${t('app.Account Settings')}`;
   const ordersPath = `/:lang?/orders`;
   const ordersTitle = `${t('app.Your Orders')}`;
   const signInPath = `/:lang?/auth/signin`;
@@ -80,7 +87,7 @@ function App() {
   const smsPath = `/:lang?/sms`;
   const smsTitle = `${t('app.Your SMS')}`;
 
-  const temporySms ="/:lang?/temporary-sms";
+  const temporySms = '/:lang?/temporary-sms';
   const temporySmsTitle = `${t('app.Buy Temporary SMS')}`;
 
   const subscriptionPath = `/:lang?/subscription-plans`;
@@ -88,31 +95,32 @@ function App() {
   const rentingPath = `/:lang?/rent-number`;
   const rentingTitle = `${t('app.Rent Number')}`;
 
-
   const adminSetupPath = `/admin382013453sms/setup`;
+  const contactPath = `/:lang?/contact`;
+  const contactTitle = `${t('app.Contact Us')}`;
+
   // useEffect(() => {
   //   const currentLanguage = i18n.language;
   //   const pathLanguage = location.pathname.split('/')[1];
 
   //   // Check if the path language is different from the current language
-    const languages = [
-      { code: 'en', name: 'English', flag: '🇬🇧' },
-      { code: 'es', name: 'Español', flag: '🇪🇸' },
-      { code: 'pt', name: 'Português', flag: '🇵🇹' },
-      { code: 'fr', name: 'Français', flag: '🇫🇷' },
-      { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-      { code: 'it', name: 'Italiano', flag: '🇮🇹' },
-      { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-      { code: 'zh', name: '中文', flag: '🇨🇳' },
-      { code: 'ja', name: '日本語', flag: '🇯🇵' },
-      { code: 'ar', name: 'العربية', flag: '🇸🇦' },
-    ];
-  
-  
+  const languages = [
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' },
+    { code: 'pt', name: 'Português', flag: '🇵🇹' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+    { code: 'zh', name: '中文', flag: '🇨🇳' },
+    { code: 'ja', name: '日本語', flag: '🇯🇵' },
+    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+  ];
+
   useEffect(() => {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
- 
+
   const changeLanguageAndPath = useChangeLanguageAndPath();
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -153,20 +161,26 @@ function App() {
               <Elements stripe={stripePromise}>
                 <ProtectedRoute>
                   <div>
-                    <PageTitle title={`${payTitle}  | SMSApp`} lang={i18n.language}/>
+                    <PageTitle
+                      title={`${payTitle}  | SMSApp`}
+                      lang={i18n.language}
+                    />
                     <PaymentForm />
                   </div>
                 </ProtectedRoute>
               </Elements>
             }
           />
-              {/* <Route path={faqPath} element={<Faq />} /> */}
+          {/* <Route path={faqPath} element={<Faq />} /> */}
 
           <Route
             path={faqPath}
             element={
               <>
-                <PageTitle title={`${faqTitle} | SMS App`} lang={i18n.language} />
+                <PageTitle
+                  title={`${faqTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <Faq />
               </>
             }
@@ -175,7 +189,10 @@ function App() {
             path={temporySms}
             element={
               <>
-                <PageTitle title={`${temporySmsTitle} | SMS App`} lang={i18n.language} />
+                <PageTitle
+                  title={`${temporySmsTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <TempNumberLandingPage></TempNumberLandingPage>
               </>
             }
@@ -184,7 +201,10 @@ function App() {
             path={subscriptionPath}
             element={
               <>
-                <PageTitle title={`${subscriptionTitle} | SMS App`} lang={i18n.language} />
+                <PageTitle
+                  title={`${subscriptionTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <Subscription />
               </>
             }
@@ -193,7 +213,10 @@ function App() {
             path={rentingPath}
             element={
               <>
-                <PageTitle title={`${rentingTitle} | SMS App`} lang={i18n.language} />
+                <PageTitle
+                  title={`${rentingTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <RentNumber></RentNumber>
               </>
             }
@@ -202,7 +225,10 @@ function App() {
             path={statPath}
             element={
               <>
-                <PageTitle title={`${statTitle} | SMS App`} lang={i18n.language}/>
+                <PageTitle
+                  title={`${statTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <StatsPage />
               </>
             }
@@ -213,7 +239,10 @@ function App() {
               <>
                 <ProtectedRoute>
                   <>
-                    <PageTitle title="Payment Failure | SMS App" lang={i18n.language} />
+                    <PageTitle
+                      title="Payment Failure | SMS App"
+                      lang={i18n.language}
+                    />
                     <PaymentFailure />
                   </>
                 </ProtectedRoute>
@@ -226,7 +255,10 @@ function App() {
               <>
                 <ProtectedRoute>
                   <>
-                    <PageTitle title="Payment Success | SMS App" lang={i18n.language} />
+                    <PageTitle
+                      title="Payment Success | SMS App"
+                      lang={i18n.language}
+                    />
                     <PaymentSuccess />
                   </>
                 </ProtectedRoute>
@@ -237,18 +269,24 @@ function App() {
             path={ourServicesPath}
             element={
               <>
-                <PageTitle title={`${ourServicesTitle} | SMS App`} lang={i18n.language}/>
+                <PageTitle
+                  title={`${ourServicesTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <InternalPagesShowcase />
               </>
             }
           />
-        
+
           <Route
             path={settingsPath}
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title={`${settingsTitle} | SMS App`} lang={i18n.language} />
+                  <PageTitle
+                    title={`${settingsTitle} | SMS App`}
+                    lang={i18n.language}
+                  />
                   <Settings />
                 </>
               </ProtectedRoute>
@@ -259,7 +297,10 @@ function App() {
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title={`${ordersTitle} | SMS App`} lang={i18n.language} />
+                  <PageTitle
+                    title={`${ordersTitle} | SMS App`}
+                    lang={i18n.language}
+                  />
                   <OrdersPage />
                 </>
               </ProtectedRoute>
@@ -269,7 +310,10 @@ function App() {
             path={signInPath}
             element={
               <>
-                <PageTitle title={`${signInTitle} | SMS App`} lang={i18n.language} />
+                <PageTitle
+                  title={`${signInTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <SignIn />
               </>
             }
@@ -278,7 +322,10 @@ function App() {
             path={signUpPath}
             element={
               <>
-                <PageTitle title={`${signUpTitle} | SMS App`} lang={i18n.language} />
+                <PageTitle
+                  title={`${signUpTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <SignUp />
               </>
             }
@@ -287,7 +334,10 @@ function App() {
             path={HowToBuyPath}
             element={
               <>
-                <PageTitle title={`${HowToBuyTitle} | SMS App`} lang={i18n.language} />
+                <PageTitle
+                  title={`${HowToBuyTitle} | SMS App`}
+                  lang={i18n.language}
+                />
                 <HowToBuy />
               </>
             }
@@ -297,18 +347,36 @@ function App() {
             element={
               <ProtectedRoute>
                 <>
-                  <PageTitle title={`${smsTitle} | SMS App`} lang={i18n.language}/>
+                  <PageTitle
+                    title={`${smsTitle} | SMS App`}
+                    lang={i18n.language}
+                  />
                   <SmsPage />
                 </>
               </ProtectedRoute>
             }
           />
-          <Route path="/:lang?/:slug" element={
-            <>
-            <PageTitle title="Service | SMS App" lang={i18n.language} />
-            <InternalPage />
-            </>
-            } />
+          <Route
+            path={contactPath}
+            element={
+              <>
+                <PageTitle
+                  title={`${contactTitle} | SMS App`}
+                  lang={i18n.language}
+                />
+                <Contact />
+              </>
+            }
+          />
+          <Route
+            path="/:lang?/:slug"
+            element={
+              <>
+                <PageTitle title="Service | SMS App" lang={i18n.language} />
+                <InternalPage />
+              </>
+            }
+          />
         </Route>
         <Route
           element={
@@ -321,7 +389,6 @@ function App() {
             />
           }
         >
-         
           <Route
             path={adminSetupPath}
             element={
@@ -349,7 +416,10 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Admin Edit | SMS App" lang={i18n.language} />
+                  <PageTitle
+                    title="Admin Edit | SMS App"
+                    lang={i18n.language}
+                  />
                   {/* <InternalPagesList></InternalPagesList> */}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
@@ -374,7 +444,10 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Admin Edit | SMS App" lang={i18n.language}/>
+                  <PageTitle
+                    title="Admin Edit | SMS App"
+                    lang={i18n.language}
+                  />
 
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
@@ -399,7 +472,10 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Admin Edit | SMS App" lang={i18n.language}/>{' '}
+                  <PageTitle
+                    title="Admin Edit | SMS App"
+                    lang={i18n.language}
+                  />{' '}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -422,7 +498,10 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Edit Country | SMS App" lang={i18n.language} />{' '}
+                  <PageTitle
+                    title="Edit Country | SMS App"
+                    lang={i18n.language}
+                  />{' '}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -450,7 +529,10 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Country Service Pricing | SMS App" lang={i18n.language} />
+                  <PageTitle
+                    title="Country Service Pricing | SMS App"
+                    lang={i18n.language}
+                  />
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -476,7 +558,10 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Edit Services | SMS App"  lang={i18n.language}/>{' '}
+                  <PageTitle
+                    title="Edit Services | SMS App"
+                    lang={i18n.language}
+                  />{' '}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -502,7 +587,10 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Edit Plans | SMS App"  lang={i18n.language}/>{' '}
+                  <PageTitle
+                    title="Edit Plans | SMS App"
+                    lang={i18n.language}
+                  />{' '}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -515,8 +603,8 @@ function App() {
                         {/* <ServicesMenu
                           key={`services-menu-${refreshKey}`}
                         />{' '} */}
-                <AdminSubscriptionPlans></AdminSubscriptionPlans>
-                {/* </ScrollArea> */}
+                        <AdminSubscriptionPlans></AdminSubscriptionPlans>
+                        {/* </ScrollArea> */}
                       </CardContent>
                     </Card>
                   </div>
@@ -529,7 +617,10 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <>
-                  <PageTitle title="Edit Plans | SMS App"  lang={i18n.language}/>{' '}
+                  <PageTitle
+                    title="Edit Plans | SMS App"
+                    lang={i18n.language}
+                  />{' '}
                   <div className="mx-7">
                     <Card className="bg-white/10 shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:bg-white/20 backdrop-blur-lg">
                       <CardHeader className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6">
@@ -543,7 +634,7 @@ function App() {
                           key={`services-menu-${refreshKey}`}
                         />{' '} */}
                         <RentNumberPricing></RentNumberPricing>
-                {/* </ScrollArea> */}
+                        {/* </ScrollArea> */}
                       </CardContent>
                     </Card>
                   </div>
@@ -557,7 +648,7 @@ function App() {
           path="/:lang?/404"
           element={
             <div>
-              <PageTitle title="404 | SMS App" lang={i18n.language}/>
+              <PageTitle title="404 | SMS App" lang={i18n.language} />
               <NotFound />
             </div>
           }

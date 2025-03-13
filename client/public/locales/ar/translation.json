@@ -1,5 +1,38 @@
-{
+{"contact": {
+    "Contact Us": "اتصل بنا",
+    "Have questions or need assistance? Reach out to our team.": "هل لديك أسئلة أو تحتاج إلى مساعدة؟ تواصل مع فريقنا.",
+    "Send us a Message": "أرسل لنا رسالة",
+    "Your Name": "اسمك",
+    "Enter your name": "أدخل اسمك",
+    "Your Email": "بريدك الإلكتروني",
+    "Enter your email": "أدخل بريدك الإلكتروني",
+    "Subject": "الموضوع",
+    "Enter subject": "أدخل الموضوع",
+    "Message": "الرسالة",
+    "Type your message here": "اكتب رسالتك هنا",
+    "Send Message": "إرسال الرسالة",
+    "Sending...": "جاري الإرسال...",
+    "Success": "نجاح",
+    "Your message has been sent successfully!": "تم إرسال رسالتك بنجاح!",
+    "Error": "خطأ",
+    "Failed to send message. Please try again.": "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.",
+    "Email": "البريد الإلكتروني",
+    "Phone": "الهاتف",
+    "Address": "العنوان"
+  },
+  "contactInfo": {
+    "emailAddress": "support@smsapp.io",
+    "phoneNumber": "+1 (555) 123-4567",
+    "physicalAddress": "123 شارع التحقق، المدينة الرقمية، 10001"
+  },
+  "validation": {
+    "nameRequired": "يجب أن يتكون الاسم من حرفين على الأقل",
+    "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "subjectRequired": "يجب أن يتكون الموضوع من 5 أحرف على الأقل",
+    "messageRequired": "يجب أن تتكون الرسالة من 10 أحرف على الأقل"
+  },
   "header": {
+    "CONTACT": "تواصل معنا",
     "OUR_SERVICES": "خدماتنا",
     "BUY_TEMP_NUMBER": "شراء رقم مؤقت",
     "SUBSCRIPTION_PLANS": "خطط الاشتراك",
@@ -262,6 +295,7 @@
   },
   "app": {
     "Faq": "الأسئلة الشائعة",
+    "Contact Us": "اتصل بنا",
     "Subscription": "خطط الاشتراك",
     "Buy Temporary SMS": "شراء رسائل نصية مؤقتة",
     "Rent Number": "استئجار رقم",

@@ -13,10 +13,12 @@ import FreeNumberBanner from '../pages/FreePage/freepage';
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [actionSidebarOpen, setActionSidebarOpen] = useState(false);
+  const [showLogo, setShowLogo] = useState(true);
   useEffect(() => {
     const path = location.pathname
-    const shouldShowAction = !path.includes("/temporary-sms") 
+    const shouldShowAction = !path.includes("/temporary-sms") && !path.includes("/rent-number")
     setActionSidebarOpen(shouldShowAction)
+    setShowLogo(!shouldShowAction)
   }, [location.pathname])
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
@@ -34,7 +36,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} showLogo={showLogo} />
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}

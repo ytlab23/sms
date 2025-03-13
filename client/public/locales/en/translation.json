@@ -1,7 +1,40 @@
-{
+{"contact": {
+    "Contact Us": "Contact Us",
+    "Have questions or need assistance? Reach out to our team.": "Have questions or need assistance? Reach out to our team.",
+    "Send us a Message": "Send us a Message",
+    "Your Name": "Your Name",
+    "Enter your name": "Enter your name",
+    "Your Email": "Your Email",
+    "Enter your email": "Enter your email",
+    "Subject": "Subject",
+    "Enter subject": "Enter subject",
+    "Message": "Message",
+    "Type your message here": "Type your message here",
+    "Send Message": "Send Message",
+    "Sending...": "Sending...",
+    "Success": "Success",
+    "Your message has been sent successfully!": "Your message has been sent successfully!",
+    "Error": "Error",
+    "Failed to send message. Please try again.": "Failed to send message. Please try again.",
+    "Email": "Email",
+    "Phone": "Phone",
+    "Address": "Address"
+  },
+  "contactInfo": {
+    "emailAddress": "support@smsapp.io",
+    "phoneNumber": "+1 (555) 123-4567",
+    "physicalAddress": "123 Verification St, Digital City, 10001"
+  },
+  "validation": {
+    "nameRequired": "Name must be at least 2 characters",
+    "emailInvalid": "Please enter a valid email address",
+    "subjectRequired": "Subject must be at least 5 characters",
+    "messageRequired": "Message must be at least 10 characters"
+  },
   "welcome": "Welcome",
   "signIn": "Sign In",
   "header": {
+    "CONTACT": "CONTACT",
     "OUR_SERVICES": "Our Services",
     "BUY_TEMP_NUMBER": "Buy Temp Number",
     "SUBSCRIPTION_PLANS": "Subscription Plans",
@@ -269,6 +302,7 @@
   },
   "app": {
     "Faq": "Faq",
+    "Contact Us": "Contact Us",
     "Subscription": "Subscription Plans",
     "Buy Temporary SMS": "Buy Temporary SMS",
     "Rent Number": "Rent Number",
@@ -285,6 +319,7 @@
 
   "urls": {
     "home": "",
+    "contact": "contact",
     "faq": "faq",
     "ourservices": "ourservices",
     "statistics": "statistics",

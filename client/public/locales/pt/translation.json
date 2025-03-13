@@ -1,5 +1,39 @@
 {
+  "contact": {
+    "Contact Us": "Contate-nos",
+    "Have questions or need assistance? Reach out to our team.": "Tem perguntas ou precisa de assistência? Entre em contato conosco.",
+    "Send us a Message": "Envie uma mensagem",
+    "Your Name": "Seu Nome",
+    "Enter your name": "Digite seu nome",
+    "Your Email": "Seu Email",
+    "Enter your email": "Digite seu email",
+    "Subject": "Assunto",
+    "Enter subject": "Digite o assunto",
+    "Message": "Mensagem",
+    "Type your message here": "Digite sua mensagem aqui",
+    "Send Message": "Enviar Mensagem",
+    "Sending...": "Enviando...",
+    "Success": "Sucesso",
+      "Your message has been sent successfully!": "Sua mensagem foi enviada com sucesso!",
+    "Error": "Erro",
+    "Failed to send message. Please try again.": "Falha ao enviar a mensagem. Por favor, tente novamente.",
+    "Email": "Email",
+    "Phone": "Telefone",
+    "Address": "Endereço"
+  },
+  "contactInfo": {
+    "emailAddress": "support@smsapp.io",
+    "phoneNumber": "+1 (555) 123-4567",
+    "physicalAddress": "123 Verification St, Digital City, 10001"
+  },
+  "validation": {
+    "nameRequired": "Nome deve ter pelo menos 2 caracteres",
+    "emailInvalid": "Por favor, insira um endereço de email válido",
+    "subjectRequired": "Assunto deve ter pelo menos 5 caracteres",
+    "messageRequired": "Mensagem deve ter pelo menos 10 caracteres"
+  },
   "header": {
+    "CONTACT": "CONTATO",
     "OUR_SERVICES": "Nossos Serviços",
     "BUY_TEMP_NUMBER": "Comprar Número Temporário",
     "SUBSCRIPTION_PLANS": "Planos de Assinatura",
@@ -264,6 +298,7 @@
     "Reset Password": "Redefinir Senha"
   },
   "app": {
+    "Contact Us": "Contate-nos",
     "Faq": "Perguntas Frequentes",
     "Subscription": "Planos de Assinatura",
     "Buy Temporary SMS": "Comprar SMS Temporário",
