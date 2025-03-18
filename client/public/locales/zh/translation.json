@@ -1,5 +1,7 @@
 {
   "contact": {
+     "Verify you're human": "验证您是人类",
+    "Please verify you are not a robot": "请验证您不是机器人",
     "Contact Us": "联系我们",
     "Have questions or need assistance? Reach out to our team.": "有任何问题或需要帮助？请联系我们的团队。",
     "Send us a Message": "发送消息",

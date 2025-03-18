@@ -1,5 +1,7 @@
 {
   "contact": {
+     "Verify you're human": "人間であることを確認してください",
+    "Please verify you are not a robot": "ロボットではないことを確認してください",
       "Contact Us": "お問い合わせ",
       "Have questions or need assistance? Reach out to our team.": "ご質問やサポートが必要ですか？私たちのチームに連絡してください。",
       "Send us a Message": "メッセージを送る",
