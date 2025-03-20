@@ -17,8 +17,8 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const path = location.pathname
     const shouldShowAction = !path.includes("/temporary-sms") && !path.includes("/rent-number")
-    setActionSidebarOpen(shouldShowAction)
-    setShowLogo(!shouldShowAction)
+    // setActionSidebarOpen(false)
+    setShowLogo(true)
   }, [location.pathname])
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
